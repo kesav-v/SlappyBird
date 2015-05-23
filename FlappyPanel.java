@@ -40,27 +40,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 	private ArrayList<String> songNames;
 
 	public FlappyPanel() {
-		songNames = new ArrayList<String>();
-		/*songNames.add("Andalouse.mp3");
-		songNames.add("Breathing.mp3");
-		songNames.add("GetLow.mp3");
-		songNames.add("INeedYourLove.mp3");
-		songNames.add("Conmigo.mp3");
-		songNames.add("WrittenInTheStars.mp3");
-		songNames.add("LaVieDuBonCote.mp3");
-		songNames.add("Bella.mp3");
-		songNames.add("JmeTire.mp3");
-		songNames.add("PasTouche.mp3");
-		songNames.add("SeeYouAgain.mp3");
-		songNames.add("TheMan.mp3");
-		songNames.add("Cool.mp3");
-		songNames.add("Papaoutai.mp3");
-		songNames.add("HeyBrother.mp3");
-		songNames.add("TenFeetTall.mp3");
-		songNames.add("InTheEnd.mp3");
-		songNames.add("Bills.mp3");*/
-		songNames.add("Background1.mp3"); // taken from youtube at https://www.youtube.com/watch?v=P5TBh9vtL6o
-		songs = new AudioList(songNames, true);
+		songs = new AudioList(true);
 		songs.play();
 		flap = new AudioClip("flap.wav", 100, 900);
 		previousScores = new ArrayList<String>();

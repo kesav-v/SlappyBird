@@ -25,10 +25,13 @@ import javafx.application.Platform;
  * @author Ofek Gila
  * @since  May 19th, 2015
  * @lastedited May 22nd, 2015
- * @version 2.7s
+ * @version 2.8
  */
 public class AudioClip extends Application implements Runnable	{
 
+	/**
+	 * double length The length of the audioclip when initialized
+	 */
 	public double length;
 
 	private String soundLocation;
@@ -44,23 +47,7 @@ public class AudioClip extends Application implements Runnable	{
 	
 
 	public AudioClip(AudioClip ac)	{
-		noException();
-		clip = ac.getClip();
-		player = new MediaPlayer(clip);
-		player.setOnEndOfMedia(this);
-
-		play(); stop(); while (Double.isNaN(length()));
-		length = ac.length();
-		setStart(ac.getStart());
-		setStop(ac.getStop());
-		setVolume(ac.getVolume());
-		setRate(ac.getRate());
-		startat = getStart(); stopat = getStop();
-		setLoop(ac.getLoop());
-		numCycles = ac.getCycleCount();
-		totalCycles = 0;
-		cycleOn = 0;
-		running = false;
+		load(ac);
 	}
 	public AudioClip(String soundLocation, double start, double stop)	{
 		this(soundLocation, start, stop, false);
@@ -77,13 +64,26 @@ public class AudioClip extends Application implements Runnable	{
 	public AudioClip(String soundLocation)	{
 		this(soundLocation, false);
 	}
-
 	public String getLocation()	{
 		return soundLocation;
 	}
 
+	public String getName()	{
+		return soundLocation.substring(soundLocation.lastIndexOf("\\")+1, soundLocation.lastIndexOf("."));
+	}
+
+	public String getExtension()	{
+		try	{
+			return soundLocation.substring(soundLocation.lastIndexOf(".")).substring(1);
+		}
+		catch (StringIndexOutOfBoundsException e)	{
+			System.err.println("Cannot find extension in " + soundLocation);
+			return "";
+		}
+	}
+
 	public String toString()	{
-		return soundLocation;
+		return getName();
 	}
 
 	public void reload()	{
@@ -111,13 +111,39 @@ public class AudioClip extends Application implements Runnable	{
 	}
 
 	public void reInit(String soundLocation)	{
+		reInit(soundLocation, 0, -1, false);
+	}
+	public void reInit(String soundLocation, double start, double end)	{
+		reInit(soundLocation, start, end, false);
+	}
+	public void reInit(String soundLocation, double start, double end, boolean loop)	{
 		dispose();
-		load(soundLocation);
+		load(soundLocation, start, end, loop);
 		length = length();
 	}
 
 	public void load(String soundLocation)	{
 		load(soundLocation, 0, -1, false);
+	}
+
+	public void load(AudioClip ac)	{
+		noException();
+		clip = ac.getClip();
+		player = new MediaPlayer(clip);
+		player.setOnEndOfMedia(this);
+
+		play(); stop(); while (Double.isNaN(length()));
+		length = ac.length();
+		setStart(ac.getStart());
+		setStop(ac.getStop());
+		setVolume(ac.getVolume());
+		setRate(ac.getRate());
+		startat = getStart(); stopat = getStop();
+		setLoop(ac.getLoop());
+		numCycles = ac.getCycleCount();
+		totalCycles = 0;
+		cycleOn = 0;
+		running = false;
 	}
 
 	public void load(String soundLocation, double start, double stop, boolean loop)	{
