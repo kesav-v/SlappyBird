@@ -9,20 +9,18 @@ public class FlappyPipe implements ActionListener {
 	private double x;
 	private double y; // (x, y) represents the bottom left corner of the pipe
 	private double velocity;
-	private static int WIDTH;
+	private final int WIDTH;
 	private Color color;
 	private Timer oscillator;
 	private double oscillation;
-	private static int HEIGHT;
+	private final int HEIGHT;
+	private boolean isInvincible;
+	private int count;
 
 	public FlappyPipe(JComponent comp, double velocity, double x) {
-		switch ((int)(Math.random() * 4)) {
-			case 0: color = Color.RED; break;
-			case 1: color = Color.GREEN; break;
-			case 2: color = Color.BLUE; break;
-			case 3: color = Color.YELLOW; break;
-		}
-		if (Math.random() < 0.1) color = Color.GRAY;
+		setColor();
+		if (Math.random() < 0.1) isInvincible = true;
+		else isInvincible = false;
 		WIDTH = comp.getWidth();
 		HEIGHT = comp.getHeight();
 		this.x = x;
@@ -32,21 +30,30 @@ public class FlappyPipe implements ActionListener {
 		oscillator = new Timer(20, this);
 		oscillator.start();
 		if (Math.random() > 0.5) oscillation = 0;
+		count = 0;
 	}
 
 	public void move() {
 		x -= velocity;
+		count++;
 		if (x <= -50) {
 			x = WIDTH;
-			switch ((int)(Math.random() * 4)) {
-				case 0: color = Color.RED; break;
-				case 1: color = Color.GREEN; break;
-				case 2: color = Color.BLUE; break;
-				case 3: color = Color.YELLOW; break;
-			}
-			if (Math.random() < 0.1) color = Color.GRAY;
+			setColor();
+			if (Math.random() < 0.1) isInvincible = true;
+			else isInvincible = false;
 			oscillation = Math.random() * 5 + 1;
 			if (Math.random() > 0.5) oscillation = 0;
+		}
+		if (isInvincible && count % 20 == 0)
+			setColor();
+	}
+
+	public void setColor()	{
+		switch ((int)(Math.random() * 4)) {
+			case 0: color = Color.RED; break;
+			case 1: color = Color.GREEN; break;
+			case 2: color = Color.BLUE; break;
+			case 3: color = Color.YELLOW; break;
 		}
 	}
 
@@ -75,5 +82,9 @@ public class FlappyPipe implements ActionListener {
 
 	public Color getColor() {
 		return color;
+	}
+
+	public boolean isInvincible()	{
+		return isInvincible;
 	}
 }

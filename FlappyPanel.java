@@ -117,9 +117,9 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 			fp.move();
 		}
 		score++;
-		if (score % 100 == 0 && score != 0) {
+		if (score != 0) {
 			for (FlappyPipe fp : pipes) {
-				fp.incVelocity(1);
+				fp.incVelocity(0.005);
 			}
 		}
 		repaint();
@@ -185,10 +185,13 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 		for (FlappyPipe fp : pipes) {
 			if (!bird.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 &&
 				(fp.getY() <= bird.getY() - 150 || fp.getY() >= bird.getY())) {
-				if (fp.getColor().equals(Color.GRAY)) {
+				if (fp.isInvincible()) {
 					bird.setInvincible(true);
 					invincibility.start();
 					invincibleColor = Color.RED;
+					for (FlappyPipe pipe : pipes)	{
+						pipe.incVelocity(1);
+					}
 					return false;
 				}
 				else return true;
