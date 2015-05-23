@@ -6,16 +6,16 @@ import javax.swing.Timer;
 
 public class FlappyPipe implements ActionListener {
 
-	private int x;
-	private int y; // (x, y) represents the bottom left corner of the pipe
-	private int velocity;
+	private double x;
+	private double y; // (x, y) represents the bottom left corner of the pipe
+	private double velocity;
 	private static int WIDTH;
 	private Color color;
 	private Timer oscillator;
-	private int oscillation;
+	private double oscillation;
 	private static int HEIGHT;
 
-	public FlappyPipe(JComponent comp, int velocity, int x) {
+	public FlappyPipe(JComponent comp, double velocity, double x) {
 		switch ((int)(Math.random() * 4)) {
 			case 0: color = Color.RED; break;
 			case 1: color = Color.GREEN; break;
@@ -26,9 +26,9 @@ public class FlappyPipe implements ActionListener {
 		WIDTH = comp.getWidth();
 		HEIGHT = comp.getHeight();
 		this.x = x;
-		y = (int)(Math.random() * (comp.getHeight() - 800)) + 400;
+		y = Math.random() * (comp.getHeight() - 800) + 400;
 		this.velocity = velocity;
-		oscillation = (int)(Math.random() * 5) + 1;
+		oscillation = Math.random() * 5 + 1;
 		oscillator = new Timer(20, this);
 		oscillator.start();
 		if (Math.random() > 0.5) oscillation = 0;
@@ -45,7 +45,7 @@ public class FlappyPipe implements ActionListener {
 				case 3: color = Color.YELLOW; break;
 			}
 			if (Math.random() < 0.1) color = Color.GRAY;
-			oscillation = (int)(Math.random() * 5) + 1;
+			oscillation = Math.random() * 5 + 1;
 			if (Math.random() > 0.5) oscillation = 0;
 		}
 	}
@@ -58,18 +58,18 @@ public class FlappyPipe implements ActionListener {
 	}
 
 	public int getX() {
-		return x;
+		return (int)(x + 0.5);
 	}
 
 	public int getY() {
-		return y;
+		return (int)(y + 0.5);
 	}
 
-	public void incVelocity(int amt) {
+	public void incVelocity(double amt) {
 		velocity += amt;
 	}
 
-	public int getVelocity() {
+	public double getVelocity() {
 		return velocity;
 	}
 
