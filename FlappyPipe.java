@@ -6,47 +6,54 @@ import javax.swing.Timer;
 
 public class FlappyPipe implements ActionListener {
 
-	private int x;
-	private int y; // (x, y) represents the bottom left corner of the pipe
-	private int velocity;
-	private static int WIDTH;
+	private double x;
+	private double y; // (x, y) represents the bottom left corner of the pipe
+	private double velocity;
+	private final int WIDTH;
 	private Color color;
 	private Timer oscillator;
-	private int oscillation;
-	private static int HEIGHT;
+	private double oscillation;
+	private final int HEIGHT;
+	private boolean isInvincible;
+	private int count;
 
-	public FlappyPipe(JComponent comp, int velocity, int x) {
+	public FlappyPipe(JComponent comp, double velocity, double x) {
+		setColor();
+		if (Math.random() < 0.1) isInvincible = true;
+		else isInvincible = false;
+		WIDTH = comp.getWidth();
+		HEIGHT = comp.getHeight();
+		this.x = x;
+		y = Math.random() * (comp.getHeight() - 800) + 400;
+		this.velocity = velocity;
+		oscillation = Math.random() * 5 + 1;
+		oscillator = new Timer(20, this);
+		oscillator.start();
+		if (Math.random() > 0.5) oscillation = 0;
+		count = 0;
+	}
+
+	public void move() {
+		x -= velocity;
+		count++;
+		if (x <= -50) {
+			x = WIDTH;
+			setColor();
+			if (Math.random() < 0.1) isInvincible = true;
+			else isInvincible = false;
+			oscillation = Math.random() * 5 + 1;
+			if (Math.random() > 0.5) oscillation = 0;
+		}
+		if (isInvincible && count % 20 == 0)
+			setColor();
+	}
+
+	public void setColor()	{
 		switch ((int)(Math.random() * 4)) {
 			case 0: color = Color.RED; break;
 			case 1: color = Color.GREEN; break;
 			case 2: color = Color.BLUE; break;
 			case 3: color = Color.YELLOW; break;
-		}
-		if (Math.random() < 0.1) color = Color.GRAY;
-		WIDTH = comp.getWidth();
-		HEIGHT = comp.getHeight();
-		this.x = x;
-		y = (int)(Math.random() * (comp.getHeight() - 800)) + 400;
-		this.velocity = velocity;
-		oscillation = (int)(Math.random() * 5) + 1;
-		oscillator = new Timer(20, this);
-		oscillator.start();
-		if (Math.random() > 0.5) oscillation = 0;
-	}
-
-	public void move() {
-		x -= velocity;
-		if (x <= -50) {
-			x = WIDTH;
-			switch ((int)(Math.random() * 4)) {
-				case 0: color = Color.RED; break;
-				case 1: color = Color.GREEN; break;
-				case 2: color = Color.BLUE; break;
-				case 3: color = Color.YELLOW; break;
-			}
-			if (Math.random() < 0.1) color = Color.GRAY;
-			oscillation = (int)(Math.random() * 5) + 1;
-			if (Math.random() > 0.5) oscillation = 0;
 		}
 	}
 
@@ -58,22 +65,26 @@ public class FlappyPipe implements ActionListener {
 	}
 
 	public int getX() {
-		return x;
+		return (int)(x + 0.5);
 	}
 
 	public int getY() {
-		return y;
+		return (int)(y + 0.5);
 	}
 
-	public void incVelocity(int amt) {
+	public void incVelocity(double amt) {
 		velocity += amt;
 	}
 
-	public int getVelocity() {
+	public double getVelocity() {
 		return velocity;
 	}
 
 	public Color getColor() {
 		return color;
+	}
+
+	public boolean isInvincible()	{
+		return isInvincible;
 	}
 }

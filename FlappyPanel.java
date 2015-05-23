@@ -40,27 +40,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 	private ArrayList<String> songNames;
 
 	public FlappyPanel() {
-		songNames = new ArrayList<String>();
-		/*songNames.add("Andalouse.mp3");
-		songNames.add("Breathing.mp3");
-		songNames.add("GetLow.mp3");
-		songNames.add("INeedYourLove.mp3");
-		songNames.add("Conmigo.mp3");
-		songNames.add("WrittenInTheStars.mp3");
-		songNames.add("LaVieDuBonCote.mp3");
-		songNames.add("Bella.mp3");
-		songNames.add("JmeTire.mp3");
-		songNames.add("PasTouche.mp3");
-		songNames.add("SeeYouAgain.mp3");
-		songNames.add("TheMan.mp3");
-		songNames.add("Cool.mp3");
-		songNames.add("Papaoutai.mp3");
-		songNames.add("HeyBrother.mp3");
-		songNames.add("TenFeetTall.mp3");
-		songNames.add("InTheEnd.mp3");
-		songNames.add("Bills.mp3");*/
-		songNames.add("Background1.mp3"); // taken from youtube at https://www.youtube.com/watch?v=P5TBh9vtL6o
-		songs = new AudioList(songNames, true);
+		songs = new AudioList(true);
 		songs.play();
 		flap = new AudioClip("flap.wav", 100, 900);
 		previousScores = new ArrayList<String>();
@@ -137,9 +117,9 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 			fp.move();
 		}
 		score++;
-		if (score % 100 == 0 && score != 0) {
+		if (score != 0) {
 			for (FlappyPipe fp : pipes) {
-				fp.incVelocity(1);
+				fp.incVelocity(0.005);
 			}
 		}
 		repaint();
@@ -205,10 +185,13 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 		for (FlappyPipe fp : pipes) {
 			if (!bird.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 &&
 				(fp.getY() <= bird.getY() - 150 || fp.getY() >= bird.getY())) {
-				if (fp.getColor().equals(Color.GRAY)) {
+				if (fp.isInvincible()) {
 					bird.setInvincible(true);
 					invincibility.start();
 					invincibleColor = Color.RED;
+					for (FlappyPipe pipe : pipes)	{
+						pipe.incVelocity(1);
+					}
 					return false;
 				}
 				else return true;
