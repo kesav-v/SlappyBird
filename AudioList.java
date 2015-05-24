@@ -8,7 +8,7 @@ import java.io.File;
  * Makes an automatically-playing playlist of AudioClip files
  * Supports wav, mp3, mp4, flv, aif, and more filetypes
  * @author Kesav Viswanadha and Ofek Gila
- * @version 2.3s
+ * @version 2.3
  * @since  May 22nd, 2015
  * @lastedited May 24th, 2015
  */
