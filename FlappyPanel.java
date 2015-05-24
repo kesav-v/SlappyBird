@@ -42,14 +42,12 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 	private boolean imgLoaded;
 	private Timer invincibility;
 	private Color invincibleColor;
-	private AudioClip flap;
 	private AudioList songs;
 	private ArrayList<String> songNames;
 
 	public FlappyPanel() {
 		songs = new AudioList(true);
 		songs.play();
-		flap = new AudioClip("flap.wav", 100, 900);
 		previousScores = new ArrayList<String>();
 		movePipes = new Timer(20, this);
 		invincibility = new Timer(25, new Handler());
@@ -97,9 +95,9 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 		g.setColor(Color.BLUE);
 		if (bird.isInvincible()) {
 			g.setColor(invincibleColor);
-			g.fillRect(50, bird.getY(), 60, 60);
+			g.fillRect(50, bird.getY(), 50, 50);
 			g.setColor(Color.GREEN);
-			g.drawRect(50, bird.getY(), 60, 60);
+			g.drawRect(50, bird.getY(), 50, 50);
 		}
 		g.drawImage(theBird.getImage(), 50, bird.getY(), 50, 50, this);
 		if (dying() || dead()) {
@@ -165,15 +163,16 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if (firstPress) {
-			movePipes.start();
-			bird.startFalling();
-			firstPress = false;
-		}
 		if (e.getKeyCode() == KeyEvent.VK_UP && !dying() && !dead()) {
+			if (firstPress) {
+				movePipes.start();
+				bird.startFalling();
+				firstPress = false;
+			}
 			//clip.play(9000000);
 			bird.setVelocity(13);
 			//flap.loadNPlay();
+			repaint();
 		}
 		if (e.getKeyChar() == 'r' && dead()) {
 			bird = new Bird(this);
@@ -185,8 +184,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 			firstPress = true;
 			justDied = true;
 			previousScores.clear();
+			repaint();
 		}
-		repaint();
 	}
 	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}

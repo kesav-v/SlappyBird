@@ -23,6 +23,9 @@ public class FlappyPipe implements ActionListener {
 	private final int HEIGHT;
 	private boolean isInvincible;
 	private int count;
+	private boolean redding;
+	private boolean blueing;
+	private boolean greening;
 
 	public FlappyPipe(JComponent comp, double velocity, double x) {
 		setColor();
@@ -38,6 +41,22 @@ public class FlappyPipe implements ActionListener {
 		oscillator.start();
 		if (Math.random() > 0.5) oscillation = 0;
 		count = 0;
+		if (isInvincible && color.equals(Color.YELLOW)) color = Color.RED;
+		if (color.equals(Color.RED)) {
+			redding = false;
+			greening = true;
+			blueing = false;
+		}
+		else if (color.equals(Color.GREEN)) {
+			redding = false;
+			greening = false;
+			blueing = true;
+		}
+		else {
+			redding = true;
+			greening = false;
+			blueing = false;
+		}
 	}
 
 	public void move() {
@@ -48,23 +67,48 @@ public class FlappyPipe implements ActionListener {
 			setColor();
 			if (Math.random() < 0.1) isInvincible = true;
 			else isInvincible = false;
+			if (isInvincible && color.equals(Color.YELLOW)) color = Color.RED;
 			oscillation = Math.random() * 5 + 1;
 			if (Math.random() > 0.5) oscillation = 0;
 		}
-		if (isInvincible && count % 20 == 0)
-			setColor();
+		if (isInvincible)
+			fadeColor();
 	}
 
 	public void setOscillation(int osc) {
 		oscillation = osc;
 	}
 
-	public void setColor()	{
+	public void fadeColor()	{
+		if (redding) {
+			if (color.getRed() >= 255) {
+				redding = false;
+				greening = true;
+			}
+			else color = new Color(color.getRed() + 5, 0, color.getBlue() - 5);
+		}
+		if (greening) {
+			if (color.getGreen() >= 255) {
+				greening = false;
+				blueing = true;
+			}
+			else color = new Color(color.getRed() - 5, color.getGreen() + 5, 0);
+		}
+		if (blueing) {
+			if (color.getBlue() >= 255) {
+				blueing = false;
+				redding = true;
+			}
+			else color = new Color(0, color.getGreen() - 5, color.getBlue() + 5);
+		}
+	}
+
+	public void setColor() {
 		switch ((int)(Math.random() * 4)) {
 			case 0: color = Color.RED; break;
-			case 1: color = Color.GREEN; break;
-			case 2: color = Color.BLUE; break;
-			case 3: color = Color.YELLOW; break;
+			case 1: color = Color.BLUE; break;
+			case 2: color = Color.YELLOW; break;
+			case 3: color = Color.GREEN; break;
 		}
 	}
 
