@@ -60,19 +60,40 @@ public class FlappyPipe implements ActionListener {
 	}
 
 	public void move() {
-		x -= velocity;
-		count++;
-		if (x <= -50) {
-			x = WIDTH;
-			setColor();
-			if (Math.random() < 0.1) isInvincible = true;
-			else isInvincible = false;
-			if (isInvincible && color.equals(Color.YELLOW)) color = Color.RED;
-			oscillation = Math.random() * 5 + 1;
-			if (Math.random() > 0.5) oscillation = 0;
+		try {
+			x -= velocity;
+			count++;
+			if (x <= -50) {
+				x = WIDTH;
+				setColor();
+				if (Math.random() < 0.1) isInvincible = true;
+				else isInvincible = false;
+				if (isInvincible && color.equals(Color.YELLOW)) color = Color.RED;
+				if (color.equals(Color.RED)) {
+					redding = false;
+					greening = true;
+					blueing = false;
+				}
+				else if (color.equals(Color.GREEN)) {
+					redding = false;
+					greening = false;
+					blueing = true;
+				}
+				else {
+					redding = true;
+					greening = false;
+					blueing = false;
+				}
+				oscillation = Math.random() * 5 + 1;
+				if (Math.random() > 0.5) oscillation = 0;
+			}
+			if (isInvincible)
+				fadeColor();
+		} catch (IllegalArgumentException e) {
+			System.out.println(redding + "\t" + greening + "\t" + blueing);
+			System.out.println(color.getRed() + "\t" + color.getGreen() + "\t" + color.getBlue());
+			System.exit(1);
 		}
-		if (isInvincible)
-			fadeColor();
 	}
 
 	public void setOscillation(int osc) {
@@ -84,20 +105,23 @@ public class FlappyPipe implements ActionListener {
 			if (color.getRed() >= 255) {
 				redding = false;
 				greening = true;
+				blueing = false;
 			}
 			else color = new Color(color.getRed() + 5, 0, color.getBlue() - 5);
 		}
-		if (greening) {
+		else if (greening) {
 			if (color.getGreen() >= 255) {
 				greening = false;
 				blueing = true;
+				redding = false;
 			}
 			else color = new Color(color.getRed() - 5, color.getGreen() + 5, 0);
 		}
-		if (blueing) {
+		else if (blueing) {
 			if (color.getBlue() >= 255) {
 				blueing = false;
 				redding = true;
+				greening = false;
 			}
 			else color = new Color(0, color.getGreen() - 5, color.getBlue() + 5);
 		}

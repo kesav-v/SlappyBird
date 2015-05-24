@@ -24,7 +24,7 @@ public class PlayFavorites {
 		names[15] = "Papaoutai.mp3";
 		names[16] = "GetLow.mp3";
 		names[17] = "InTheEnd.mp3";
-		AudioList songs = new AudioList(names, true);
+		AudioList songs = new AudioList(names, AudioList.INITIAL_SHUFFLE);
 		songs.play();
 		Scanner scan = new Scanner(System.in);
 		int n = -1;
