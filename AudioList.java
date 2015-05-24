@@ -130,6 +130,8 @@ public class AudioList implements ActionListener {
 
 	public void speedUp(double rate) {
 		clip.setRate(rate);
+		loadNextSong.setInitialDelay((int)((loadNextSong.getDelay() - clip.getPosition()) / rate));
+		loadNextSong.restart();
 	}
 
 	public void previousSong()	{
