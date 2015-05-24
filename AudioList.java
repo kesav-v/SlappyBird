@@ -63,7 +63,7 @@ public class AudioList implements ActionListener {
 	public ArrayList<String> getFilesInFolder(final File folder, ArrayList<String> locations, String... extensions) {
 		for (final File fileEntry : folder.listFiles())
 			if (fileEntry.isDirectory())
-				getFilesInFolder(fileEntry, locations);
+				getFilesInFolder(fileEntry, locations, extensions);
 			else for (String extension : extensions)
 				if (getExtension(fileEntry.getPath()).equals(extension))
 					locations.add(fileEntry.getPath().substring(getDirectory().length()+1));
@@ -98,7 +98,6 @@ public class AudioList implements ActionListener {
 		loadNextSong.restart();
 	}
 
-	// method modified by Kesav Viswanadha
 	public void stop()	{
 		clip.stop();
 		loadNextSong.stop();
@@ -144,7 +143,7 @@ public class AudioList implements ActionListener {
 	public void playSong(String songName)	{
 		playlist = new ArrayList<Integer>();
 		songOn = 0;
-		clip.stop(); //added by Kesav Viswanadha
+		clip.stop();
 		int songloc;
 		for (songloc = 0; songloc < locations.length; songloc++)
 			if (getName(locations[songloc]).equals(songName))
@@ -159,7 +158,6 @@ public class AudioList implements ActionListener {
 		}
 	}
 
-	// this method added by Kesav Viswanadha
 	public boolean isPlaying() {
 		return clip.isRunning();
 	}
