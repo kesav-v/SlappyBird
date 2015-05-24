@@ -128,6 +128,10 @@ public class AudioList implements ActionListener {
 		loadNextSong.restart();
 	}
 
+	public void speedUp(double rate) {
+		clip.setRate(rate);
+	}
+
 	public void previousSong()	{
 		songOn--;
 		if (songOn < 0) songOn = playlist.size() - 1;

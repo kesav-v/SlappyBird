@@ -29,8 +29,8 @@ public class PlayFavorites {
 		Scanner scan = new Scanner(System.in);
 		int n = -1;
 		while (n != 1) {
-			if (songs.isPlaying()) System.out.print("Enter 0 to pause, 1 to stop, 2 to go to next song, 3 to go to previous song, or 4 to jump to a song -> ");
-			else System.out.print("Enter 0 to play, 1 to stop, 2 to go to next song, 3 to go to previous song, or 4 to jump to a song -> ");
+			if (songs.isPlaying()) System.out.print("Enter 0 to pause, 1 to stop, 2 to go to next song, 3 to go to previous song, 4 to jump to a song, or 5 to change playback speed -> ");
+			else System.out.print("Enter 0 to play, 1 to stop, 2 to go to next song, 3 to go to previous song, 4 to jump to a song, or 5 to change playback speed -> ");
 			n = scan.nextInt();
 			scan.nextLine();
 			switch (n) {
@@ -44,6 +44,11 @@ public class PlayFavorites {
 				case 4:
 					System.out.print("Enter the name of the song you would like to play -> ");
 					songs.playSong(scan.nextLine());
+					break;
+				case 5:
+					System.out.print("Enter the new playback speed -> ");
+					songs.speedUp(scan.nextDouble());
+					scan.nextLine();
 					break;
 			}
 		}
