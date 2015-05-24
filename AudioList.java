@@ -15,14 +15,16 @@ import java.io.File;
 
 public class AudioList implements ActionListener {
 
+	public static final int NO_SHUFFLE = 0, CONSTANT_SHUFFLE = 1, INITIAL_SHUFFLE = 2;
+
 	private String[] locations;
 	private ArrayList<Integer> playlist;
 	private AudioClip clip;
 	private Timer loadNextSong;
 	private int songOn = 0;
-	private boolean shuffle;
+	private int shuffle;
 
-	public AudioList(Object[] locs, boolean shuffle) {
+	public AudioList(Object[] locs, int shuffle) {
 		this.shuffle = shuffle;
 		locations = new String[locs.length];
 		for (int i = 0; i < locs.length; i++)
@@ -36,14 +38,14 @@ public class AudioList implements ActionListener {
 		loadNextSong.setRepeats(false);
 	}
 
-	public AudioList(ArrayList<String> locs, boolean shuffle) {
+	public AudioList(ArrayList<String> locs, int shuffle) {
 		this(locs.toArray(), shuffle);
 	}
 
-	public AudioList(boolean shuffle)	{
+	public AudioList(int shuffle)	{
 		this(shuffle, "mp3", "wav", "mp4", "m4a", "m4v", "m3u8", "fxm", "flv", "aif", "aiff");
 	}
-	public AudioList(boolean shuffle, String... extensions)	{
+	public AudioList(int shuffle, String... extensions)	{
 		ArrayList<String> locs = getFilesInFolder(new File(getDirectory()), new ArrayList<String>(), extensions);
 		this.shuffle = shuffle;
 
@@ -105,15 +107,39 @@ public class AudioList implements ActionListener {
 	}
 
 	public void addNext()	{
+		int ran;
 		if (playlist.size() == 0)
-			playlist.add(shuffle ? ((int)(Math.random() * locations.length)):0);
-		else if (shuffle) {
-			int ran;
-			do ran = (int)(Math.random() * locations.length);
-			while (ran == playlist.get(playlist.size() - 1));
-			playlist.add(ran);
-		} else
-			playlist.add((playlist.get(playlist.size() - 1) + 1) % locations.length);
+			switch (shuffle)	{
+				case NO_SHUFFLE: 
+					playlist.add(0); break;
+				case CONSTANT_SHUFFLE: case INITIAL_SHUFFLE:
+					playlist.add((int)(Math.random() * locations.length)); break;	
+			}
+		else switch(shuffle) {
+			case NO_SHUFFLE: 
+				playlist.add((playlist.get(playlist.size() - 1) + 1) % locations.length); break;
+			case CONSTANT_SHUFFLE:
+				do ran = (int)(Math.random() * locations.length);
+				while (ran == playlist.get(playlist.size() - 1));
+				playlist.add(ran);
+				break;
+			case INITIAL_SHUFFLE:
+				if (playlist.size() >= locations.length)
+					playlist.add(playlist.get(songOn - locations.length));
+				else	{
+					do ran = (int)(Math.random() * locations.length);
+					while (inPlaylist(ran));
+					playlist.add(ran);
+					break;
+				}
+		}
+	}
+
+	public boolean inPlaylist(int location)	{
+		for (Integer song : playlist)
+			if (song.intValue() == location)
+				return true;
+		return false;
 	}
 
 	public void nextSong()	{

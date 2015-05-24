@@ -49,7 +49,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 	private ArrayList<String> songNames;
 
 	public FlappyPanel() {
-		songs = new AudioList(true);
+		songs = new AudioList(AudioList.INITIAL_SHUFFLE);
 		songs.play();
 		previousScores = new ArrayList<String>();
 		movePipes = new Timer(20, this);
@@ -118,7 +118,6 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 			if (score % 20 <= 10)
 				 g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
 			else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
->>>>>>> 263a19386649b8935fed88ddc03b70be6b58baa7
 		if (dying() || dead()) {
 			movePipes.stop();
 			g.setColor(Color.WHITE);
@@ -194,11 +193,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 			}
 			//clip.play(9000000);
 			bird.setVelocity(13);
-<<<<<<< HEAD
 			//flap.loadNPlay();
 			repaint();
-=======
->>>>>>> 263a19386649b8935fed88ddc03b70be6b58baa7
 		}
 		if (e.getKeyChar() == 'r' && dead()) {
 			bird = new Bird(this);
