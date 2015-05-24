@@ -42,14 +42,12 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 	private boolean imgLoaded;
 	private Timer invincibility;
 	private Color invincibleColor;
-	private AudioClip flap;
 	private AudioList songs;
 	private ArrayList<String> songNames;
 
 	public FlappyPanel() {
 		songs = new AudioList(true);
 		songs.play();
-		flap = new AudioClip("flap.wav", 100, 900);
 		previousScores = new ArrayList<String>();
 		movePipes = new Timer(20, this);
 		invincibility = new Timer(25, new Handler());
@@ -173,7 +171,6 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 		if (e.getKeyCode() == KeyEvent.VK_UP && !dying() && !dead()) {
 			//clip.play(9000000);
 			bird.setVelocity(13);
-			//flap.loadNPlay();
 		}
 		if (e.getKeyChar() == 'r' && dead()) {
 			bird = new Bird(this);
