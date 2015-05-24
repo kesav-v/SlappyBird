@@ -1,5 +1,12 @@
 import javax.swing.JFrame;
 
+/**
+ * This is the main class that runs the Flappy Bird game.
+ * @author Kesav Viswanadha
+ * @version 1.1
+ * @lastedited May 23, 2015
+*/
+
 public class FlappyBird extends JFrame {
 	
 	public FlappyBird() {

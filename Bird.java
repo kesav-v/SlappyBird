@@ -3,6 +3,13 @@ import javax.swing.Timer;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * This class represents a bird in my Flappy Bird game.
+ * @author Kesav Viswanadha
+ * @version 1.1
+ * @lastedited May 23, 2015
+*/
+
 public class Bird implements ActionListener {
 
 	private int y;

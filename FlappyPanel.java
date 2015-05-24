@@ -20,6 +20,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
+/**
+ * This is the bulk of the code - the game itself is displayed through this panel.
+ * @author Kesav Viswanadha and Ofek Gila
+ * @version 1.1
+ * @lastedited May 23, 2015
+*/
+
 public class FlappyPanel extends JPanel implements ActionListener, KeyListener, MouseListener {
 	
 	private FlappyPipe[] pipes;
