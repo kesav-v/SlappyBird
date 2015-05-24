@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -39,6 +41,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 	private ArrayList<String> previousScores;
 	private boolean justDied;
 	private ImageIcon theBird;
+	private ImageIcon bird1, bird2;
 	private boolean imgLoaded;
 	private Timer invincibility;
 	private Color invincibleColor;
@@ -61,6 +64,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 		imgLoaded = true;
 		invincibleColor = Color.BLACK;
 		theBird = new ImageIcon(getClass().getResource("FlappyBirdOnline.png"));
+		bird1 = new ImageIcon(getClass().getResource("bird1.png"));
+		bird2 = new ImageIcon(getClass().getResource("bird2.png"));
 	}
 
 	private class Handler implements ActionListener {
@@ -93,13 +98,21 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 			g.fillRect(fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200));
 		}
 		g.setColor(Color.BLUE);
-		if (bird.isInvincible()) {
+		if (bird.isInvincible()) {/*
 			g.setColor(invincibleColor);
-			g.fillRect(50, bird.getY(), 60, 60);
+			g.fillRect(50, bird.getY(), 50, 50);
 			g.setColor(Color.GREEN);
-			g.drawRect(50, bird.getY(), 60, 60);
+			g.drawRect(50, bird.getY(), 50, 50);*/
 		}
-		g.drawImage(theBird.getImage(), 50, bird.getY(), 50, 50, this);
+		// g.drawImage(theBird.getImage(), 50, bird.getY(), 50, 50, this);
+		if (bird.isInvincible())
+			if (score % 2 == 0)
+				g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
+			else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
+		else
+			if (score % 20 <= 10)
+				 g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
+			else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
 		if (dying() || dead()) {
 			movePipes.stop();
 			g.setColor(Color.WHITE);
@@ -126,10 +139,14 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 		score++;
 		if (score != 0) {
 			for (FlappyPipe fp : pipes) {
-				fp.incVelocity(0.005);
+				fp.incVelocity(bird.isInvincible() ? (2*velocityInc(fp.getVelocity())):velocityInc(fp.getVelocity()));
 			}
 		}
 		repaint();
+	}
+
+	public double velocityInc(double num)	{
+		return 1 / (100 * Math.sqrt(num));
 	}
 
 	public void saveScore() {
@@ -196,9 +213,6 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 					bird.setInvincible(true);
 					invincibility.start();
 					invincibleColor = Color.RED;
-					for (FlappyPipe pipe : pipes)	{
-						pipe.incVelocity(1);
-					}
 					return false;
 				}
 				else return true;
