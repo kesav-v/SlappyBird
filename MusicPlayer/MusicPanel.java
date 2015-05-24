@@ -19,7 +19,6 @@ public class MusicPanel extends JPanel implements MouseListener {
 	private JButton next;
 
 	public MusicPanel(String[] args) {
-		//this.songs = new AudioList(true);
 		setLayout(null);
 		System.out.println(getLayout());
 		playPause = new JButton("Play");
@@ -86,6 +85,8 @@ public class MusicPanel extends JPanel implements MouseListener {
 		super.paintComponent(g);
 		setBackground(Color.BLACK);
 		System.out.println("HERE");
+		this.songs = new AudioList(AudioList.INITIAL_SHUFFLE, "mp3");
+		songs.play();
 	}
 
 	public void mouseEntered(MouseEvent e) {}
