@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import java.net.URL;
+import java.net.URI;
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.MalformedURLException;
 
 import javafx.application.Application;
 import javafx.scene.media.Media;
@@ -35,6 +39,7 @@ public class AudioClip extends Application implements Runnable	{
 	public double length;
 
 	private String soundLocation;
+	private File file;
 	private Media clip;
 	private MediaPlayer player;
 	private boolean loop;
@@ -64,6 +69,24 @@ public class AudioClip extends Application implements Runnable	{
 	public AudioClip(String soundLocation)	{
 		this(soundLocation, false);
 	}
+
+	public AudioClip(File f)	{
+		this(f, 0, -1, false);
+	}
+
+	public AudioClip(File f, boolean loop)	{
+		this(f, 0, -1, loop);
+	}
+
+	public AudioClip(File f, double start, double stop)	{
+		this(f, start, stop, false);
+	}
+
+	public AudioClip(File f, double start, double stop, boolean loop)	{
+		load(f, start, stop, loop);
+		length = length();
+	}
+
 	public String getLocation()	{
 		return soundLocation;
 	}
@@ -113,12 +136,35 @@ public class AudioClip extends Application implements Runnable	{
 	public void reInit(String soundLocation)	{
 		reInit(soundLocation, 0, -1, false);
 	}
-	public void reInit(String soundLocation, double start, double end)	{
-		reInit(soundLocation, start, end, false);
+
+	public void reInit(String soundLocation, boolean loop)	{
+		reInit(soundLocation, loop);
 	}
-	public void reInit(String soundLocation, double start, double end, boolean loop)	{
+
+	public void reInit(File f)	{
+		reInit(f, 0, -1, false);
+	}
+
+	public void reInit(File f, boolean loop)	{
+		reInit(f, 0, -1, loop);
+	}
+
+	public void reInit(File f, double start, double stop)	{
+		reInit(f, start, stop, false);
+	}
+
+	public void reInit(File f, double start, double stop, boolean loop)	{
 		dispose();
-		load(soundLocation, start, end, loop);
+		load(f, start, stop, loop);
+		length = length();
+	}
+
+	public void reInit(String soundLocation, double start, double stop)	{
+		reInit(soundLocation, start, stop, false);
+	}
+	public void reInit(String soundLocation, double start, double stop, boolean loop)	{
+		dispose();
+		load(soundLocation, start, stop, loop);
 		length = length();
 	}
 
@@ -146,17 +192,24 @@ public class AudioClip extends Application implements Runnable	{
 		running = false;
 	}
 
-	public void load(String soundLocation, double start, double stop, boolean loop)	{
+	public void load (File f, double start, double stop, boolean loop)	{
 		noException();
-		this.soundLocation = soundLocation;
-		URL resource = getClass().getResource(soundLocation);
-		try	{
-			clip = new Media(resource.toString());
-		}	catch (NullPointerException e)	{
-			System.err.println("Cannot find file " + soundLocation);
-			System.exit(1);
-		}	catch (MediaException e)	{
-			System.err.println("Unsupported file format: " + soundLocation);
+		this.file = f;
+		this.soundLocation = f.getName();
+		URL resource;
+		try {
+			resource = f.toURI().toURL();
+			try	{
+				clip = new Media(resource.toString());
+			}	catch (NullPointerException e)	{
+				System.err.println("Cannot find file " + soundLocation);
+				System.exit(1);
+			}	catch (MediaException e)	{
+				System.err.println("Unsupported file format: " + soundLocation);
+				System.exit(1);
+			}
+		}	catch (MalformedURLException e)	{
+			System.err.println("Bad URL");
 			System.exit(1);
 		}
 
@@ -178,6 +231,10 @@ public class AudioClip extends Application implements Runnable	{
 		running = false;
 		this.loop = loop;
 		while (Double.isNaN(length()));
+	}
+
+	public void load(String soundLocation, double start, double stop, boolean loop)	{
+		load(new File(soundLocation), start, stop, loop);
 	}
 
 	public void loadNPlay()	{
@@ -317,7 +374,7 @@ public class AudioClip extends Application implements Runnable	{
 		return player.getStatus().equals(Status.PLAYING);
 	}
 	
-	@Override	// runs when song ends
+	@Override	// runs when song stops
 	public void run()	{
 		player.stop();
 		running = false;

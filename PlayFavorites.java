@@ -28,7 +28,6 @@ public class PlayFavorites {
 		songs.play();
 		Scanner scan = new Scanner(System.in);
 		int n = -1;
-		songs.printSongs();
 		while (n != 1) {
 			if (songs.isPlaying()) System.out.print("Enter 0 to pause, 1 to stop, 2 to go to next song, 3 to go to previous song, or 4 to jump to a song -> ");
 			else System.out.print("Enter 0 to play, 1 to stop, 2 to go to next song, 3 to go to previous song, or 4 to jump to a song -> ");
