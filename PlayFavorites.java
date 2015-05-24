@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 // this is a client of a class made by Ofek Gila
 // May 22, 2015
 
@@ -24,5 +26,27 @@ public class PlayFavorites {
 		names[17] = "InTheEnd.mp3";
 		AudioList songs = new AudioList(names, true);
 		songs.play();
+		Scanner scan = new Scanner(System.in);
+		int n = -1;
+		songs.printSongs();
+		while (n != 1) {
+			if (songs.isPlaying()) System.out.print("Enter 0 to pause, 1 to stop, 2 to go to next song, 3 to go to previous song, or 4 to jump to a song -> ");
+			else System.out.print("Enter 0 to play, 1 to stop, 2 to go to next song, 3 to go to previous song, or 4 to jump to a song -> ");
+			n = scan.nextInt();
+			scan.nextLine();
+			switch (n) {
+				case 0:
+					if (songs.isPlaying()) songs.pause();
+					else songs.play();
+					break;
+				case 1: songs.stop(); break;
+				case 2: songs.nextSong(); break;
+				case 3: songs.previousSong(); break;
+				case 4:
+					System.out.print("Enter the name of the song you would like to play -> ");
+					songs.playSong(scan.nextLine());
+					break;
+			}
+		}
 	}
 }

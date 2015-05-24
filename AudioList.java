@@ -116,6 +116,16 @@ public class AudioList implements ActionListener {
 			playlist.add((playlist.get(playlist.size() - 1) + 1) % locations.length);
 	}
 
+	public boolean isPlaying() {
+		return clip.isRunning();
+	}
+
+	public void printSongs() {
+		for (String s : locations) {
+			System.out.println(s);
+		}
+	}
+
 	public void nextSong()	{
 		songOn++;
 		addNext();
@@ -135,6 +145,9 @@ public class AudioList implements ActionListener {
 	}
 
 	public void playSong(String songName)	{
+		for (String s : locations) {
+			System.out.println(s);
+		}
 		for (songOn = 0; songOn < playlist.size(); songOn++)
 			if (getName(locations[playlist.get(songOn)]).equals(songName))
 				break;
