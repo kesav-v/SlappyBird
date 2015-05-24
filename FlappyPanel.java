@@ -85,6 +85,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 			System.out.println(getWidth());
 			for (int i = 0; i < pipes.length; i++) {
 				pipes[i] = new FlappyPipe(this, 2, i * (2160 / 4) + 2160 / 4);
+				pipes[i].setOscillation(0);
 			}
 		}
 		super.paintComponent(g);

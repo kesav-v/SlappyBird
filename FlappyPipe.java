@@ -55,6 +55,10 @@ public class FlappyPipe implements ActionListener {
 			setColor();
 	}
 
+	public void setOscillation(int osc) {
+		oscillation = osc;
+	}
+
 	public void setColor()	{
 		switch ((int)(Math.random() * 4)) {
 			case 0: color = Color.RED; break;
