@@ -102,11 +102,11 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 			g.setColor(invincibleColor);
 			g.fillRect(50, bird.getY(), 50, 50);
 			g.setColor(Color.GREEN);
-<<<<<<< HEAD
+
 			g.drawRect(50, bird.getY(), 50, 50);
 		}
 		g.drawImage(theBird.getImage(), 50, bird.getY(), 50, 50, this);
-=======
+
 			g.drawRect(50, bird.getY(), 50, 50);*/
 		}
 		// g.drawImage(theBird.getImage(), 50, bird.getY(), 50, 50, this);
