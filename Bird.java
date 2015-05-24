@@ -6,8 +6,8 @@ import java.awt.event.ActionEvent;
 /**
  * This class represents a bird in my Flappy Bird game.
  * @author Kesav Viswanadha
- * @version 1.1
- * @lastedited May 23, 2015
+ * @version 1.8
+ * @lastedited May 24, 2015
 */
 
 public class Bird implements ActionListener {

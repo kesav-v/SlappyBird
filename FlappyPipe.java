@@ -7,8 +7,8 @@ import javax.swing.Timer;
 /**
  * This class represents a pipe in the Flappy Bird game.
  * @author Kesav Viswanadha and Ofek Gila
- * @version 1.1
- * @lastedited May 23, 2015
+ * @version 1.8
+ * @lastedited May 24, 2015
 */
 
 public class FlappyPipe implements ActionListener {

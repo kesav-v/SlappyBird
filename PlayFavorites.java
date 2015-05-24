@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 // this is a client of a class made by Ofek Gila
-// May 22, 2015
+// May 24, 2015
 
 public class PlayFavorites {
 	public static void main(String[] args) {
