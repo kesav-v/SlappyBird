@@ -16,6 +16,9 @@ import java.io.File;
 public class AudioList implements ActionListener {
 
 	public static final int NO_SHUFFLE = 0, CONSTANT_SHUFFLE = 1, INITIAL_SHUFFLE = 2;
+	public static final int CURRENT_FOLDER = 0, SUBFOLDERS_AND_CURRENT = 1, SEARCH_EVERYTHING = 2;
+	public static final String[] acceptedTypes = {"mp3", "wav", "mp4", "m4a", "m4v", "m3u8", "fxm", "flv", "aif", "aiff"};
+	public static final File currentFile = new File(System.getProperty("user.dir"));
 
 	private String[] locations;
 	private ArrayList<Integer> playlist;
@@ -23,6 +26,7 @@ public class AudioList implements ActionListener {
 	private Timer loadNextSong;
 	private int songOn = 0;
 	private int shuffle;
+	private int folderSearch;
 	private double rate = 1;
 
 	public AudioList(Object[] locs, int shuffle) {
@@ -43,11 +47,36 @@ public class AudioList implements ActionListener {
 		this(locs.toArray(), shuffle);
 	}
 
-	public AudioList(int shuffle)	{
-		this(shuffle, "mp3", "wav", "mp4", "m4a", "m4v", "m3u8", "fxm", "flv", "aif", "aiff");
+	public AudioList()	{
+		this(NO_SHUFFLE);
 	}
+
+	public AudioList(int shuffle, int folderSearch)	{
+		this(shuffle, folderSearch, currentFile);
+	}
+
+	public AudioList(int shuffle)	{
+		this(shuffle, acceptedTypes);
+	}
+
 	public AudioList(int shuffle, String... extensions)	{
-		ArrayList<String> locs = getFilesInFolder(new File(getDirectory()), new ArrayList<String>(), extensions);
+		this(shuffle, 1, extensions);
+	}
+
+	public AudioList(int shuffle, int folderSearch, File startDirectory)	{
+		this(shuffle, folderSearch, startDirectory, acceptedTypes);
+	}
+
+	public AudioList(int shuffle, int folderSearch, String... extensions)	{
+		this(shuffle, folderSearch, currentFile, extensions);
+	}
+
+	public AudioList(int shuffle, int folderSearch, File startDirectory, String... extensions)	{
+		this.folderSearch = folderSearch;
+		if (folderSearch == SEARCH_EVERYTHING)
+			while (startDirectory.getParentFile().getParentFile().getParentFile() != null)
+				startDirectory = startDirectory.getParentFile();
+		ArrayList<String> locs = getFilesInFolder(startDirectory, new ArrayList<String>(), extensions);
 		this.shuffle = shuffle;
 
 		locations = new String[locs.size()];
@@ -64,13 +93,15 @@ public class AudioList implements ActionListener {
 	}
 
 	public ArrayList<String> getFilesInFolder(final File folder, ArrayList<String> locations, String... extensions) {
-		for (final File fileEntry : folder.listFiles())
-			if (fileEntry.isDirectory())
-				getFilesInFolder(fileEntry, locations, extensions);
-			else for (String extension : extensions)
-				if (getExtension(fileEntry.getPath()).equals(extension))
-					locations.add(fileEntry.getPath().substring(getDirectory().length()+1));
+		try {
+			for (final File fileEntry : folder.listFiles())
+				if (fileEntry.isDirectory() && (folderSearch == SUBFOLDERS_AND_CURRENT || folderSearch == SEARCH_EVERYTHING))
+					getFilesInFolder(fileEntry, locations, extensions);
+				else for (String extension : extensions)
+					if (getExtension(fileEntry.getPath()).equals(extension))
+						locations.add(fileEntry.getPath());
 			return locations;
+		}	catch(NullPointerException e)	{return locations; }
 	}
 	public String getDirectory() {
 		return  System.getProperty("user.dir");
