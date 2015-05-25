@@ -19,7 +19,7 @@ public class PlayFavorites {
 					if (songs.isPlaying()) songs.pause();
 					else songs.play();
 					break;
-				case 1: songs.stop(); break;
+				case 1: songs.stop(); System.exit(0); break;
 				case 2: songs.nextSong(); break;
 				case 3: songs.previousSong(); break;
 				case 4:
@@ -28,7 +28,7 @@ public class PlayFavorites {
 					break;
 				case 5:
 					System.out.print("Enter the new playback speed -> ");
-					songs.speedUp(scan.nextDouble());
+					songs.setRate(scan.nextDouble());
 					scan.nextLine();
 					break;
 			}
