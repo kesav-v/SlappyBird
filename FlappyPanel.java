@@ -48,6 +48,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 	private AudioList songs;
 	private ArrayList<String> songNames;
 	private AudioClip clip;
+	private ImageIcon thePipe;
 
 	public FlappyPanel() {
 		songs = new AudioList(AudioList.INITIAL_SHUFFLE);
@@ -68,6 +69,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 		theBird = new ImageIcon(getClass().getResource("FlappyBirdOnline.png"));
 		bird1 = new ImageIcon(getClass().getResource("bird1.png"));
 		bird2 = new ImageIcon(getClass().getResource("bird2.png"));
+		pipe = new ImageIcon(getClass().getResource("Pipe.png"));
 	}
 
 	private class Handler implements ActionListener {
@@ -102,8 +104,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 		setBackground(Color.BLACK);
 		for (FlappyPipe fp : pipes) {
 			g.setColor(fp.getColor());
-			g.fillRect(fp.getX(), 0, 50, fp.getY());
-			g.fillRect(fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200));
+			g.drawImage(thePipe.getImage(), fp.getX(), 0, 50, fp.getY(), fp.getColor(), this);
+			g.drawImage(thePipe.getImage(), fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200), fp.getColor(), this);
 		}
 		g.setColor(Color.BLUE);
 		if (bird.isInvincible()) {/*
