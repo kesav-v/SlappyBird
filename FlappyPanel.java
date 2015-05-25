@@ -240,8 +240,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 				(fp.getY() <= bird.getY() - 150 || fp.getY() >= bird.getY())) {
 				if (fp.isInvincible()) {
 					bird.setInvincible(true);
-					if (headBangs >= 5)	invincibility.setDelay(50);
-					else invincibility.setDelay(25);
+					//if (headBangs >= 5)	invincibility.setDelay(50);
+					//else invincibility.setDelay(25);
 					invincibility.start();
 					invincibleColor = Color.RED;
 					return false;
