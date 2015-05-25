@@ -47,10 +47,12 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 	private Color invincibleColor;
 	private AudioList songs;
 	private ArrayList<String> songNames;
+	private AudioClip clip;
 
 	public FlappyPanel() {
 		songs = new AudioList(AudioList.INITIAL_SHUFFLE);
 		songs.play();
+		clip = new AudioClip("MarioInvincible.mp3");
 		previousScores = new ArrayList<String>();
 		movePipes = new Timer(20, this);
 		invincibility = new Timer(25, new Handler());
@@ -71,11 +73,17 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 	private class Handler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			invincibleTimes++;
+			if (!clip.isRunning()) {
+				clip.play();
+				songs.pause();
+			}
 			invincibleColor = new Color(255 - invincibleTimes, 0, 0);
 			if (invincibleTimes == 255) {
 				bird.setInvincible(false);
 				invincibility.stop();
 				invincibleTimes = 0;
+				clip.stop();
+				songs.play();
 			}
 		}
 	}
