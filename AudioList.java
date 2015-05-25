@@ -23,6 +23,7 @@ public class AudioList implements ActionListener {
 	private Timer loadNextSong;
 	private int songOn = 0;
 	private int shuffle;
+	private double rate = 1;
 
 	public AudioList(Object[] locs, int shuffle) {
 		this.shuffle = shuffle;
@@ -89,6 +90,7 @@ public class AudioList implements ActionListener {
 	}
 
 	public void play() {
+		clip.setRate(rate);
 		clip.play();
 		loadNextSong.setInitialDelay((int)(clip.length() - clip.getPosition()));
 		loadNextSong.restart();
@@ -102,8 +104,8 @@ public class AudioList implements ActionListener {
 
 	public void stop()	{
 		clip.stop();
-		loadNextSong.stop();
-		System.exit(1);
+		loadNextSong.setInitialDelay(Integer.MAX_VALUE);
+		loadNextSong.restart();
 	}
 
 	public void addNext()	{
@@ -125,7 +127,7 @@ public class AudioList implements ActionListener {
 				break;
 			case INITIAL_SHUFFLE:
 				if (playlist.size() >= locations.length)
-					playlist.add(playlist.get(songOn - locations.length));
+					playlist.add(playlist.get(playlist.size() - locations.length));
 				else	{
 					do ran = (int)(Math.random() * locations.length);
 					while (inPlaylist(ran));
@@ -148,12 +150,14 @@ public class AudioList implements ActionListener {
 		clip.stop();
 		clip.dispose();
 		clip.reInit(new File(locations[playlist.get(songOn)]).getAbsoluteFile());
+		clip.setRate(rate);
 		clip.play();
 		loadNextSong.setInitialDelay((int)clip.length());
 		loadNextSong.restart();
 	}
 
-	public void speedUp(double rate) {
+	public void setRate(double rate) {
+		this.rate = rate;
 		clip.setRate(rate);
 		loadNextSong.setInitialDelay((int)((loadNextSong.getDelay() - clip.getPosition()) / rate));
 		loadNextSong.restart();
@@ -190,5 +194,13 @@ public class AudioList implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		nextSong();
+	}
+
+	public AudioClip getAudioClip()	{
+		return clip;
+	}
+
+	public String getSongName()	{
+		return clip.getName();
 	}
 }
