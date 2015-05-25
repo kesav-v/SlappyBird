@@ -24,7 +24,8 @@ import java.text.SimpleDateFormat;
 
 /**
  * This is the bulk of the code - the game itself is displayed through this panel.
- * @author Kesav Viswanadha and Ofek Gila
+ * @author Kesav Viswanadha
+ * @contributor Ofek Gila
  * @version 1.8
  * @lastedited May 24, 2015
 */
@@ -48,7 +49,11 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 	private AudioList songs;
 	private ArrayList<String> songNames;
 	private AudioClip clip;
+<<<<<<< HEAD
 	private ImageIcon thePipe;
+=======
+	private int headBangs;
+>>>>>>> origin/master
 
 	public FlappyPanel() {
 		songs = new AudioList(AudioList.INITIAL_SHUFFLE);
@@ -60,6 +65,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 		first = true;
 		firstPress = true;
 		score = 0;
+		headBangs = 0;
 		bird = new Bird(this);
 		addKeyListener(this);
 		addMouseListener(this);
@@ -222,12 +228,17 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}
 	public boolean dead() {
-		if (bird.getY() < 0 || bird.getY() + 50 > getHeight()) return true;
+		if (bird.getY() + 50 > getHeight()) {
+			headBangs++;
+			return true;
+		} else if (bird.getY() < 0)	return true;
 		for (FlappyPipe fp : pipes) {
 			if (!bird.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 &&
 				(fp.getY() <= bird.getY() - 150 || fp.getY() >= bird.getY())) {
 				if (fp.isInvincible()) {
 					bird.setInvincible(true);
+					if (headBangs >= 5)	invincibility.setDelay(50);
+					else invincibility.setDelay(25);
 					invincibility.start();
 					invincibleColor = Color.RED;
 					return false;
