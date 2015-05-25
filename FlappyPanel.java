@@ -49,11 +49,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 	private AudioList songs;
 	private ArrayList<String> songNames;
 	private AudioClip clip;
-<<<<<<< HEAD
 	private ImageIcon thePipe;
-=======
 	private int headBangs;
->>>>>>> origin/master
 
 	public FlappyPanel() {
 		songs = new AudioList(AudioList.INITIAL_SHUFFLE);
@@ -75,7 +72,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 		theBird = new ImageIcon(getClass().getResource("FlappyBirdOnline.png"));
 		bird1 = new ImageIcon(getClass().getResource("bird1.png"));
 		bird2 = new ImageIcon(getClass().getResource("bird2.png"));
-		pipe = new ImageIcon(getClass().getResource("Pipe.png"));
+		thePipe = new ImageIcon(getClass().getResource("Pipe.png"));
 	}
 
 	private class Handler implements ActionListener {
