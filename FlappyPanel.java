@@ -7,8 +7,6 @@ import javax.swing.Timer;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.Font;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
 import java.util.Scanner;
 import java.io.File;
 import java.io.PrintWriter;
@@ -30,7 +28,7 @@ import java.text.SimpleDateFormat;
  * @lastedited May 24, 2015
 */
 
-public class FlappyPanel extends JPanel implements ActionListener, KeyListener, MouseListener {
+public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	
 	private FlappyPipe[] pipes;
 	private Timer movePipes;
@@ -65,7 +63,6 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 		headBangs = 0;
 		bird = new Bird(this);
 		addKeyListener(this);
-		addMouseListener(this);
 		justDied = true;
 		imgLoaded = true;
 		invincibleColor = Color.BLACK;
@@ -231,17 +228,12 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}
 	public boolean dead() {
-		if (bird.getY() + 50 > getHeight()) {
-			headBangs++;
-			return true;
-		} else if (bird.getY() < 0)	return true;
+		if (bird.getY() + 50 > getHeight() || (bird.getY() < 0)) return true;
 		for (FlappyPipe fp : pipes) {
 			if (!bird.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 &&
 				(fp.getY() <= bird.getY() - 150 || fp.getY() >= bird.getY())) {
 				if (fp.isInvincible()) {
 					bird.setInvincible(true);
-					//if (headBangs >= 5)	invincibility.setDelay(50);
-					//else invincibility.setDelay(25);
 					invincibility.start();
 					invincibleColor = Color.RED;
 					return false;
@@ -255,17 +247,4 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 	public boolean dying() {
 		return bird.isFalling() && !movePipes.isRunning();
 	}
-
-	public void mousePressed(MouseEvent e) {
-		if (firstPress) {
-			movePipes.start();
-			bird.startFalling();
-			firstPress = false;
-		}
-		bird.setVelocity(13);
-	}
-	public void mouseExited(MouseEvent e) {}
-	public void mouseEntered(MouseEvent e) {}
-	public void mouseClicked(MouseEvent e) {}
-	public void mouseReleased(MouseEvent e) {}
 }
