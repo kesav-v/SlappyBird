@@ -107,8 +107,14 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener, 
 		setBackground(Color.BLACK);
 		for (FlappyPipe fp : pipes) {
 			g.setColor(fp.getColor());
-			g.drawImage(thePipe.getImage(), fp.getX(), 0, 50, fp.getY(), fp.getColor(), this);
-			g.drawImage(thePipe.getImage(), fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200), fp.getColor(), this);
+			if (fp.isInvincible()) {
+				g.fillRect(fp.getX(), 0, 50, fp.getY());
+				g.fillRect(fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200));
+			}
+			else {
+				g.drawImage(thePipe.getImage(), fp.getX(), 0, 50, fp.getY(), this);
+				g.drawImage(thePipe.getImage(), fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200), this);
+			}
 		}
 		g.setColor(Color.BLUE);
 		if (bird.isInvincible()) {/*
