@@ -97,7 +97,7 @@ public class FlappyPipe implements ActionListener {
 		return score;
 	}
 
-	public void setOscillation(int osc) {
+	public void setOscillation(double osc) {
 		oscillation = osc;
 	}
 

@@ -50,8 +50,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private int headBangs;
 
 	public FlappyPanel() {
-		clip = new AudioClip("MarioInvincible.mp3");
-		songs = new AudioList(AudioList.INITIAL_SHUFFLE, AudioList.SUBFOLDERS_AND_CURRENT);
+		clip = new AudioClip(new File("SoundEffects/MarioInvincible.mp3"));
+		songs = new AudioList(AudioList.INITIAL_SHUFFLE, AudioList.CURRENT_FOLDER, new File("AllMusic"));
 		songs.play();
 		previousScores = new ArrayList<String>();
 		movePipes = new Timer(20, this);
