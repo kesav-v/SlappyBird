@@ -48,6 +48,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private AudioClip clip;
 	private ImageIcon thePipe;
 	private int headBangs;
+	private int score;
+	private int count;
 
 	public FlappyPanel() {
 		clip = new AudioClip(new File("SoundEffects/MarioInvincible.mp3"));
@@ -58,7 +60,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		invincibility = new Timer(25, new Handler());
 		first = true;
 		firstPress = true;
-		headBangs = 0;
+		headBangs = count = score = 0;
 		bird = new Bird(this);
 		addKeyListener(this);
 		justDied = true;
@@ -68,6 +70,10 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		bird1 = new ImageIcon(getClass().getResource("bird1.png"));
 		bird2 = new ImageIcon(getClass().getResource("bird2.png"));
 		thePipe = new ImageIcon(getClass().getResource("Pipe.png"));
+	}
+
+	public int getScore()	{
+		return score / 2;
 	}
 
 	private class Handler implements ActionListener {
@@ -111,25 +117,12 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 				g.drawImage(thePipe.getImage(), fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200), this);
 			}
 		}
-		g.setColor(Color.BLUE);
-		if (bird.isInvincible()) {/*
-			g.setColor(invincibleColor);
-			g.fillRect(50, bird.getY(), 50, 50);
-			g.setColor(Color.GREEN);
-
-			g.drawRect(50, bird.getY(), 50, 50);
-		}
-		g.drawImage(theBird.getImage(), 50, bird.getY(), 50, 50, this);
-
-			g.drawRect(50, bird.getY(), 50, 50);*/
-		}
-		// g.drawImage(theBird.getImage(), 50, bird.getY(), 50, 50, this);
 		if (bird.isInvincible())
-			if (sumScores() % 2 == 0)
+			if (count % 2 == 0)
 				g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
 			else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
 		else
-			if (sumScores() % 20 <= 10)
+			if (count % 20 <= 10)
 				 g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
 			else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
 		if (dying() || dead()) {
@@ -144,26 +137,19 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		}
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", Font.BOLD, 96));
-		g.drawString("SCORE: " + sumScores(), 800, 800);
+		g.drawString("SCORE: " + getScore(), 800, 800);
 		if (firstPress) {
 			g.setColor(new Color(0, 100, 0));
 			g.drawString("GET READY!", 780, 700);
 		}
 	}
 
-	public int sumScores() {
-		int sum = 0;
-		for (FlappyPipe fp : pipes) {
-			sum += fp.getScore();
-		}
-		return sum;
-	}
-
 	public void actionPerformed(ActionEvent e) {
+		count++;
 		for (FlappyPipe fp : pipes) {
 			fp.move();
 		}
-		if (sumScores() != 0) {
+		if (getScore() != 0) {
 			for (FlappyPipe fp : pipes) {
 				fp.incVelocity(bird.isInvincible() ? (2*velocityInc(fp.getVelocity())):velocityInc(fp.getVelocity()));
 			}
@@ -188,10 +174,10 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			}
 		}
 		int i;
-		for (i = 0; i < previousScores.size() && Integer.parseInt(previousScores.get(i).substring(0, previousScores.get(i).indexOf(" "))) > sumScores(); i++) {}
+		for (i = 0; i < previousScores.size() && Integer.parseInt(previousScores.get(i).substring(0, previousScores.get(i).indexOf(" "))) > getScore(); i++) {}
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm a");
-		previousScores.add(i, sumScores() + " on " + sdf.format(date));
+		previousScores.add(i, getScore() + " on " + sdf.format(date));
 		PrintWriter writeScores = null;
 		try {
 			writeScores = new PrintWriter(new File("scores.txt"));
@@ -225,6 +211,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			}
 			firstPress = true;
 			justDied = true;
+			score = 0;
 			previousScores.clear();
 			repaint();
 		}
@@ -234,6 +221,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	public boolean dead() {
 		if (bird.getY() + 50 > getHeight() || (bird.getY() < 0)) return true;
 		for (FlappyPipe fp : pipes) {
+			if (fp.isReset())
+				score++;
 			if (!bird.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 &&
 				(fp.getY() <= bird.getY() - 150 || fp.getY() >= bird.getY())) {
 				if (fp.isInvincible()) {

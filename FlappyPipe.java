@@ -27,7 +27,7 @@ public class FlappyPipe implements ActionListener {
 	private boolean redding;
 	private boolean blueing;
 	private boolean greening;
-	private int score;
+	private boolean reset;
 
 	public FlappyPipe(JComponent comp, double velocity, double x) {
 		setColor();
@@ -65,6 +65,7 @@ public class FlappyPipe implements ActionListener {
 		x -= velocity;
 		count++;
 		if (x <= -50) {
+			reset = true;
 			x = WIDTH;
 			setColor();
 			if (Math.random() < 0.1) isInvincible = true;
@@ -86,18 +87,22 @@ public class FlappyPipe implements ActionListener {
 				blueing = false;
 			}
 			oscillation = Math.random() * 5 + 1;
-			score++;
 			if (Math.random() > 0.5) oscillation = 0;
 		}
+		else reset = false;
 		if (isInvincible)
 			fadeColor();
 	}
 
+<<<<<<< HEAD
 	public int getScore() {
 		return score;
 	}
 
 	public void setOscillation(double osc) {
+=======
+	public void setOscillation(int osc) {
+>>>>>>> origin/master
 		oscillation = osc;
 	}
 
@@ -166,5 +171,9 @@ public class FlappyPipe implements ActionListener {
 
 	public boolean isInvincible()	{
 		return isInvincible;
+	}
+
+	public boolean isReset()	{
+		return reset;
 	}
 }
