@@ -88,6 +88,7 @@ public class FlappyPipe implements ActionListener {
 			}
 			oscillation = Math.random() * 5 + 1;
 			if (Math.random() > 0.5) oscillation = 0;
+			if (isInvincible) oscillation = 10;
 		}
 		else reset = false;
 		if (isInvincible)
