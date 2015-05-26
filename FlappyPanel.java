@@ -34,7 +34,6 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private Timer movePipes;
 	private boolean first;
 	private Bird bird;
-	private int score;
 	private int invincibleTimes;
 	private boolean firstPress;
 	private ArrayList<String> previousScores;
@@ -51,15 +50,14 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private int headBangs;
 
 	public FlappyPanel() {
-		songs = new AudioList(AudioList.INITIAL_SHUFFLE);
-		songs.play();
 		clip = new AudioClip("MarioInvincible.mp3");
+		songs = new AudioList(AudioList.INITIAL_SHUFFLE, AudioList.SUBFOLDERS_AND_CURRENT);
+		songs.play();
 		previousScores = new ArrayList<String>();
 		movePipes = new Timer(20, this);
 		invincibility = new Timer(25, new Handler());
 		first = true;
 		firstPress = true;
-		score = 0;
 		headBangs = 0;
 		bird = new Bird(this);
 		addKeyListener(this);
@@ -127,11 +125,11 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		}
 		// g.drawImage(theBird.getImage(), 50, bird.getY(), 50, 50, this);
 		if (bird.isInvincible())
-			if (score % 2 == 0)
+			if (sumScores() % 2 == 0)
 				g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
 			else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
 		else
-			if (score % 20 <= 10)
+			if (sumScores() % 20 <= 10)
 				 g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
 			else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
 		if (dying() || dead()) {
@@ -146,19 +144,26 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		}
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", Font.BOLD, 96));
-		g.drawString("SCORE: " + score, 800, 800);
+		g.drawString("SCORE: " + sumScores(), 800, 800);
 		if (firstPress) {
 			g.setColor(new Color(0, 100, 0));
 			g.drawString("GET READY!", 780, 700);
 		}
 	}
 
+	public int sumScores() {
+		int sum = 0;
+		for (FlappyPipe fp : pipes) {
+			sum += fp.getScore();
+		}
+		return sum;
+	}
+
 	public void actionPerformed(ActionEvent e) {
 		for (FlappyPipe fp : pipes) {
 			fp.move();
 		}
-		score++;
-		if (score != 0) {
+		if (sumScores() != 0) {
 			for (FlappyPipe fp : pipes) {
 				fp.incVelocity(bird.isInvincible() ? (2*velocityInc(fp.getVelocity())):velocityInc(fp.getVelocity()));
 			}
@@ -183,10 +188,10 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			}
 		}
 		int i;
-		for (i = 0; i < previousScores.size() && Integer.parseInt(previousScores.get(i).substring(0, previousScores.get(i).indexOf(" "))) > score; i++) {}
+		for (i = 0; i < previousScores.size() && Integer.parseInt(previousScores.get(i).substring(0, previousScores.get(i).indexOf(" "))) > sumScores(); i++) {}
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm a");
-		previousScores.add(i, score + " on " + sdf.format(date));
+		previousScores.add(i, sumScores() + " on " + sdf.format(date));
 		PrintWriter writeScores = null;
 		try {
 			writeScores = new PrintWriter(new File("scores.txt"));
@@ -218,7 +223,6 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 				pipes[i] = new FlappyPipe(this, 2, i * (2160 / 4) + 2160 / 4);
 				pipes[i].setOscillation(0);
 			}
-			score = 0;
 			firstPress = true;
 			justDied = true;
 			previousScores.clear();

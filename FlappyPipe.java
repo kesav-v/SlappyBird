@@ -27,6 +27,7 @@ public class FlappyPipe implements ActionListener {
 	private boolean redding;
 	private boolean blueing;
 	private boolean greening;
+	private int score;
 
 	public FlappyPipe(JComponent comp, double velocity, double x) {
 		setColor();
@@ -61,40 +62,39 @@ public class FlappyPipe implements ActionListener {
 	}
 
 	public void move() {
-		try {
-			x -= velocity;
-			count++;
-			if (x <= -50) {
-				x = WIDTH;
-				setColor();
-				if (Math.random() < 0.1) isInvincible = true;
-				else isInvincible = false;
-				if (isInvincible && color.equals(Color.YELLOW)) color = Color.RED;
-				if (color.equals(Color.RED)) {
-					redding = false;
-					greening = true;
-					blueing = false;
-				}
-				else if (color.equals(Color.GREEN)) {
-					redding = false;
-					greening = false;
-					blueing = true;
-				}
-				else {
-					redding = true;
-					greening = false;
-					blueing = false;
-				}
-				oscillation = Math.random() * 5 + 1;
-				if (Math.random() > 0.5) oscillation = 0;
+		x -= velocity;
+		count++;
+		if (x <= -50) {
+			x = WIDTH;
+			setColor();
+			if (Math.random() < 0.1) isInvincible = true;
+			else isInvincible = false;
+			if (isInvincible && color.equals(Color.YELLOW)) color = Color.RED;
+			if (color.equals(Color.RED)) {
+				redding = false;
+				greening = true;
+				blueing = false;
 			}
-			if (isInvincible)
-				fadeColor();
-		} catch (IllegalArgumentException e) {
-			System.out.println(redding + "\t" + greening + "\t" + blueing);
-			System.out.println(color.getRed() + "\t" + color.getGreen() + "\t" + color.getBlue());
-			System.exit(1);
+			else if (color.equals(Color.GREEN)) {
+				redding = false;
+				greening = false;
+				blueing = true;
+			}
+			else {
+				redding = true;
+				greening = false;
+				blueing = false;
+			}
+			oscillation = Math.random() * 5 + 1;
+			score++;
+			if (Math.random() > 0.5) oscillation = 0;
 		}
+		if (isInvincible)
+			fadeColor();
+	}
+
+	public int getScore() {
+		return score;
 	}
 
 	public void setOscillation(int osc) {
