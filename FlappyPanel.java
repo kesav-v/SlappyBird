@@ -192,7 +192,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_UP && !dying() && !dead()) {
+		if ((e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_SPACE) && !dying() && !dead()) {
 			if (firstPress) {
 				movePipes.start();
 				bird.startFalling();
