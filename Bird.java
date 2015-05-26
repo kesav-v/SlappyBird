@@ -27,6 +27,10 @@ public class Bird implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		fall();
+	}
+
+	public void fall() {
 		y -= velocity;
 		velocity -= 1;
 		comp.repaint();

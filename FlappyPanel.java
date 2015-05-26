@@ -101,7 +101,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			pipes = new FlappyPipe[4];
 			for (int i = 0; i < pipes.length; i++) {
 				pipes[i] = new FlappyPipe(this, 2, i * (2160 / 4) + 2160 / 4);
-				pipes[i].setOscillation(0);
+				if (!pipes[i].isInvincible()) pipes[i].setOscillation(0);
+				else pipes[i].setOscillation(10);
 			}
 		}
 		super.paintComponent(g);
@@ -109,8 +110,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		for (FlappyPipe fp : pipes) {
 			g.setColor(fp.getColor());
 			if (fp.isInvincible()) {
-				g.fillRect(fp.getX(), 0, 50, fp.getY());
-				g.fillRect(fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200));
+				g.fillRect(fp.getX(), fp.getY(), 50, 200);
 			}
 			else {
 				g.drawImage(thePipe.getImage(), fp.getX(), 0, 50, fp.getY(), this);
@@ -207,7 +207,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			bird = new Bird(this);
 			for (int i = 0; i < pipes.length; i++) {
 				pipes[i] = new FlappyPipe(this, 2, i * (2160 / 4) + 2160 / 4);
-				pipes[i].setOscillation(0);
+				if (!pipes[i].isInvincible()) pipes[i].setOscillation(0);
+				else pipes[i].setOscillation(10);
 			}
 			firstPress = true;
 			justDied = true;
@@ -223,15 +224,14 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		for (FlappyPipe fp : pipes) {
 			if (fp.isReset())
 				score++;
-			if (!bird.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 &&
+			if (!bird.isInvincible() && !fp.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 &&
 				(fp.getY() <= bird.getY() - 150 || fp.getY() >= bird.getY())) {
-				if (fp.isInvincible()) {
-					bird.setInvincible(true);
-					invincibility.start();
-					invincibleColor = Color.RED;
-					return false;
-				}
-				else return true;
+				return true;
+			} else if (fp.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 && bird.getY() >= fp.getY() && bird.getY() <= fp.getY() + 200) {
+				bird.setInvincible(true);
+				invincibility.start();
+				invincibleColor = Color.RED;
+				return false;
 			}
 		}
 		return false;

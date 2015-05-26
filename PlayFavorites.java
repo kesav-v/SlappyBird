@@ -1,11 +1,12 @@
 import java.util.Scanner;
+import java.io.File;
 
 // this is a client of a class made by Ofek Gila
 // May 24, 2015
 
 public class PlayFavorites {
 	public static void main(String[] args) {
-		AudioList songs = new AudioList(AudioList.INITIAL_SHUFFLE);
+		AudioList songs = new AudioList(AudioList.INITIAL_SHUFFLE, AudioList.CURRENT_FOLDER, new File("AllMusic"));
 		songs.play();
 		Scanner scan = new Scanner(System.in);
 		int n = -1;

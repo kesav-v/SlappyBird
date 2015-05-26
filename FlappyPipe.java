@@ -94,15 +94,7 @@ public class FlappyPipe implements ActionListener {
 			fadeColor();
 	}
 
-<<<<<<< HEAD
-	public int getScore() {
-		return score;
-	}
-
 	public void setOscillation(double osc) {
-=======
-	public void setOscillation(int osc) {
->>>>>>> origin/master
 		oscillation = osc;
 	}
 
