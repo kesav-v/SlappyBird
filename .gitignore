@@ -45,5 +45,8 @@ Temporary Items
 *.txt
 *.txt
 scores.txt
+<<<<<<< HEAD
 scores.txt
+=======
+>>>>>>> 3c2360aa848d69c54dc574db3c1ea13021e93344
 *.txt
