@@ -160,13 +160,18 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 
 	public void incPipeVelocity(double ratio)	{
 		for (FlappyPipe fp : pipes)	{
-			fp.incVelocity(velocityInc(fp.getVelocity()) * ratio);
-			if (fp.getVelocity() < 2)	fp.setVelocity(2);
+			if (ratio > 0)
+				fp.incVelocity(velocityInc(fp.getVelocity()) * ratio);
+			else fp.incVelocity(velocityDec(fp.getVelocity()-2) * ratio);
 		}
 	}
 
 	public double velocityInc(double num)	{
 		return 1 / (100 * Math.sqrt(num));
+	}
+
+	public double velocityDec(double num)	{
+		return Math.sqrt(num) / 100;
 	}
 
 	public void saveScore() {
@@ -232,7 +237,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			if (!fp.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 &&
 				(fp.getY() <= bird.getY() - 150 || fp.getY() >= bird.getY())) {
 				if (bird.isInvincible())	{
-					incPipeVelocity(-5);
+					incPipeVelocity(-1);
 					return false;
 				}
 				else return true;
