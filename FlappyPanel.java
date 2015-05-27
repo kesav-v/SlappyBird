@@ -49,6 +49,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private ImageIcon thePipe;
 	private int headBangs;
 	private int count;
+	private boolean updateSong;
 
 	public FlappyPanel() {
 		clip = new AudioClip(new File("SoundEffects/MarioInvincible.mp3"));
@@ -63,6 +64,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		bird = new Bird(this);
 		addKeyListener(this);
 		justDied = true;
+		updateSong = true;
 		imgLoaded = true;
 		invincibleColor = Color.BLACK;
 		theBird = new ImageIcon(getClass().getResource("FlappyBirdOnline.png"));
@@ -155,7 +157,17 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		if (sumScores() != 0) {
 			incPipeVelocity(bird.isInvincible() ? 2:1);
 		}
+		if (sumScores() % 1 == 0)	{
+			if (updateSong)	{
+				updateSong = false;
+				songs.setRate((1 + (pipes[0].getVelocity()-2)/20));
+			}
+		}	else updateSong = true;
 		repaint();
+
+
+		// songs.setRate(1 + sumScores() / 20f);
+		// System.out.println((1 + sumScores() / 20f) + " " + (1 + (pipes[0].getVelocity()-2)/20));
 	}
 
 	public void incPipeVelocity(double ratio)	{
