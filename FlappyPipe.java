@@ -97,6 +97,14 @@ public class FlappyPipe implements ActionListener {
 			fadeColor();
 	}
 
+	public void setX(int newX) {
+		x = newX;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
 	public void setOscillation(double osc) {
 		oscillation = osc;
 	}

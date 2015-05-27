@@ -66,8 +66,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		imgLoaded = true;
 		invincibleColor = Color.BLACK;
 		theBird = new ImageIcon(getClass().getResource("FlappyBirdOnline.png"));
-		bird1 = new ImageIcon(getClass().getResource("bird1.png"));
-		bird2 = new ImageIcon(getClass().getResource("bird2.png"));
+		bird1 = new ImageIcon(getClass().getResource("Bird1.png"));
+		bird2 = new ImageIcon(getClass().getResource("Bird2.png"));
 		thePipe = new ImageIcon(getClass().getResource("Pipe.png"));
 	}
 
