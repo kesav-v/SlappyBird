@@ -160,6 +160,10 @@ public class FlappyPipe implements ActionListener {
 		velocity += amt;
 	}
 
+	public void setVelocity(double vel)	{
+		velocity = vel;
+	}
+
 	public double getVelocity() {
 		return velocity;
 	}

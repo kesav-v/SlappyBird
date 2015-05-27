@@ -113,11 +113,11 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			}
 		}
 		if (bird.isInvincible())
-			if (count % 2 == 0)
+			if (count % 4 < 2)
 				g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
 			else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
 		else
-			if (count % 20 <= 10)
+			if (count % 20 < 10)
 				 g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
 			else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
 		if (dying() || dead()) {
@@ -153,11 +153,16 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			fp.move();
 		}
 		if (sumScores() != 0) {
-			for (FlappyPipe fp : pipes) {
-				fp.incVelocity(bird.isInvincible() ? (2*velocityInc(fp.getVelocity())):velocityInc(fp.getVelocity()));
-			}
+			incPipeVelocity(bird.isInvincible() ? 2:1);
 		}
 		repaint();
+	}
+
+	public void incPipeVelocity(double ratio)	{
+		for (FlappyPipe fp : pipes)	{
+			fp.incVelocity(velocityInc(fp.getVelocity()) * ratio);
+			if (fp.getVelocity() < 2)	fp.setVelocity(2);
+		}
 	}
 
 	public double velocityInc(double num)	{
@@ -224,9 +229,13 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	public boolean dead() {
 		if (bird.getY() + 50 > getHeight() || (bird.getY() < 0)) return true;
 		for (FlappyPipe fp : pipes) {
-			if (!bird.isInvincible() && !fp.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 &&
+			if (!fp.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 &&
 				(fp.getY() <= bird.getY() - 150 || fp.getY() >= bird.getY())) {
-				return true;
+				if (bird.isInvincible())	{
+					incPipeVelocity(-5);
+					return false;
+				}
+				else return true;
 			} else if (fp.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 && bird.getY() >= fp.getY() && bird.getY() <= fp.getY() + 200) {
 				bird.setInvincible(true);
 				invincibility.start();
