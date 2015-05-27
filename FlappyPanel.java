@@ -48,7 +48,6 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private AudioClip clip;
 	private ImageIcon thePipe;
 	private int headBangs;
-	private int score;
 	private int count;
 
 	public FlappyPanel() {
@@ -60,7 +59,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		invincibility = new Timer(25, new Handler());
 		first = true;
 		firstPress = true;
-		headBangs = count = score = 0;
+		headBangs = count = 0;
 		bird = new Bird(this);
 		addKeyListener(this);
 		justDied = true;
@@ -70,10 +69,6 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		bird1 = new ImageIcon(getClass().getResource("bird1.png"));
 		bird2 = new ImageIcon(getClass().getResource("bird2.png"));
 		thePipe = new ImageIcon(getClass().getResource("Pipe.png"));
-	}
-
-	public int getScore()	{
-		return score / 2;
 	}
 
 	private class Handler implements ActionListener {
@@ -100,7 +95,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			first = false;
 			pipes = new FlappyPipe[4];
 			for (int i = 0; i < pipes.length; i++) {
-				pipes[i] = new FlappyPipe(this, 2, i * (2160 / 4) + 2160 / 4);
+				pipes[i] = new FlappyPipe(this, 3, i * (2160 / 4) + 2160 / 4);
 				if (!pipes[i].isInvincible()) pipes[i].setOscillation(0);
 				else pipes[i].setOscillation(10);
 			}
@@ -137,11 +132,19 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		}
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", Font.BOLD, 96));
-		g.drawString("SCORE: " + getScore(), 800, 800);
+		g.drawString("SCORE: " + sumScores(), 800, 800);
 		if (firstPress) {
 			g.setColor(new Color(0, 100, 0));
 			g.drawString("GET READY!", 780, 700);
 		}
+	}
+
+	private int sumScores() {
+		int sum = 0;
+		for (FlappyPipe fp : pipes) {
+			sum += fp.getScore();
+		}
+		return sum;
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -149,7 +152,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		for (FlappyPipe fp : pipes) {
 			fp.move();
 		}
-		if (getScore() != 0) {
+		if (sumScores() != 0) {
 			for (FlappyPipe fp : pipes) {
 				fp.incVelocity(bird.isInvincible() ? (2*velocityInc(fp.getVelocity())):velocityInc(fp.getVelocity()));
 			}
@@ -174,10 +177,10 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			}
 		}
 		int i;
-		for (i = 0; i < previousScores.size() && Integer.parseInt(previousScores.get(i).substring(0, previousScores.get(i).indexOf(" "))) > getScore(); i++) {}
+		for (i = 0; i < previousScores.size() && Integer.parseInt(previousScores.get(i).substring(0, previousScores.get(i).indexOf(" "))) > sumScores(); i++) {}
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm a");
-		previousScores.add(i, getScore() + " on " + sdf.format(date));
+		previousScores.add(i, sumScores() + " on " + sdf.format(date));
 		PrintWriter writeScores = null;
 		try {
 			writeScores = new PrintWriter(new File("scores.txt"));
@@ -206,13 +209,12 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		if (e.getKeyChar() == 'r' && dead()) {
 			bird = new Bird(this);
 			for (int i = 0; i < pipes.length; i++) {
-				pipes[i] = new FlappyPipe(this, 2, i * (2160 / 4) + 2160 / 4);
+				pipes[i] = new FlappyPipe(this, 3, i * (2160 / 4) + 2160 / 4);
 				if (!pipes[i].isInvincible()) pipes[i].setOscillation(0);
 				else pipes[i].setOscillation(10);
 			}
 			firstPress = true;
 			justDied = true;
-			score = 0;
 			previousScores.clear();
 			repaint();
 		}
@@ -222,8 +224,6 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	public boolean dead() {
 		if (bird.getY() + 50 > getHeight() || (bird.getY() < 0)) return true;
 		for (FlappyPipe fp : pipes) {
-			if (fp.isReset())
-				score++;
 			if (!bird.isInvincible() && !fp.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 &&
 				(fp.getY() <= bird.getY() - 150 || fp.getY() >= bird.getY())) {
 				return true;

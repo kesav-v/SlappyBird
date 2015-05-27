@@ -28,6 +28,7 @@ public class FlappyPipe implements ActionListener {
 	private boolean blueing;
 	private boolean greening;
 	private boolean reset;
+	private int score;
 
 	public FlappyPipe(JComponent comp, double velocity, double x) {
 		setColor();
@@ -65,6 +66,7 @@ public class FlappyPipe implements ActionListener {
 		x -= velocity;
 		count++;
 		if (x <= -50) {
+			score++;
 			reset = true;
 			x = WIDTH;
 			setColor();
@@ -97,6 +99,10 @@ public class FlappyPipe implements ActionListener {
 
 	public void setOscillation(double osc) {
 		oscillation = osc;
+	}
+
+	public int getScore() {
+		return score;
 	}
 
 	public void fadeColor()	{
