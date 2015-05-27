@@ -6,7 +6,7 @@ import java.io.File;
 
 public class PlayFavorites {
 	public static void main(String[] args) {
-		AudioList songs = new AudioList(AudioList.INITIAL_SHUFFLE, AudioList.CURRENT_FOLDER, new File("AllMusic"));
+		AudioList songs = new AudioList(AudioList.INITIAL_SHUFFLE, AudioList.CURRENT_FOLDER, new File("C:/Users/Kesav Viswanadha/OneDrive/Documents/YoutubeVideos"));
 		songs.play();
 		Scanner scan = new Scanner(System.in);
 		int n = -1;
