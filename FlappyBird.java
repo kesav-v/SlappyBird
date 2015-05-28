@@ -19,7 +19,6 @@ public class FlappyBird extends JFrame {
 		FlappyBird fw = new FlappyBird();
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		fw.setSize((int)d.getWidth(), (int)d.getHeight());
-		System.out.println(d.getWidth() + " " + d.getHeight());
 		fw.setVisible(true);
 		fw.getContentPane().add(new FlappyPanel());
 		fw.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
