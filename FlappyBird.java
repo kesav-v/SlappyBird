@@ -1,4 +1,6 @@
 import javax.swing.JFrame;
+import java.awt.Toolkit;
+import java.awt.Dimension;
 
 /**
  * This is the main class that runs the Flappy Bird game.
@@ -15,7 +17,8 @@ public class FlappyBird extends JFrame {
 
 	public static void main(String[] args) {
 		FlappyBird fw = new FlappyBird();
-		fw.setSize(2160, 1440);
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		fw.setSize((int)d.getWidth(), (int)d.getHeight());
 		fw.setVisible(true);
 		fw.getContentPane().add(new FlappyPanel());
 		fw.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
