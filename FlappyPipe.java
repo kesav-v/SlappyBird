@@ -151,8 +151,11 @@ public class FlappyPipe implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		y -= oscillation;
-		if (y < 400 || y > HEIGHT - 400) {
-			oscillation *= -1;
+		if ((y < 400 && oscillation > 0) || (y > HEIGHT - 400 && oscillation < 0)) {
+			if (isInvincible) {
+				if (oscillation > 0) oscillation = -(Math.random() * 10 + 5);
+				else oscillation = (Math.random() * 10 + 5);
+			} else oscillation *= -1;
 		}
 	}
 
