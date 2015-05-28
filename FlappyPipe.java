@@ -39,7 +39,7 @@ public class FlappyPipe implements ActionListener {
 		WIDTH = comp.getWidth();
 		HEIGHT = comp.getHeight();
 		count = 1;
-		invinTime = (int)(Math.random() * 2);
+		isInvincible = true;
 		reset();
 		this.x = x;
 		y = Math.random() * (comp.getHeight() - 800) + 400;
