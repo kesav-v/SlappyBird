@@ -49,8 +49,10 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private ImageIcon thePipe;
 	private int headBangs;
 	private int count;
+	private ImageIcon apple;
 
 	public FlappyPanel() {
+		apple = new ImageIcon(getClass().getResource("AppleImg.png"));
 		clip = new AudioClip(new File("SoundEffects/MarioInvincible.mp3"));
 		songs = new AudioList(AudioList.INITIAL_SHUFFLE, AudioList.CURRENT_FOLDER, new File("AllMusic"));
 		songs.play();
@@ -105,7 +107,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		for (FlappyPipe fp : pipes) {
 			g.setColor(fp.getColor());
 			if (fp.isInvincible()) {
-				g.fillOval(fp.getX(), fp.getY(), 50, 50);
+				g.drawImage(apple.getImage(), fp.getX(), fp.getY(), 50, 50, this);
 			}
 			else {
 				g.drawImage(thePipe.getImage(), fp.getX(), 0, 50, fp.getY(), this);
