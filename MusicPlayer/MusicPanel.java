@@ -7,21 +7,23 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.Graphics;
 import java.awt.Color;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
+import java.io.File;
+import javax.swing.JSlider;
 
-public class MusicPanel extends JPanel implements MouseListener {
+public class MusicPanel extends JPanel implements ChangeListener, ActionListener {
 
 	private AudioList songs;
 	private JButton playPause;
 	private JButton stop;
 	private JButton previous;
 	private JButton next;
+	private JSlider position;
+	private Timer changePos;
 
 	public MusicPanel(String[] args) {
 		setLayout(null);
 		System.out.println(getLayout());
-		playPause = new JButton("Play");
+		playPause = new JButton("Pause");
 		add(playPause);
 		playPause.setSize(200, 50);
 		playPause.setLocation(400, 475);
@@ -42,14 +44,22 @@ public class MusicPanel extends JPanel implements MouseListener {
 		next.setLocation(400, 675);
 		next.addActionListener(new HandleNext());
 		System.out.println("Initialized buttons");
-		addMouseListener(this);
 		//this.repaint();
 		System.out.println("PAINTED");
+		this.songs = new AudioList(AudioList.INITIAL_SHUFFLE, AudioList.CURRENT_FOLDER, new File("C:/Users/Kesav Viswanadha/OneDrive/Documents/YoutubeVideos"));
+		position = new JSlider(JSlider.HORIZONTAL, 0, (int)(songs.getAudioClip().lengthSeconds() * 1000), 0);
+		add(position);
+		position.setSize(800, 20);
+		position.setLocation(100, 275);
+		position.addChangeListener(this);
+		changePos = new Timer(20, this);
+		changePos.start();
+		songs.play();
 	}
 
 	private class HandlePlayPause implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			/**if (songs.isPlaying()) {
+			if (songs.isPlaying()) {
 				songs.pause();
 				playPause.setText("Play");
 			}
@@ -57,25 +67,25 @@ public class MusicPanel extends JPanel implements MouseListener {
 				songs.play();
 				playPause.setText("Pause");
 			}
-			repaint();*/
+			repaint();
 		}
 	}
 
 	private class HandleStop implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			//songs.stop();
+			songs.stop();
 		}
 	}
 
 	private class HandlePrevious implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			//songs.previousSong();
+			songs.previousSong();
 		}
 	}
 
 	private class HandleNext implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			//songs.nextSong();
+			songs.nextSong();
 		}
 	}
 
@@ -85,13 +95,13 @@ public class MusicPanel extends JPanel implements MouseListener {
 		super.paintComponent(g);
 		setBackground(Color.BLACK);
 		System.out.println("HERE");
-		this.songs = new AudioList(AudioList.INITIAL_SHUFFLE, "mp3");
-		songs.play();
 	}
 
-	public void mouseEntered(MouseEvent e) {}
-	public void mouseClicked(MouseEvent e) {}
-	public void mouseReleased(MouseEvent e) {}
-	public void mouseExited(MouseEvent e) {}
-	public void mousePressed(MouseEvent e) {repaint();}
+	public void stateChanged(ChangeEvent e) {
+		songs.getAudioClip().setPosition(position.getValue());
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		position.setValue((int)songs.getAudioClip().getPosition());
+	}
 }
