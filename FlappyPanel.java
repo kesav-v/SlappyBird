@@ -68,7 +68,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		theBird = new ImageIcon(getClass().getResource("FlappyBirdOnline.png"));
 		bird1 = new ImageIcon(getClass().getResource("Bird1.png"));
 		bird2 = new ImageIcon(getClass().getResource("Bird2.png"));
-		thePipe = new ImageIcon(getClass().getResource("Pipe.png"));
+		thePipe = new ImageIcon(getClass().getResource("PipeCut.png"));
 	}
 
 	private class Handler implements ActionListener {
@@ -95,7 +95,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			first = false;
 			pipes = new FlappyPipe[4];
 			for (int i = 0; i < pipes.length; i++) {
-				pipes[i] = new FlappyPipe(this, 3, i * (2160 / 4) + 2160 / 4);
+				pipes[i] = new FlappyPipe(this, 3, i * (2160 / 4) + 2160 / 4, i);
 				if (!pipes[i].isInvincible()) pipes[i].setOscillation(0);
 				else pipes[i].setOscillation(10);
 			}
@@ -223,7 +223,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		if (e.getKeyChar() == 'r' && dead()) {
 			bird = new Bird(this);
 			for (int i = 0; i < pipes.length; i++) {
-				pipes[i] = new FlappyPipe(this, 3, i * (2160 / 4) + 2160 / 4);
+				pipes[i] = new FlappyPipe(this, 3, i * (2160 / 4) + 2160 / 4, i);
 				if (!pipes[i].isInvincible()) pipes[i].setOscillation(0);
 				else pipes[i].setOscillation(10);
 			}
