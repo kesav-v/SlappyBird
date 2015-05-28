@@ -3,28 +3,28 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JTextArea;
+import java.awt.Toolkit;
 
 public class InstructionPanel extends JPanel {
 
 	private JTextArea words;
+	private static final int SCREEN_WIDTH = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+	private static final int SCREEN_HEIGHT = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
 	public InstructionPanel() {
 		setLayout(null);
-		setBackground(Color.BLUE);
 		words = new JTextArea();
 		add(words);
-		words.setSize(800, 800);
+		words.setSize(SCREEN_WIDTH - 200, SCREEN_HEIGHT - 200);
 		words.setLocation(100, 100);
-		words.setFont(new Font("Arial", Font.BOLD, 14));
-		words.setText("Welcome to Flappy Bird! Here's how to play:\nup arrow key - jump\nWhen you die, hit 'r' to reset\nGo through the colorful pipes to become invincible, but avoid all the other pipes!");
+		words.setFont(new Font("Arial", Font.BOLD, 48));
+		words.setText("Welcome to Flappy Bird! Here's how to play:\n\nup arrow key or space bar - jump\n\nWhen you die, hit 'r' to reset\n\nCollect the apples to become invincible, but avoid all the other pipes!");
+		words.setEditable(false);
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		for (int w = 0; w < 256; w++) {
-			g.setColor(new Color(w, w, w));
-			g.fillRect(0, 1000 - 4 * w, 4 * w, 1000);
-		}
+		setBackground(Color.WHITE);
 	}
 }
