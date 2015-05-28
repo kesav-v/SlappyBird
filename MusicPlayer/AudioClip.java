@@ -206,6 +206,7 @@ public class AudioClip extends Application implements Runnable	{
 				System.exit(1);
 			}	catch (MediaException e)	{
 				System.err.println("Unsupported file format: " + soundLocation);
+				e.printStackTrace();
 				System.exit(1);
 			}
 		}	catch (MalformedURLException e)	{
@@ -259,6 +260,7 @@ public class AudioClip extends Application implements Runnable	{
 			stop();
 		player.play();
 		running = true;
+		System.out.println("Started in AudioClip");
 	}
 
 	public void play(boolean fromstart)	{
