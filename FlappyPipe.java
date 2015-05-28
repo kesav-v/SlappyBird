@@ -33,12 +33,16 @@ public class FlappyPipe implements ActionListener {
 	private boolean changeOscil = true;
 	private final int numPipe;
 	private int invinTime;
+	private boolean visible;
+	private Timer flash;
+	private boolean flashing;
 
 	public FlappyPipe(JComponent comp, double velocity, double x, int numPipe) {
 		this.numPipe = numPipe;
 		WIDTH = comp.getWidth();
 		HEIGHT = comp.getHeight();
 		count = 1;
+		visible = true;
 		isInvincible = true;
 		reset();
 		this.x = x;
@@ -46,6 +50,9 @@ public class FlappyPipe implements ActionListener {
 		this.velocity = velocity;
 		oscillator = new Timer(20, this);
 		oscillator.start();
+		flashing = (Math.random() > 0.9);
+		flash = new Timer(500, new Flash());
+		if (flashing && isInvincible) flash.start();
 	}
 
 	public void reset()	{
@@ -71,23 +78,35 @@ public class FlappyPipe implements ActionListener {
 			greening = false;
 			blueing = false;
 		}
+		visible = true;
 		if (Math.random() > 0.5) oscillation = 0;
 		oscillation = Math.random() * 5 + 1;
 		if (isInvincible) oscillation = 10;
 		newOscilDist();
+		flashing = (Math.random() > 0.9);
+		flash = new Timer(250, new Flash());
+		if (flashing && !isInvincible) flash.start();
 	}
 
 	public void newOscilDist()	{
 		if (changeOscil)	{
 			topOscilDist = 450 - (int)(Math.random() * 100);
 			botOscilDist = 450 - (int)(Math.random() * 100);
-		}	else	topOscilDist = botOscilDist = 400;
+		}
+		else topOscilDist = botOscilDist = 400;
+	}
+
+	private class Flash implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			visible = !visible;
+		}
 	}
 
 	public void move() {
 		x -= velocity;
 		count++;
 		if (x <= -50) {
+			flash.stop();
 			if (!isInvincible)
 				score++;
 			reset = true;
@@ -160,6 +179,14 @@ public class FlappyPipe implements ActionListener {
 				newOscilDist();
 			} else oscillation *= -1;
 		}
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean bool) {
+		visible = bool;
 	}
 
 	public int getX() {

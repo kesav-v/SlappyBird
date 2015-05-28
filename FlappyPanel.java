@@ -107,9 +107,9 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		for (FlappyPipe fp : pipes) {
 			g.setColor(fp.getColor());
 			if (fp.isInvincible()) {
-				g.drawImage(apple.getImage(), fp.getX(), fp.getY(), 50, 50, this);
+				if (fp.isVisible()) g.drawImage(apple.getImage(), fp.getX(), fp.getY(), 50, 50, this);
 			}
-			else {
+			else if (fp.isVisible()) {
 				g.drawImage(thePipe.getImage(), fp.getX(), 0, 50, fp.getY(), this);
 				g.drawImage(thePipe.getImage(), fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200), this);
 			}
@@ -249,6 +249,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 				else return true;
 			} else if (fp.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 && bird.getY() + 50 >= fp.getY() && bird.getY() <= fp.getY() + 50) {
 				bird.setInvincible(true);
+				fp.setVisible(false);
 				invincibility.start();
 				invincibleColor = Color.RED;
 				return false;
