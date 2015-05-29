@@ -111,19 +111,12 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		frame.setResizable(false);
 	}
 
-<<<<<<< HEAD
-	private class GameChecker implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			gameToMenu.setVisible(gamePanel.gameIsOver());
-		}
-=======
 	public void gameOver()	{
 		gameToMenu.setVisible(gamePanel.gameIsOver());
 	}
 
 	public void gameStart()	{
 		gameToMenu.setVisible(gamePanel.gameIsOver());
->>>>>>> origin/master
 	}
 
 	private class ShowSettings implements ActionListener {

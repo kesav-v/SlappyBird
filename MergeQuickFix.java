@@ -17,7 +17,7 @@ public class MergeQuickFix	{
 			}
 			while (input.hasNext())	{
 				String nextLine = input.nextLine();
-				if (!nextLine.contains("=====") && !nextLine.contains(">>>>>"))
+				if (!nextLine.contains("=====") && !nextLine.contains(">>>>>") && !nextLine.contains("<<<<<"))
 					fileContents.add(nextLine);
 			}
 			input.close();
