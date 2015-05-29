@@ -66,15 +66,12 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		firstPress = true;
 		headBangs = count = 0;
 		ghostPipes = false;
-<<<<<<< HEAD
 		oscilPipes = true;
 		changeOscil = true;
-=======
 		oscilPipes = false;
 		changeOscil = false;
 		initVelocity = 3;
 		maxOscillation = 600;
->>>>>>> origin/master
 		bird = new Bird(this);
 		addKeyListener(this);
 		justDied = true;
