@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 
 public class MergeQuickFix	{
 	public static void main(String... pumpkins)	{
-		for (File file : FileSearcher.findFiles(FileSearcher.CURRENT_FOLDER, "java"))	{
+		for (File file : FileSearcher.findFiles(FileSearcher.CURRENT_FOLDER, "java", "txt"))	{
 			if (file.getName().contains("MergeQuickFix"))	continue;
 			boolean changed = false;
 			ArrayList<String> fileContents = new ArrayList<String>();
@@ -23,7 +23,10 @@ public class MergeQuickFix	{
 				else changed = true;
 			}
 			input.close();
-			if (!changed) continue;
+			if (!changed) {
+				System.out.println("Checked: " + file);
+				continue;
+			}
 
 			PrintWriter writer = null;
 			try {
@@ -34,7 +37,7 @@ public class MergeQuickFix	{
 			for (String line : fileContents)
 				writer.println(line);
 			writer.close();
-			System.out.println("Checked: " + file);
+			System.out.println("Fixed: " + file);
 		}
 	}
 }
