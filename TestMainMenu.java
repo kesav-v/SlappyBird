@@ -8,6 +8,7 @@ import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Font;
+import javax.swing.Timer;
 
 public class TestMainMenu extends JPanel implements ActionListener {
 
@@ -22,25 +23,48 @@ public class TestMainMenu extends JPanel implements ActionListener {
 	private JButton backToMenu;
 	private JButton instructionsToMenu;
 	private JButton statsToMenu;
+	private JButton settingsToMenu;
+	private JButton goToSettings;
+	private JButton gameToMenu;
 	private Font universal;
+	private SettingsPanel settings;
+	private Timer checkGame;
 
 	public TestMainMenu() {
+		checkGame = new Timer(1000, new GameChecker());
 		universal = new Font("Comic Sans", Font.BOLD, 48);
 		cards = new CardLayout();
 		setLayout(cards);
 		System.out.println(getLayout());
 		play = new JButton("PLAY");
 		play.setFont(universal);
+		play.setBackground(Color.GREEN);
 		howToPlay = new JButton("HOW TO PLAY");
 		howToPlay.setFont(universal);
+		howToPlay.setBackground(Color.BLUE);
+		howToPlay.setForeground(Color.WHITE);
 		stats = new JButton("YOUR STATISTICS");
 		stats.setFont(universal);
+		stats.setBackground(Color.ORANGE);
+		stats.setForeground(Color.WHITE);
 		instructionsToMenu = new JButton("BACK TO MAIN MENU");
 		instructionsToMenu.setFont(universal);
 		statsToMenu = new JButton("BACK TO MAIN MENU");
 		statsToMenu.setFont(universal);
+		settingsToMenu = new JButton("BACK TO MAIN MENU");
+		settingsToMenu.setFont(universal);
+		goToSettings = new JButton("SETTINGS");
+		goToSettings.setFont(universal);
+		goToSettings.setBackground(Color.GRAY);
+		gameToMenu = new JButton("BACK TO MAIN MENU");
+		gameToMenu.setFont(universal);
 		menu = new MainMenu();
 		gamePanel = new FlappyPanel();
+		gamePanel.add(gameToMenu);
+		gameToMenu.setSize(1000, 100);
+		gameToMenu.setLocation(580, 900);
+		gameToMenu.setVisible(false);
+		gameToMenu.addActionListener(new BackToMenu());
 		instructions = new InstructionPanel();
 		instructions.add(instructionsToMenu);
 		instructionsToMenu.addActionListener(new BackToMenu());
@@ -51,10 +75,16 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		statsToMenu.addActionListener(new BackToMenu());
 		statsToMenu.setSize(1000, 200);
 		statsToMenu.setLocation(580, 1020);
+		settings = new SettingsPanel(gamePanel);
+		settings.add(settingsToMenu);
+		settingsToMenu.setSize(1000, 200);
+		settingsToMenu.setLocation(580, 1020);
+		settingsToMenu.addActionListener(new BackToMenu());
 		add(menu, "Main Menu");
 		add(gamePanel, "Game");
 		add(instructions, "Instructions");
 		add(statPanel, "Stats");
+		add(settings, "Settings");
 		menu.add(play);
 		play.setSize(1000, 200);
 		play.setLocation(580, 520);
@@ -67,6 +97,10 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		stats.setSize(1000, 200);
 		stats.setLocation(580, 1120);
 		stats.addActionListener(new ShowStats());
+		menu.add(goToSettings);
+		goToSettings.setSize(1000, 200);
+		goToSettings.setLocation(580, 220);
+		goToSettings.addActionListener(new ShowSettings());
 		cards.show(this, "Main Menu");
 	}
 
@@ -77,6 +111,19 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		frame.setSize(2160, 1440);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
+	}
+
+	private class GameChecker implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("Checking game");
+			gameToMenu.setVisible(gamePanel.gameIsOver());
+		}
+	}
+
+	private class ShowSettings implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			show("Settings");
+		}
 	}
 
 	private class ShowStats implements ActionListener {
@@ -108,5 +155,6 @@ public class TestMainMenu extends JPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		show("Game");
+		checkGame.start();
 	}
 }
