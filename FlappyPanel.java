@@ -146,7 +146,10 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			g.setColor(fp.getColor());
 			if (fp.isVisible())
 				if (fp.isInvincible())
-					if (retro)	g.fillOval(fp.getX()-25, fp.getY()-25, 50, 50);
+					if (retro)	{
+						g.drawOval(fp.getX()-25, fp.getY()-25, 50, 50);
+						g.drawOval(fp.getX()-15, fp.getY()-15, 30, 30);
+					}
 					else g.drawImage(apple.getImage(), fp.getX(), fp.getY(), 50, 50, this);
 				else if (fp.isVisible())
 					if (retro)	{
@@ -158,9 +161,11 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 						g.drawImage(thePipe.getImage(), fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200), this);
 					}
 		}
+		g.setColor(birdColor);
 		if (retro)	{
-			g.setColor(birdColor);
 			g.drawOval(50, bird.getY(), 50, 50);
+			if (bird.isInvincible())
+				g.drawOval(60, bird.getY() + 10, 30, 30);
 		}
 		else
 			if (bird.isInvincible())
@@ -280,6 +285,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			for (int i = 0; i < pipes.length; i++) {
 				pipes[i] = new FlappyPipe(this, getValues(i));
 			}
+			birdColor = Color.white;
 			firstPress = true;
 			justDied = true;
 			previousScores.clear();
@@ -302,7 +308,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			return true;
 		}
 		for (FlappyPipe fp : pipes) {
-			if (fp.getX() <= 0)
+			if (fp.getX() <= 50)
 				birdColor = fp.getColor();
 			if (!fp.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 &&
 				(fp.getY() <= bird.getY() - 150 || fp.getY() >= bird.getY())) {
