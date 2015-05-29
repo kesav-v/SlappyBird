@@ -16,6 +16,7 @@ public class SettingsPanel extends JPanel implements ChangeListener, ItemListene
 	private JSlider volume;
 	private FlappyPanel game;
 	private JCheckBox retroMode;
+	private JCheckBox ghostMode;
 
 	public SettingsPanel(FlappyPanel game) {
 		setLayout(null);
@@ -40,12 +41,20 @@ public class SettingsPanel extends JPanel implements ChangeListener, ItemListene
 		retroMode.setBackground(Color.BLUE);
 		retroMode.setForeground(Color.WHITE);
 		retroMode.setFont(new Font("Arial", Font.PLAIN, 16));
+		ghostMode = new JCheckBox("Ghost mode?");
+		add(ghostMode);
+		ghostMode.setSize(200, 40);
+		ghostMode.setLocation(680, 375);
+		ghostMode.addItemListener(new ToggleGhost());
+		ghostMode.setBackground(Color.BLUE);
+		ghostMode.setForeground(Color.WHITE);
+		ghostMode.setFont(new Font("Arial", Font.PLAIN, 16));
 	}
 
-
-
-	public boolean getRetro() {
-		return retroMode.isSelected();
+	private class ToggleGhost implements ItemListener {
+		public void itemStateChanged(ItemEvent e) {
+			game.setGhostPipes(ghostMode.isSelected());
+		}
 	}
 
 	public void stateChanged(ChangeEvent e) {

@@ -56,6 +56,8 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		goToSettings.setBackground(Color.GRAY);
 		gameToMenu = new JButton("BACK TO MAIN MENU");
 		gameToMenu.setFont(universal);
+		gameToMenu.setBackground(Color.RED);
+		gameToMenu.setForeground(Color.WHITE);
 		menu = new MainMenu();
 		gamePanel.add(gameToMenu);
 		gameToMenu.setSize(1000, 100);

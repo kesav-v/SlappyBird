@@ -331,7 +331,10 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	public boolean dead() {
 		if (bird.getY() + 50 > getHeight() || (bird.getY() < 0)) {
 			gameIsOver = true;
-			if (explode) bird.setExploding(true);
+			if (explode) {
+				bird.setExploding(true);
+				bird.fall();
+			}
 			mainMenu.gameOver();
 			return true;
 		}
@@ -346,7 +349,10 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 				}
 				else {
 					gameIsOver = true;
-					if (explode) bird.setExploding(true);
+					if (explode) {
+						bird.setExploding(true);
+						bird.fall();
+					}
 					mainMenu.gameOver();
 					return true;
 				}

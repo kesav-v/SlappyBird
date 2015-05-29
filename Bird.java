@@ -19,6 +19,7 @@ public class Bird implements ActionListener {
 	private boolean invincible;
 	private boolean exploding;
 	private int radius;
+	private int dR;
 
 	public Bird(JComponent comp) {
 		y = 720;
@@ -28,6 +29,7 @@ public class Bird implements ActionListener {
 		invincible = false;
 		exploding = false;
 		radius = 0;
+		dR = 0;
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -48,8 +50,9 @@ public class Bird implements ActionListener {
 
 	public void fall() {
 		if (exploding) {
-			radius += 2;
-			fall.setDelay(3);
+			radius += dR;
+			dR++;
+			fall.setDelay(20);
 			comp.repaint();
 			if (radius >= 200) {
 				radius = 0;
