@@ -27,7 +27,7 @@ public class Bird implements ActionListener {
 		fall = new Timer(18, this);
 		invincible = false;
 		exploding = false;
-		radius = 100;
+		radius = 0;
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -48,10 +48,11 @@ public class Bird implements ActionListener {
 
 	public void fall() {
 		if (exploding) {
-			radius -= 2;
-			fall.setDelay(10);
+			radius += 2;
+			fall.setDelay(3);
 			comp.repaint();
-			if (radius <= 0) {
+			if (radius >= 200) {
+				radius = 0;
 				fall.stop();
 			}
 			return;

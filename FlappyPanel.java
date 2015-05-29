@@ -62,10 +62,12 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private boolean gameIsOver;
 	private boolean retro;
 	private Color birdColor;
+	private ImageIcon explosion;
 
 	public FlappyPanel(TestMainMenu mainMenu) {
 		this.mainMenu = mainMenu;
 		setLayout(null);
+		explosion = new ImageIcon(getClass().getResource("explosion.png"));
 		apple = new ImageIcon(getClass().getResource("AppleImg.png"));
 		clip = new AudioClip(new File("SoundEffects/MarioInvincible.mp3"));
 		songs = new AudioList(AudioList.INITIAL_SHUFFLE, AudioList.CURRENT_FOLDER, new File("AllMusic"));
@@ -184,8 +186,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			}
 		}
 		else if (bird.isExploding()) {
-			g.setColor(Color.ORANGE);
-			g.fillOval(75 - bird.getRadius() / 2, bird.getY() + 25 - bird.getRadius() / 2, bird.getRadius(), bird.getRadius());
+			g.drawImage(explosion.getImage(), 75 - bird.getRadius() / 2, bird.getY() + 25 - bird.getRadius() / 2, bird.getRadius(), bird.getRadius(), this);
 		}
 		else
 			if (bird.isInvincible())
