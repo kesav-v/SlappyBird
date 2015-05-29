@@ -29,6 +29,14 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		volume.setBackground(Color.BLUE);
 		volume.setForeground(Color.WHITE);
 		volume.addChangeListener(this);
+		retroMode = new JCheckBox("Retro mode?", true);
+		add(retroMode);
+		retroMode.setSize(100, 20);
+		retroMode.setLocation(800, 275);
+	}
+
+	public boolean getRetro() {
+		return retroMode.isSelected();
 	}
 
 	public void stateChanged(ChangeEvent e) {

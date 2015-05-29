@@ -74,7 +74,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		movePipes = new Timer(20, this);
 		invincibility = new Timer(25, new Handler());
 		first = true;
-		retro = true;
+		retro = mainMenu.getSettings().getRetro();
 		firstPress = true;
 		headBangs = count = 0;
 		setValues(DEFAULT_VALUES);
