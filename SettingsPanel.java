@@ -2,6 +2,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JComboBox;
 import java.awt.Toolkit;
 import java.awt.Color;
 import javax.swing.JCheckBox;
@@ -17,6 +18,7 @@ public class SettingsPanel extends JPanel implements ChangeListener, ItemListene
 	private FlappyPanel game;
 	private JCheckBox retroMode;
 	private JCheckBox ghostMode;
+	private JComboBox defaultValues;
 
 	public SettingsPanel(FlappyPanel game) {
 		setLayout(null);
@@ -49,11 +51,26 @@ public class SettingsPanel extends JPanel implements ChangeListener, ItemListene
 		ghostMode.setBackground(Color.BLUE);
 		ghostMode.setForeground(Color.WHITE);
 		ghostMode.setFont(new Font("Arial", Font.PLAIN, 16));
+		defaultValues = new JComboBox(new String[] {"Default", "Ghost"});
+		defaultValues.setSize(200, 40);
+		defaultValues.setLocation(480, 175);
+		defaultValues.addItemListener(new ToggleDefault());
+		defaultValues.setBackground(Color.BLUE);
+		defaultValues.setForeground(Color.WHITE);
+		defaultValues.setFont(new Font("Arial", Font.PLAIN, 16));
+		add(defaultValues);
 	}
 
 	private class ToggleGhost implements ItemListener {
 		public void itemStateChanged(ItemEvent e) {
 			game.setGhostPipes(ghostMode.isSelected());
+		}
+	}
+	private class ToggleDefault implements ItemListener {
+		public void itemStateChanged(ItemEvent e) {
+			String chosen = defaultValues.getSelectedItem().toString();
+			if (chosen.equals("Default"))	game.setValues(game.DEFAULT_VALUES);
+			else if (chosen.equals("Ghost"))	game.setValues(game.DEFAULT_GHOST);
 		}
 	}
 
