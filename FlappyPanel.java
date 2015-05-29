@@ -164,7 +164,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		super.paintComponent(g);
 		setBackground(Color.BLACK);
 		for (FlappyPipe fp : pipes) {
-			if (ghostPipes && fp.getX() <= 100 + 150 && !gameIsOver)
+			if (ghostPipes && fp.getX() <= 100 + 150 && !gameIsOver && !fp.isInvincible())
 				if (fp.getX() <= 100)	continue;
 				else g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (fp.getX() - 100f) / 150f));	
 			g.setColor(fp.getColor());

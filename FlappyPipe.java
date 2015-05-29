@@ -110,7 +110,6 @@ public class FlappyPipe implements ActionListener {
 
 	public void move() {
 		x -= velocity;
-		if (isGhost && x <= 100)	isVisible = false;
 		if (x <= -50) {
 			if (!isInvincible)
 				score++;
