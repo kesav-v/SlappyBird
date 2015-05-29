@@ -115,7 +115,6 @@ public class TestMainMenu extends JPanel implements ActionListener {
 
 	private class GameChecker implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Checking game");
 			gameToMenu.setVisible(gamePanel.gameIsOver());
 		}
 	}
