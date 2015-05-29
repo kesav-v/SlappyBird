@@ -4,13 +4,15 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import java.awt.Toolkit;
 import java.awt.Color;
+import javax.swing.JCheckBox;
 
 public class SettingsPanel extends JPanel implements ChangeListener {
 
-	private JSlider volume;
-	FlappyPanel game;
 	private static final int SCREEN_WIDTH = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 	private static final int SCREEN_HEIGHT = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+	private JSlider volume;
+	private FlappyPanel game;
+	private JCheckBox retroMode;
 
 	public SettingsPanel(FlappyPanel game) {
 		setLayout(null);
@@ -18,8 +20,14 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		this.game = game;
 		volume = new JSlider(JSlider.HORIZONTAL, 0, 100, 100);
 		add(volume);
-		volume.setSize(800, 20);
+		volume.setSize(800, 50);
 		volume.setLocation(680, 200);
+		volume.setMajorTickSpacing(25);
+		volume.setMinorTickSpacing(5);
+		volume.setPaintTicks(true);
+		volume.setPaintLabels(true);
+		volume.setBackground(Color.BLUE);
+		volume.setForeground(Color.WHITE);
 		volume.addChangeListener(this);
 	}
 
