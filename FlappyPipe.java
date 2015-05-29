@@ -88,18 +88,15 @@ public class FlappyPipe implements ActionListener {
 		oscillation = Math.random() * 5 + 1;
 		if (isInvincible) oscillation = 10;
 		newOscilDist();
-<<<<<<< HEAD
-=======
 		resets++;
->>>>>>> origin/master
 	}
 
 	public void newOscilDist()	{
 		if (changeOscil)	{
-			topOscilDist = 450 - (int)(Math.random() * 100);
-			botOscilDist = 450 - (int)(Math.random() * 100);
+			topOscilDist = maxOscillation / 2 - (int)(Math.random() * 50);
+			botOscilDist = maxOscillation / 2 - (int)(Math.random() * 50);
 		}
-		else topOscilDist = botOscilDist = 400;
+		else topOscilDist = botOscilDist = maxOscillation / 2;
 	}
 
 	public void move() {
@@ -171,7 +168,7 @@ public class FlappyPipe implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		y -= oscillation;
-		if ((y < HEIGHT / 2 - botOscilDist && oscillation > 0) || (y > HEIGHT / 2 + topOscilDist && oscillation < 0)) {
+		if ((y < HEIGHT / 2 - botOscilDist && oscillation > 0) || (y > HEIGHT / 2 + topOscilDist - 100 && oscillation < 0)) {
 			if (isInvincible) {
 				if (oscillation > 0) oscillation = -(Math.random() * 10 + 5);
 				else oscillation = (Math.random() * 10 + 5);

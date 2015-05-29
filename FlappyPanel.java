@@ -66,10 +66,10 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		firstPress = true;
 		headBangs = count = 0;
 		ghostPipes = false;
-		oscilPipes = false;
-		changeOscil = false;
+		oscilPipes = true;
+		changeOscil = true;
 		initVelocity = 3;
-		maxOscillation = 600;
+		maxOscillation = 400;
 		bird = new Bird(this);
 		addKeyListener(this);
 		justDied = true;
@@ -207,7 +207,9 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			}
 		}
 		int i;
-		for (i = 0; i < previousScores.size() && Integer.parseInt(previousScores.get(i).substring(0, previousScores.get(i).indexOf(" "))) > sumScores(); i++) {}
+		try {
+			for (i = 0; i < previousScores.size() && Integer.parseInt(previousScores.get(i).substring(0, previousScores.get(i).indexOf(" "))) > sumScores(); i++) {}
+		}	catch (Exception e)	{System.err.println("Fix your score.txt files!!!"); return; }
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm a");
 		previousScores.add(i, sumScores() + " on " + sdf.format(date));
