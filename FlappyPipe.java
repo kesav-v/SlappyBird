@@ -37,6 +37,7 @@ public class FlappyPipe implements ActionListener {
 	private boolean isVisible;
 	private boolean isGhost;
 	private int maxOscillation;
+	private double maxOscilSpeed;
 
 	public FlappyPipe(JComponent comp, Object... values) {
 		this.velocity = (double)values[0];
@@ -46,6 +47,7 @@ public class FlappyPipe implements ActionListener {
 		this.changeOscil = (boolean)values[4];
 		this.isGhost = (boolean)values[5];
 		this.maxOscillation = (int)values[6];
+		this.maxOscilSpeed = (double)values[7];
 		WIDTH = comp.getWidth();
 		HEIGHT = comp.getHeight();
 		Object testbool = true;
@@ -85,7 +87,7 @@ public class FlappyPipe implements ActionListener {
 		}
 		isVisible = true;
 		if (!oscilPipes || Math.random() > 0.5) oscillation = 0;
-		oscillation = Math.random() * 5 + 1;
+		oscillation = Math.random() * maxOscilSpeed + 1;
 		if (isInvincible) oscillation = 10;
 		newOscilDist();
 		resets++;
