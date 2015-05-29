@@ -90,6 +90,19 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		thePipe = new ImageIcon(getClass().getResource("PipeCut.png"));
 	}
 
+	public void resetGame()	{
+		bird = new Bird(this);
+		for (int i = 0; i < pipes.length; i++) {
+			pipes[i] = new FlappyPipe(this, getValues(i));
+		}
+		birdColor = Color.white;
+		firstPress = true;
+		justDied = true;
+		previousScores.clear();
+		gameIsOver = false;
+		mainMenu.gameStart();
+	}
+
 	public Object[] getValues(int numPipe)	{
 		return new Object[]	{initVelocity, numPipe * (getWidth() / 4) + getWidth() / 4, numPipe, oscilPipes, changeOscil, ghostPipes, maxOscillation, maxOscilSpeed, numStartOscil, roundsTillInvin};
 	}
@@ -281,16 +294,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			repaint();
 		}
 		if (e.getKeyChar() == 'r' && dead()) {
-			bird = new Bird(this);
-			for (int i = 0; i < pipes.length; i++) {
-				pipes[i] = new FlappyPipe(this, getValues(i));
-			}
-			birdColor = Color.white;
-			firstPress = true;
-			justDied = true;
-			previousScores.clear();
-			gameIsOver = false;
-			mainMenu.gameStart();
+			resetGame();
 			repaint();
 		}
 	}

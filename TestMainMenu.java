@@ -136,6 +136,7 @@ public class TestMainMenu extends JPanel implements ActionListener {
 
 	private class BackToMenu implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			gamePanel.resetGame();
 			show("Main Menu");
 		}
 	}
