@@ -17,6 +17,8 @@ public class Bird implements ActionListener {
 	private Timer fall;
 	private JComponent comp;
 	private boolean invincible;
+	private boolean exploding;
+	private int radius;
 
 	public Bird(JComponent comp) {
 		y = 720;
@@ -24,13 +26,36 @@ public class Bird implements ActionListener {
 		this.comp = comp;
 		fall = new Timer(18, this);
 		invincible = false;
+		exploding = false;
+		radius = 100;
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		fall();
 	}
 
+	public void setExploding(boolean bool) {
+		exploding = bool;
+	}
+
+	public int getRadius() {
+		return radius;
+	}
+
+	public boolean isExploding() {
+		return exploding;
+	}
+
 	public void fall() {
+		if (exploding) {
+			radius -= 2;
+			fall.setDelay(10);
+			comp.repaint();
+			if (radius <= 0) {
+				fall.stop();
+			}
+			return;
+		}
 		y -= velocity;
 		velocity -= 1;
 		comp.repaint();
