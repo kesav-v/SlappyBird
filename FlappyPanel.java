@@ -51,6 +51,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private int count;
 	private ImageIcon apple;
 	private boolean ghostPipes, oscilPipes, changeOscil;
+	private double initVelocity;
+	private int maxOscillation;
 
 	public FlappyPanel() {
 		apple = new ImageIcon(getClass().getResource("AppleImg.png"));
@@ -66,6 +68,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		ghostPipes = false;
 		oscilPipes = false;
 		changeOscil = false;
+		initVelocity = 3;
+		maxOscillation = 600;
 		bird = new Bird(this);
 		addKeyListener(this);
 		justDied = true;
@@ -75,6 +79,10 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		bird1 = new ImageIcon(getClass().getResource("Bird1.png"));
 		bird2 = new ImageIcon(getClass().getResource("Bird2.png"));
 		thePipe = new ImageIcon(getClass().getResource("PipeCut.png"));
+	}
+
+	public Object[] getValues(int numPipe)	{
+		return new Object[]	{initVelocity, numPipe * (getWidth() / 4) + getWidth() / 4, numPipe, oscilPipes, changeOscil, ghostPipes, maxOscillation};
 	}
 
 	private class Handler implements ActionListener {
@@ -101,7 +109,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			first = false;
 			pipes = new FlappyPipe[4];
 			for (int i = 0; i < pipes.length; i++) {
-				pipes[i] = new FlappyPipe(this, 3, i * (getWidth() / 4) + getWidth() / 4, i, oscilPipes, ghostPipes, changeOscil);
+				pipes[i] = new FlappyPipe(this, getValues(i));
 				if (!pipes[i].isInvincible()) pipes[i].setOscillation(0);
 				else pipes[i].setOscillation(10);
 			}
@@ -231,7 +239,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		if (e.getKeyChar() == 'r' && dead()) {
 			bird = new Bird(this);
 			for (int i = 0; i < pipes.length; i++) {
-				pipes[i] = new FlappyPipe(this, 3, i * (getWidth() / 4) + getWidth() / 4, i, oscilPipes, ghostPipes, changeOscil);
+				pipes[i] = new FlappyPipe(this, getValues(i));
 				if (!pipes[i].isInvincible()) pipes[i].setOscillation(0);
 				else pipes[i].setOscillation(10);
 			}

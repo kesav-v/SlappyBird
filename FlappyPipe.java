@@ -36,21 +36,24 @@ public class FlappyPipe implements ActionListener {
 	private int invinTime;
 	private boolean isVisible;
 	private boolean isGhost;
+	private int maxOscillation;
 
-	public FlappyPipe(JComponent comp, double velocity, double x, int numPipe, boolean oscilPipes, boolean isGhost, boolean changeOscil) {
-		this.numPipe = numPipe;
-		this.oscilPipes = oscilPipes;
-		this.changeOscil = changeOscil;
-		this.isGhost = isGhost;
+	public FlappyPipe(JComponent comp, Object... values) {
+		this.velocity = (double)values[0];
+		this.x = (int)values[1];
+		this.numPipe = (int)values[2];
+		this.oscilPipes = (boolean)values[3];
+		this.changeOscil = (boolean)values[4];
+		this.isGhost = (boolean)values[5];
+		this.maxOscillation = (int)values[6];
 		WIDTH = comp.getWidth();
 		HEIGHT = comp.getHeight();
+		Object testbool = true;
 		resets = 0;
 		isVisible = true;
 		isInvincible = true;
 		reset();
-		this.x = x;
 		y = Math.random() * (comp.getHeight() - 800) + 400;
-		this.velocity = velocity;
 		oscillator = new Timer(20, this);
 		if (oscilPipes)
 			oscillator.start();
@@ -64,7 +67,6 @@ public class FlappyPipe implements ActionListener {
 		}
 		else if (1 + 6 * numPipe + invinTime == resets % 24)
 			isInvincible = true;
-		System.out.println(resets + " " + (1 + 3 * numPipe + invinTime));
 		if (isInvincible && color.equals(Color.YELLOW)) color = Color.RED;
 		if (color.equals(Color.RED)) {
 			redding = false;
@@ -166,7 +168,7 @@ public class FlappyPipe implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		y -= oscillation;
-		if ((y < botOscilDist && oscillation > 0) || (y > HEIGHT - topOscilDist && oscillation < 0)) {
+		if ((y < HEIGHT / 2 - botOscilDist && oscillation > 0) || (y > HEIGHT / 2 + topOscilDist && oscillation < 0)) {
 			if (isInvincible) {
 				if (oscillation > 0) oscillation = -(Math.random() * 10 + 5);
 				else oscillation = (Math.random() * 10 + 5);
