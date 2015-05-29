@@ -48,7 +48,7 @@ public class Bird implements ActionListener {
 
 	public void fall() {
 		if (exploding) {
-			radius -= 2;
+			radius -= 1;
 			fall.setDelay(10);
 			comp.repaint();
 			if (radius <= 0) {
