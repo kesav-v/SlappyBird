@@ -50,6 +50,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private int headBangs;
 	private int count;
 	private ImageIcon apple;
+	private boolean ghostPipes, oscilPipes;
 
 	public FlappyPanel() {
 		apple = new ImageIcon(getClass().getResource("AppleImg.png"));
@@ -62,6 +63,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		first = true;
 		firstPress = true;
 		headBangs = count = 0;
+		ghostPipes = true;
+		oscilPipes = false;
 		bird = new Bird(this);
 		addKeyListener(this);
 		justDied = true;
@@ -97,7 +100,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			first = false;
 			pipes = new FlappyPipe[4];
 			for (int i = 0; i < pipes.length; i++) {
-				pipes[i] = new FlappyPipe(this, 3, i * (getWidth() / 4) + getWidth() / 4, i);
+				pipes[i] = new FlappyPipe(this, 3, i * (getWidth() / 4) + getWidth() / 4, i, oscilPipes, ghostPipes);
 				if (!pipes[i].isInvincible()) pipes[i].setOscillation(0);
 				else pipes[i].setOscillation(10);
 			}
@@ -124,6 +127,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
 		if (dying() || dead()) {
 			movePipes.stop();
+			for (FlappyPipe fp : pipes)
+				fp.setVisible(true);
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", Font.BOLD, 96));
 			g.drawString("YOU LOSE!", 800, 700);
@@ -225,7 +230,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		if (e.getKeyChar() == 'r' && dead()) {
 			bird = new Bird(this);
 			for (int i = 0; i < pipes.length; i++) {
-				pipes[i] = new FlappyPipe(this, 3, i * (getWidth() / 4) + getWidth() / 4, i);
+				pipes[i] = new FlappyPipe(this, 3, i * (getWidth() / 4) + getWidth() / 4, i, oscilPipes, ghostPipes);
 				if (!pipes[i].isInvincible()) pipes[i].setOscillation(0);
 				else pipes[i].setOscillation(10);
 			}
