@@ -14,6 +14,7 @@ public class FlappyStats extends JPanel {
 	ArrayList<Integer> scores;
 
 	public FlappyStats() {
+		setLayout(null);
 		scores = new ArrayList<Integer>();
 		readScores();
 	}

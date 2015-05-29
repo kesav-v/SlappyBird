@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Color;
+import java.awt.Font;
 
 public class TestMainMenu extends JPanel implements ActionListener {
 
@@ -18,18 +19,38 @@ public class TestMainMenu extends JPanel implements ActionListener {
 	private InstructionPanel instructions;
 	private JButton stats;
 	private FlappyStats statPanel;
+	private JButton backToMenu;
+	private JButton instructionsToMenu;
+	private JButton statsToMenu;
+	private Font universal;
 
 	public TestMainMenu() {
+		universal = new Font("Comic Sans", Font.BOLD, 48);
 		cards = new CardLayout();
 		setLayout(cards);
 		System.out.println(getLayout());
 		play = new JButton("PLAY");
+		play.setFont(universal);
 		howToPlay = new JButton("HOW TO PLAY");
+		howToPlay.setFont(universal);
 		stats = new JButton("YOUR STATISTICS");
+		stats.setFont(universal);
+		instructionsToMenu = new JButton("BACK TO MAIN MENU");
+		instructionsToMenu.setFont(universal);
+		statsToMenu = new JButton("BACK TO MAIN MENU");
+		statsToMenu.setFont(universal);
 		menu = new MainMenu();
 		gamePanel = new FlappyPanel();
 		instructions = new InstructionPanel();
+		instructions.add(instructionsToMenu);
+		instructionsToMenu.addActionListener(new BackToMenu());
+		instructionsToMenu.setSize(1000, 200);
+		instructionsToMenu.setLocation(580, 1020);
 		statPanel = new FlappyStats();
+		statPanel.add(statsToMenu);
+		statsToMenu.addActionListener(new BackToMenu());
+		statsToMenu.setSize(1000, 200);
+		statsToMenu.setLocation(580, 1020);
 		add(menu, "Main Menu");
 		add(gamePanel, "Game");
 		add(instructions, "Instructions");
@@ -61,6 +82,12 @@ public class TestMainMenu extends JPanel implements ActionListener {
 	private class ShowStats implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			show("Stats");
+		}
+	}
+
+	private class BackToMenu implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			show("Main Menu");
 		}
 	}
 
