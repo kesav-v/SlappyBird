@@ -15,7 +15,7 @@ public class InstructionPanel extends JPanel {
 		setLayout(null);
 		words = new JTextArea();
 		add(words);
-		words.setSize(SCREEN_WIDTH - 200, SCREEN_HEIGHT - 200);
+		words.setSize(2160, 900);
 		words.setLocation(100, 100);
 		words.setFont(new Font("Arial", Font.BOLD, 48));
 		words.setText("Welcome to Flappy Bird! Here's how to play:\n\nup arrow key or space bar - jump\n\nWhen you die, hit 'r' to reset\n\nCollect the apples to become invincible, but avoid all the other pipes!");

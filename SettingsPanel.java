@@ -6,16 +6,17 @@ import java.awt.Toolkit;
 
 public class SettingsPanel extends JPanel implements ChangeListener {
 
-	private int vol;
 	private JSlider volume;
+	FlappyPanel game;
 	private static final int SCREEN_WIDTH = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 	private static final int SCREEN_HEIGHT = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
-	public SettingsPanel() {
-		vol = 100;
+	public SettingsPanel(FlappyPanel game) {
+		this.game = game;
+		volume = new JSlider(JSlider.HORIZONTAL, 0, 100, 100);
 	}
 
 	public void stateChanged(ChangeEvent e) {
-
+		
 	}
 }

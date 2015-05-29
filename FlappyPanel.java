@@ -69,7 +69,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		first = true;
 		firstPress = true;
 		headBangs = count = 0;
-		setValues(DEFAULT_GHOST);
+		setValues(DEFAULT_VALUES);
 		bird = new Bird(this);
 		addKeyListener(this);
 		justDied = true;
@@ -150,7 +150,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 				fp.setVisible(true);
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", Font.BOLD, 96));
-			g.drawString("YOU LOSE!", 800, 700);
+			g.drawString("GAME OVER!", 800, 700);
 			if (justDied) {
 				saveScore();
 				justDied = false;
