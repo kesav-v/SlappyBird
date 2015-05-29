@@ -60,6 +60,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private int numStartOscil;
 	private int roundsTillInvin;
 	private boolean gameIsOver;
+	private boolean retro;
+	private Color birdColor;
 
 	public FlappyPanel(TestMainMenu mainMenu) {
 		this.mainMenu = mainMenu;
@@ -72,6 +74,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		movePipes = new Timer(20, this);
 		invincibility = new Timer(25, new Handler());
 		first = true;
+		retro = true;
 		firstPress = true;
 		headBangs = count = 0;
 		setValues(DEFAULT_VALUES);
@@ -79,6 +82,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		addKeyListener(this);
 		justDied = true;
 		imgLoaded = true;
+		birdColor = Color.white;
 		invincibleColor = Color.BLACK;
 		theBird = new ImageIcon(getClass().getResource("FlappyBirdOnline.png"));
 		bird1 = new ImageIcon(getClass().getResource("Bird1.png"));
@@ -134,30 +138,39 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			pipes = new FlappyPipe[4];
 			for (int i = 0; i < pipes.length; i++) {
 				pipes[i] = new FlappyPipe(this, getValues(i));
-				// if (!pipes[i].isInvincible()) pipes[i].setOscillation(0);
-				// else pipes[i].setOscillation(10);
 			}
 		}
 		super.paintComponent(g);
 		setBackground(Color.BLACK);
 		for (FlappyPipe fp : pipes) {
 			g.setColor(fp.getColor());
-			if (fp.isInvincible()) {
-				if (fp.isVisible()) g.drawImage(apple.getImage(), fp.getX(), fp.getY(), 50, 50, this);
-			}
-			else if (fp.isVisible()) {
-				g.drawImage(thePipe.getImage(), fp.getX(), 0, 50, fp.getY(), this);
-				g.drawImage(thePipe.getImage(), fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200), this);
-			}
+			if (fp.isVisible())
+				if (fp.isInvincible())
+					if (retro)	g.fillOval(fp.getX()-25, fp.getY()-25, 50, 50);
+					else g.drawImage(apple.getImage(), fp.getX(), fp.getY(), 50, 50, this);
+				else if (fp.isVisible())
+					if (retro)	{
+						g.drawRect(fp.getX(), 0, 50, fp.getY());
+						g.drawRect(fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200));
+					}
+					else	{
+						g.drawImage(thePipe.getImage(), fp.getX(), 0, 50, fp.getY(), this);
+						g.drawImage(thePipe.getImage(), fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200), this);
+					}
 		}
-		if (bird.isInvincible())
-			if (count % 4 < 2)
-				g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
-			else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
+		if (retro)	{
+			g.setColor(birdColor);
+			g.drawOval(50, bird.getY(), 50, 50);
+		}
 		else
-			if (count % 20 < 10)
-				 g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
-			else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
+			if (bird.isInvincible())
+				if (count % 4 < 2)
+					g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
+				else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
+			else
+				if (count % 20 < 10)
+					 g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
+				else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
 		if (dying() || dead()) {
 			movePipes.stop();
 			for (FlappyPipe fp : pipes)
@@ -289,6 +302,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			return true;
 		}
 		for (FlappyPipe fp : pipes) {
+			if (fp.getX() <= 0)
+				birdColor = fp.getColor();
 			if (!fp.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 &&
 				(fp.getY() <= bird.getY() - 150 || fp.getY() >= bird.getY())) {
 				if (bird.isInvincible())	{
@@ -340,5 +355,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	}
 	public void setRoundsTillInvinsibilityPerPipe(int val)	{
 		roundsTillInvin = val;
+	}
+	public void setRetro(boolean val)	{
+		retro = val;
 	}
 }
