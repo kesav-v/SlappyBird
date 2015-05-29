@@ -23,7 +23,7 @@ public class FlappyPipe implements ActionListener {
 	private double oscillation;
 	private final int HEIGHT;
 	private boolean isInvincible;
-	private int count;
+	private int resets;
 	private boolean redding;
 	private boolean blueing;
 	private boolean greening;
@@ -31,18 +31,20 @@ public class FlappyPipe implements ActionListener {
 	private int score;
 	private int topOscilDist, botOscilDist;
 	private boolean changeOscil;
+	private boolean oscilPipes;
 	private final int numPipe;
 	private int invinTime;
 	private boolean isVisible;
 	private boolean isGhost;
 
-	public FlappyPipe(JComponent comp, double velocity, double x, int numPipe, boolean changeOscil, boolean isGhost) {
+	public FlappyPipe(JComponent comp, double velocity, double x, int numPipe, boolean oscilPipes, boolean isGhost, boolean changeOscil) {
 		this.numPipe = numPipe;
+		this.oscilPipes = oscilPipes;
 		this.changeOscil = changeOscil;
 		this.isGhost = isGhost;
 		WIDTH = comp.getWidth();
 		HEIGHT = comp.getHeight();
-		count = 1;
+		resets = 0;
 		isVisible = true;
 		isInvincible = true;
 		reset();
@@ -50,7 +52,8 @@ public class FlappyPipe implements ActionListener {
 		y = Math.random() * (comp.getHeight() - 800) + 400;
 		this.velocity = velocity;
 		oscillator = new Timer(20, this);
-		oscillator.start();
+		if (oscilPipes)
+			oscillator.start();
 	}
 
 	public void reset()	{
@@ -59,7 +62,9 @@ public class FlappyPipe implements ActionListener {
 			isInvincible = false;
 			invinTime = (int)(Math.random() * 2);
 		}
-		else if (count / 2 % 4 == numPipe && count % 2 == invinTime)	isInvincible = true;
+		else if (1 + 6 * numPipe + invinTime == resets % 24)
+			isInvincible = true;
+		System.out.println(resets + " " + (1 + 3 * numPipe + invinTime));
 		if (isInvincible && color.equals(Color.YELLOW)) color = Color.RED;
 		if (color.equals(Color.RED)) {
 			redding = false;
@@ -77,10 +82,11 @@ public class FlappyPipe implements ActionListener {
 			blueing = false;
 		}
 		isVisible = true;
-		if (Math.random() > 0.5) oscillation = 0;
+		if (!oscilPipes || Math.random() > 0.5) oscillation = 0;
 		oscillation = Math.random() * 5 + 1;
 		if (isInvincible) oscillation = 10;
 		newOscilDist();
+		resets++;
 	}
 
 	public void newOscilDist()	{
@@ -94,7 +100,6 @@ public class FlappyPipe implements ActionListener {
 	public void move() {
 		x -= velocity;
 		if (isGhost && x <= 100)	isVisible = false;
-		count++;
 		if (x <= -50) {
 			if (!isInvincible)
 				score++;
