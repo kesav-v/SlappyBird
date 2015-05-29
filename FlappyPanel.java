@@ -92,6 +92,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 
 	public void resetGame()	{
 		bird = new Bird(this);
+		pipes = new FlappyPipe[4];
 		for (int i = 0; i < pipes.length; i++) {
 			pipes[i] = new FlappyPipe(this, getValues(i));
 		}
