@@ -81,11 +81,6 @@ public class FlappyPipe implements ActionListener {
 		oscillation = Math.random() * 5 + 1;
 		if (isInvincible) oscillation = 10;
 		newOscilDist();
-<<<<<<< HEAD
-		flashing = (Math.random() > 0.9);
-		if (flashing && !isInvincible) flash.start();
-=======
->>>>>>> origin/master
 	}
 
 	public void newOscilDist()	{
