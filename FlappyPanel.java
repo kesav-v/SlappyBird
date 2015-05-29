@@ -83,7 +83,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		explode = true;
 		firstPress = true;
 		headBangs = count = 0;
-		setValues(DEFAULT_GHOST);
+		setValues(DEFAULT_VALUES);
 		bird = new Bird(this);
 		addKeyListener(this);
 		justDied = true;
@@ -375,6 +375,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	
 	public void setGhostPipes(boolean val)	{
 		ghostPipes = val;
+		setValues(DEFAULT_GHOST);
 	}
 	public void setOscilationPipes(boolean val)	{
 		oscilPipes = val;
