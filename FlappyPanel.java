@@ -31,7 +31,7 @@ import java.text.SimpleDateFormat;
 public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	
 	private final Object[] DEFAULT_VALUES = {(double)3, null, null, true, true, false, 400, (double)5, 1};
-	private final Object[] DEFAULT_GHOST = {(double)3, null, null, false, false, true, 400, (double)5, 1};
+	private final Object[] DEFAULT_GHOST = {(double)3, null, null, false, false, true, 300, (double)2, 2};
 	private FlappyPipe[] pipes;
 	private Timer movePipes;
 	private boolean first;
@@ -284,5 +284,29 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 
 	public boolean dying() {
 		return bird.isFalling() && !movePipes.isRunning();
+	}
+
+	// Setters and such
+	
+	public void setGhostPipes(boolean val)	{
+		ghostPipes = val;
+	}
+	public void setOscilationPipes(boolean val)	{
+		oscilPipes = val;
+	}
+	public void setChangeOscillation(boolean val)	{
+		changeOscil = val;
+	}
+	public void setInitialVelocity(double val)	{
+		initVelocity = val;
+	}
+	public void setMaxOscillation(int val)	{
+		maxOscillation = val;
+	}
+	public void setMaxOscillationSpeed(double val)	{
+		maxOscilSpeed = val;
+	}
+	public void setRoundStartOscil(int val)	{
+		numStartOscil = val;
 	}
 }
