@@ -28,10 +28,8 @@ public class TestMainMenu extends JPanel implements ActionListener {
 	private JButton gameToMenu;
 	private Font universal;
 	private SettingsPanel settings;
-	private Timer checkGame;
 
 	public TestMainMenu() {
-		checkGame = new Timer(1000, new GameChecker());
 		universal = new Font("Comic Sans", Font.BOLD, 48);
 		cards = new CardLayout();
 		setLayout(cards);
@@ -59,7 +57,7 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		gameToMenu = new JButton("BACK TO MAIN MENU");
 		gameToMenu.setFont(universal);
 		menu = new MainMenu();
-		gamePanel = new FlappyPanel();
+		gamePanel = new FlappyPanel(this);
 		gamePanel.add(gameToMenu);
 		gameToMenu.setSize(1000, 100);
 		gameToMenu.setLocation(580, 900);
@@ -113,10 +111,19 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		frame.setResizable(false);
 	}
 
+<<<<<<< HEAD
 	private class GameChecker implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			gameToMenu.setVisible(gamePanel.gameIsOver());
 		}
+=======
+	public void gameOver()	{
+		gameToMenu.setVisible(gamePanel.gameIsOver());
+	}
+
+	public void gameStart()	{
+		gameToMenu.setVisible(gamePanel.gameIsOver());
+>>>>>>> origin/master
 	}
 
 	private class ShowSettings implements ActionListener {
@@ -154,6 +161,5 @@ public class TestMainMenu extends JPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		show("Game");
-		checkGame.start();
 	}
 }
