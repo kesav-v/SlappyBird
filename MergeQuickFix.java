@@ -8,6 +8,7 @@ public class MergeQuickFix	{
 	public static void main(String... pumpkins)	{
 		for (File file : FileSearcher.findFiles(FileSearcher.CURRENT_FOLDER, "java"))	{
 			if (file.getName().contains("MergeQuickFix"))	continue;
+			boolean changed = false;
 			ArrayList<String> fileContents = new ArrayList<String>();
 			Scanner input = null;
 			try {
@@ -19,8 +20,10 @@ public class MergeQuickFix	{
 				String nextLine = input.nextLine();
 				if (!nextLine.contains("=====") && !nextLine.contains(">>>>>") && !nextLine.contains("<<<<<"))
 					fileContents.add(nextLine);
+				else changed = true;
 			}
 			input.close();
+			if (!changed) continue;
 
 			PrintWriter writer = null;
 			try {
