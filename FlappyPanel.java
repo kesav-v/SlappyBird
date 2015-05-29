@@ -30,8 +30,8 @@ import java.text.SimpleDateFormat;
 
 public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 							// initVel, null, null, numPipe, oscilPipe, changeOscil, ghostPipe, maxOscil, mOSpeed, numStartOscil
-	private final Object[] DEFAULT_VALUES = {(double)3, null, null, true, true, false, 400, (double)5, 1};
-	private final Object[] DEFAULT_GHOST = {(double)3, null, null, true, false, true, 300, (double)2, 2};
+	private final Object[] DEFAULT_VALUES = {(double)3, null, null, true, true, false, 400, (double)5, 1, 6};
+	private final Object[] DEFAULT_GHOST = {(double)3, null, null, true, false, true, 300, (double)2, 2, 6};
 	private FlappyPipe[] pipes;
 	private Timer movePipes;
 	private boolean first;
@@ -57,6 +57,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private int maxOscillation;
 	private double maxOscilSpeed;
 	private int numStartOscil;
+	private int roundsTillInvin;
 
 	public FlappyPanel() {
 		apple = new ImageIcon(getClass().getResource("AppleImg.png"));
@@ -82,7 +83,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public Object[] getValues(int numPipe)	{
-		return new Object[]	{initVelocity, numPipe * (getWidth() / 4) + getWidth() / 4, numPipe, oscilPipes, changeOscil, ghostPipes, maxOscillation, maxOscilSpeed, numStartOscil};
+		return new Object[]	{initVelocity, numPipe * (getWidth() / 4) + getWidth() / 4, numPipe, oscilPipes, changeOscil, ghostPipes, maxOscillation, maxOscilSpeed, numStartOscil, roundsTillInvin};
 	}
 
 	public void setValues(Object... values)	{
@@ -93,6 +94,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		maxOscillation = (int)values[6];
 		maxOscilSpeed = (double)values[7];
 		numStartOscil = (int)values[8];
+		roundsTillInvin = (int)values[9];
 	}
 
 	private class Handler implements ActionListener {
@@ -306,7 +308,10 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	public void setMaxOscillationSpeed(double val)	{
 		maxOscilSpeed = val;
 	}
-	public void setRoundStartOscil(int val)	{
+	public void setRoundStartOscillation(int val)	{
 		numStartOscil = val;
+	}
+	public void setRoundsTillInvinsibilityPerPipe(int val)	{
+		roundsTillInvin = val;
 	}
 }
