@@ -64,8 +64,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		firstPress = true;
 		headBangs = count = 0;
 		ghostPipes = false;
-		oscilPipes = false;
-		changeOscil = false;
+		oscilPipes = true;
+		changeOscil = true;
 		bird = new Bird(this);
 		addKeyListener(this);
 		justDied = true;
