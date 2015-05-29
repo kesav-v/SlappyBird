@@ -164,8 +164,10 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(birdColor);
 		if (retro)	{
 			g.drawOval(50, bird.getY(), 50, 50);
-			if (bird.isInvincible())
-				g.drawOval(60, bird.getY() + 10, 30, 30);
+			if (bird.isInvincible())	{
+				int antiradius = (int)(invincibleTimes * 50f / 255);
+				g.drawOval(50 + antiradius/2, bird.getY() + antiradius/2, 50 - antiradius, 50 - antiradius);
+			}
 		}
 		else
 			if (bird.isInvincible())
@@ -275,9 +277,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 				bird.startFalling();
 				firstPress = false;
 			}
-			//clip.play(9000000);
 			bird.setVelocity(13);
-			//flap.loadNPlay();
 			repaint();
 		}
 		if (e.getKeyChar() == 'r' && dead()) {
