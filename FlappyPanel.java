@@ -30,7 +30,8 @@ import java.text.SimpleDateFormat;
 
 public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	
-	private final Object[] DEFAULT_VALUES = {(double)3, null, null, true, true, false, 400, (double)5};
+	private final Object[] DEFAULT_VALUES = {(double)3, null, null, true, true, false, 400, (double)5, 1};
+	private final Object[] DEFAULT_GHOST = {(double)3, null, null, false, false, true, 300, (double)2, 2};
 	private FlappyPipe[] pipes;
 	private Timer movePipes;
 	private boolean first;
@@ -55,6 +56,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private double initVelocity;
 	private int maxOscillation;
 	private double maxOscilSpeed;
+	private int numStartOscil;
 
 	public FlappyPanel() {
 		apple = new ImageIcon(getClass().getResource("AppleImg.png"));
@@ -67,6 +69,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		first = true;
 		firstPress = true;
 		headBangs = count = 0;
+<<<<<<< HEAD
 		ghostPipes = false;
 		oscilPipes = true;
 		changeOscil = true;
@@ -74,6 +77,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		maxOscillation = 600;
 		initVelocity = 3;
 		maxOscillation = 400;
+=======
+>>>>>>> origin/master
 		setValues(DEFAULT_VALUES);
 		bird = new Bird(this);
 		addKeyListener(this);
@@ -87,7 +92,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public Object[] getValues(int numPipe)	{
-		return new Object[]	{initVelocity, numPipe * (getWidth() / 4) + getWidth() / 4, numPipe, oscilPipes, changeOscil, ghostPipes, maxOscillation, maxOscilSpeed};
+		return new Object[]	{initVelocity, numPipe * (getWidth() / 4) + getWidth() / 4, numPipe, oscilPipes, changeOscil, ghostPipes, maxOscillation, maxOscilSpeed, numStartOscil};
 	}
 
 	public void setValues(Object... values)	{
@@ -97,6 +102,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		ghostPipes = (boolean)values[5];
 		maxOscillation = (int)values[6];
 		maxOscilSpeed = (double)values[7];
+		numStartOscil = (int)values[8];
 	}
 
 	private class Handler implements ActionListener {
@@ -124,8 +130,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			pipes = new FlappyPipe[4];
 			for (int i = 0; i < pipes.length; i++) {
 				pipes[i] = new FlappyPipe(this, getValues(i));
-				if (!pipes[i].isInvincible()) pipes[i].setOscillation(0);
-				else pipes[i].setOscillation(10);
+				// if (!pipes[i].isInvincible()) pipes[i].setOscillation(0);
+				// else pipes[i].setOscillation(10);
 			}
 		}
 		super.paintComponent(g);
@@ -256,8 +262,6 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			bird = new Bird(this);
 			for (int i = 0; i < pipes.length; i++) {
 				pipes[i] = new FlappyPipe(this, getValues(i));
-				if (!pipes[i].isInvincible()) pipes[i].setOscillation(0);
-				else pipes[i].setOscillation(10);
 			}
 			firstPress = true;
 			justDied = true;
@@ -290,5 +294,29 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 
 	public boolean dying() {
 		return bird.isFalling() && !movePipes.isRunning();
+	}
+
+	// Setters and such
+	
+	public void setGhostPipes(boolean val)	{
+		ghostPipes = val;
+	}
+	public void setOscilationPipes(boolean val)	{
+		oscilPipes = val;
+	}
+	public void setChangeOscillation(boolean val)	{
+		changeOscil = val;
+	}
+	public void setInitialVelocity(double val)	{
+		initVelocity = val;
+	}
+	public void setMaxOscillation(int val)	{
+		maxOscillation = val;
+	}
+	public void setMaxOscillationSpeed(double val)	{
+		maxOscilSpeed = val;
+	}
+	public void setRoundStartOscil(int val)	{
+		numStartOscil = val;
 	}
 }
