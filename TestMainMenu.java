@@ -33,7 +33,7 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		universal = new Font("Comic Sans", Font.BOLD, 48);
 		cards = new CardLayout();
 		setLayout(cards);
-		System.out.println(getLayout());
+		gamePanel = new FlappyPanel(this);
 		play = new JButton("PLAY");
 		play.setFont(universal);
 		play.setBackground(Color.GREEN);
@@ -72,7 +72,6 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		statsToMenu.addActionListener(new BackToMenu());
 		statsToMenu.setSize(1000, 200);
 		statsToMenu.setLocation(580, 1020);
-		gamePanel = new FlappyPanel(this);
 		settings = new SettingsPanel(gamePanel);
 		settings.add(settingsToMenu);
 		settingsToMenu.setSize(1000, 200);

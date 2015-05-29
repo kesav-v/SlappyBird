@@ -74,7 +74,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		movePipes = new Timer(20, this);
 		invincibility = new Timer(25, new Handler());
 		first = true;
-		retro = mainMenu.getSettings().getRetro();
+		retro = true;
 		firstPress = true;
 		headBangs = count = 0;
 		setValues(DEFAULT_VALUES);
@@ -93,7 +93,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	public Object[] getValues(int numPipe)	{
 		return new Object[]	{initVelocity, numPipe * (getWidth() / 4) + getWidth() / 4, numPipe, oscilPipes, changeOscil, ghostPipes, maxOscillation, maxOscilSpeed, numStartOscil, roundsTillInvin};
 	}
-
+	
 	public void setValues(Object... values)	{
 		initVelocity = (double)values[0];
 		oscilPipes = (boolean)values[3];

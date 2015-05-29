@@ -5,8 +5,11 @@ import javax.swing.JSlider;
 import java.awt.Toolkit;
 import java.awt.Color;
 import javax.swing.JCheckBox;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
+import java.awt.Font;
 
-public class SettingsPanel extends JPanel implements ChangeListener {
+public class SettingsPanel extends JPanel implements ChangeListener, ItemListener {
 
 	private static final int SCREEN_WIDTH = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 	private static final int SCREEN_HEIGHT = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -31,9 +34,15 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		volume.addChangeListener(this);
 		retroMode = new JCheckBox("Retro mode?", true);
 		add(retroMode);
-		retroMode.setSize(100, 20);
-		retroMode.setLocation(800, 275);
+		retroMode.setSize(200, 40);
+		retroMode.setLocation(680, 275);
+		retroMode.addItemListener(this);
+		retroMode.setBackground(Color.BLUE);
+		retroMode.setForeground(Color.WHITE);
+		retroMode.setFont(new Font("Arial", Font.PLAIN, 16));
 	}
+
+
 
 	public boolean getRetro() {
 		return retroMode.isSelected();
@@ -42,5 +51,9 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 	public void stateChanged(ChangeEvent e) {
 		game.getBackgroundMusic().setVolume(volume.getValue() / 100.0);
 		game.getInvinMusic().setVolume(volume.getValue() / 100.0);
+	}
+
+	public void itemStateChanged(ItemEvent e) {
+		game.setRetro(retroMode.isSelected());
 	}
 }
