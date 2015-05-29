@@ -30,19 +30,20 @@ public class FlappyPipe implements ActionListener {
 	private boolean reset;
 	private int score;
 	private int topOscilDist, botOscilDist;
-	private boolean changeOscil = true;
+	private boolean changeOscil;
 	private final int numPipe;
 	private int invinTime;
-	private boolean visible;
-	private Timer flash;
-	private boolean flashing;
+	private boolean isVisible;
+	private boolean isGhost;
 
-	public FlappyPipe(JComponent comp, double velocity, double x, int numPipe) {
+	public FlappyPipe(JComponent comp, double velocity, double x, int numPipe, boolean changeOscil, boolean isGhost) {
 		this.numPipe = numPipe;
+		this.changeOscil = changeOscil;
+		this.isGhost = isGhost;
 		WIDTH = comp.getWidth();
 		HEIGHT = comp.getHeight();
 		count = 1;
-		visible = true;
+		isVisible = true;
 		isInvincible = true;
 		reset();
 		this.x = x;
@@ -50,9 +51,6 @@ public class FlappyPipe implements ActionListener {
 		this.velocity = velocity;
 		oscillator = new Timer(20, this);
 		oscillator.start();
-		flashing = (Math.random() > 0.9);
-		flash = new Timer(500, new Flash());
-		if (flashing && isInvincible) flash.start();
 	}
 
 	public void reset()	{
@@ -78,13 +76,16 @@ public class FlappyPipe implements ActionListener {
 			greening = false;
 			blueing = false;
 		}
-		visible = true;
+		isVisible = true;
 		if (Math.random() > 0.5) oscillation = 0;
 		oscillation = Math.random() * 5 + 1;
 		if (isInvincible) oscillation = 10;
 		newOscilDist();
+<<<<<<< HEAD
 		flashing = (Math.random() > 0.9);
 		if (flashing && !isInvincible) flash.start();
+=======
+>>>>>>> origin/master
 	}
 
 	public void newOscilDist()	{
@@ -95,17 +96,11 @@ public class FlappyPipe implements ActionListener {
 		else topOscilDist = botOscilDist = 400;
 	}
 
-	private class Flash implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			visible = !visible;
-		}
-	}
-
 	public void move() {
 		x -= velocity;
+		if (isGhost && x <= 100)	isVisible = false;
 		count++;
 		if (x <= -50) {
-			flash.stop();
 			if (!isInvincible)
 				score++;
 			reset = true;
@@ -181,11 +176,11 @@ public class FlappyPipe implements ActionListener {
 	}
 
 	public boolean isVisible() {
-		return visible;
+		return isVisible;
 	}
 
 	public void setVisible(boolean bool) {
-		visible = bool;
+		isVisible = bool;
 	}
 
 	public int getX() {
