@@ -88,7 +88,10 @@ public class FlappyPipe implements ActionListener {
 		oscillation = Math.random() * 5 + 1;
 		if (isInvincible) oscillation = 10;
 		newOscilDist();
+<<<<<<< HEAD
+=======
 		resets++;
+>>>>>>> origin/master
 	}
 
 	public void newOscilDist()	{
