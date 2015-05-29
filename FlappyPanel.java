@@ -31,7 +31,8 @@ import java.text.SimpleDateFormat;
 public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 							// initVel, null, null, numPipe, oscilPipe, changeOscil, ghostPipe, maxOscil, mOSpeed, numStartOscil
 	private final Object[] DEFAULT_VALUES = {(double)3, null, null, true, true, false, 400, (double)5, 1, 6};
-	private final Object[] DEFAULT_GHOST = {(double)3, null, null, true, false, true, 300, (double)2, 2, 6};
+	private final Object[] DEFAULT_GHOST = {(double)3, null, null, true, false, true, 300, (double)2, 2, 5};
+	private TestMainMenu mainMenu;
 	private FlappyPipe[] pipes;
 	private Timer movePipes;
 	private boolean first;
@@ -60,7 +61,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private int roundsTillInvin;
 	private boolean gameIsOver;
 
-	public FlappyPanel() {
+	public FlappyPanel(TestMainMenu mainMenu) {
+		this.mainMenu = mainMenu;
 		setLayout(null);
 		apple = new ImageIcon(getClass().getResource("AppleImg.png"));
 		clip = new AudioClip(new File("SoundEffects/MarioInvincible.mp3"));
@@ -269,6 +271,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			justDied = true;
 			previousScores.clear();
 			gameIsOver = false;
+			mainMenu.gameStart();
 			repaint();
 		}
 	}
@@ -282,6 +285,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	public boolean dead() {
 		if (bird.getY() + 50 > getHeight() || (bird.getY() < 0)) {
 			gameIsOver = true;
+			mainMenu.gameOver();
 			return true;
 		}
 		for (FlappyPipe fp : pipes) {
@@ -293,6 +297,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 				}
 				else {
 					gameIsOver = true;
+					mainMenu.gameOver();
 					return true;
 				}
 			} else if (fp.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 && bird.getY() + 50 >= fp.getY() && bird.getY() <= fp.getY() + 50) {
