@@ -61,6 +61,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private int roundsTillInvin;
 	private boolean gameIsOver;
 	private boolean retro;
+	private boolean explode;
 	private Color birdColor;
 	private ImageIcon explosion;
 
@@ -77,9 +78,10 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		invincibility = new Timer(25, new Handler());
 		first = true;
 		retro = false;
+		explode = true;
 		firstPress = true;
 		headBangs = count = 0;
-		setValues(DEFAULT_VALUES);
+		setValues(DEFAULT_GHOST);
 		bird = new Bird(this);
 		addKeyListener(this);
 		justDied = true;
@@ -167,7 +169,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 						g.drawOval(fp.getX()-15, fp.getY()-15, 30, 30);
 					}
 					else g.drawImage(apple.getImage(), fp.getX(), fp.getY(), 50, 50, this);
-				else if (fp.isVisible())
+				else 
 					if (retro)	{
 						g.drawRect(fp.getX(), 0, 50, fp.getY());
 						g.drawRect(fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200));
@@ -179,11 +181,19 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		}
 		g.setColor(birdColor);
 		if (retro)	{
-			g.drawOval(50, bird.getY(), 50, 50);
-			if (bird.isInvincible())	{
-				int antiradius = (int)(invincibleTimes * 50f / 255);
-				g.drawOval(50 + antiradius/2, bird.getY() + antiradius/2, 50 - antiradius, 50 - antiradius);
+			if (bird.isExploding())	{
+				g.setColor(Color.red);
+				for (int radius = bird.getRadius(); radius > 0; radius -= 20)
+					g.drawOval(75 - radius / 2, bird.getY() + 25 - radius / 2, radius, radius);
 			}
+			else {
+				g.drawOval(50, bird.getY(), 50, 50);
+				if (bird.isInvincible())	{
+					int antiradius = (int)(invincibleTimes * 50f / 255);
+					g.drawOval(50 + antiradius/2, bird.getY() + antiradius/2, 50 - antiradius, 50 - antiradius);
+				}
+			}
+			
 		}
 		else if (bird.isExploding()) {
 			g.drawImage(explosion.getImage(), 75 - bird.getRadius() / 2, bird.getY() + 25 - bird.getRadius() / 2, bird.getRadius(), bird.getRadius(), this);
@@ -314,7 +324,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	public boolean dead() {
 		if (bird.getY() + 50 > getHeight() || (bird.getY() < 0)) {
 			gameIsOver = true;
-			if (!retro) bird.setExploding(true);
+			if (explode) bird.setExploding(true);
 			mainMenu.gameOver();
 			return true;
 		}
@@ -329,7 +339,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 				}
 				else {
 					gameIsOver = true;
-					if (!retro) bird.setExploding(true);
+					if (explode) bird.setExploding(true);
 					mainMenu.gameOver();
 					return true;
 				}
