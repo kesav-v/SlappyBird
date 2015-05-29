@@ -57,8 +57,10 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private int maxOscillation;
 	private double maxOscilSpeed;
 	private int numStartOscil;
+	private boolean gameIsOver;
 
 	public FlappyPanel() {
+		setLayout(null);
 		apple = new ImageIcon(getClass().getResource("AppleImg.png"));
 		clip = new AudioClip(new File("SoundEffects/MarioInvincible.mp3"));
 		songs = new AudioList(AudioList.INITIAL_SHUFFLE, AudioList.CURRENT_FOLDER, new File("AllMusic"));
@@ -69,16 +71,11 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		first = true;
 		firstPress = true;
 		headBangs = count = 0;
-<<<<<<< HEAD
 		ghostPipes = false;
 		oscilPipes = true;
 		changeOscil = true;
 		initVelocity = 3;
 		maxOscillation = 600;
-		initVelocity = 3;
-		maxOscillation = 400;
-=======
->>>>>>> origin/master
 		setValues(DEFAULT_VALUES);
 		bird = new Bird(this);
 		addKeyListener(this);
@@ -121,6 +118,14 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 				songs.play();
 			}
 		}
+	}
+
+	public AudioClip getBackgroundMusic() {
+		return songs.getAudioClip();
+	}
+
+	public AudioClip getInvinMusic() {
+		return clip;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -266,13 +271,22 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			firstPress = true;
 			justDied = true;
 			previousScores.clear();
+			gameIsOver = false;
 			repaint();
 		}
 	}
+
+	public boolean gameIsOver() {
+		return gameIsOver;
+	}
+
 	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}
 	public boolean dead() {
-		if (bird.getY() + 50 > getHeight() || (bird.getY() < 0)) return true;
+		if (bird.getY() + 50 > getHeight() || (bird.getY() < 0)) {
+			gameIsOver = true;
+			return true;
+		}
 		for (FlappyPipe fp : pipes) {
 			if (!fp.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 &&
 				(fp.getY() <= bird.getY() - 150 || fp.getY() >= bird.getY())) {
@@ -280,7 +294,10 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 					incPipeVelocity(-1);
 					return false;
 				}
-				else return true;
+				else {
+					gameIsOver = true;
+					return true;
+				}
 			} else if (fp.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 && bird.getY() + 50 >= fp.getY() && bird.getY() <= fp.getY() + 50) {
 				bird.setInvincible(true);
 				fp.setVisible(false);
