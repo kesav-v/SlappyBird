@@ -1,5 +1,7 @@
 import javax.swing.JPanel;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -150,6 +152,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void paintComponent(Graphics g) {
+		Graphics2D g2d = (Graphics2D)g;
 		requestFocus();
 		if (first) {
 			first = false;
@@ -161,6 +164,9 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		super.paintComponent(g);
 		setBackground(Color.BLACK);
 		for (FlappyPipe fp : pipes) {
+			if (ghostPipes && fp.getX() <= 100 + 150 && !gameIsOver)
+				if (fp.getX() <= 100)	continue;
+				else g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (fp.getX() - 100f) / 150f));	
 			g.setColor(fp.getColor());
 			if (fp.isVisible())
 				if (fp.isInvincible())
@@ -178,6 +184,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 						g.drawImage(thePipe.getImage(), fp.getX(), 0, 50, fp.getY(), this);
 						g.drawImage(thePipe.getImage(), fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200), this);
 					}
+			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 		}
 		g.setColor(birdColor);
 		if (retro)	{
