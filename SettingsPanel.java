@@ -9,6 +9,7 @@ import javax.swing.JCheckBox;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.Font;
+import javax.swing.JToggleButton;
 
 public class SettingsPanel extends JPanel implements ChangeListener, ItemListener {
 
@@ -16,7 +17,7 @@ public class SettingsPanel extends JPanel implements ChangeListener, ItemListene
 	private static final int SCREEN_HEIGHT = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 	private JSlider volume;
 	private FlappyPanel game;
-	private JCheckBox retroMode;
+	private JToggleButton retroMode;
 	private JCheckBox ghostMode;
 	private JComboBox defaultValues;
 
@@ -35,7 +36,7 @@ public class SettingsPanel extends JPanel implements ChangeListener, ItemListene
 		volume.setBackground(Color.BLUE);
 		volume.setForeground(Color.WHITE);
 		volume.addChangeListener(this);
-		retroMode = new JCheckBox("Retro mode?");
+		retroMode = new JToggleButton("Retro mode?");
 		add(retroMode);
 		retroMode.setSize(200, 40);
 		retroMode.setLocation(680, 275);
