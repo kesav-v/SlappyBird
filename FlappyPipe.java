@@ -73,7 +73,7 @@ public class FlappyPipe implements ActionListener {
 			isInvincible = false;
 			invinTime = (int)(Math.random() * 2);
 		}
-		else if (1 + roundsTillInvin * numPipe + invinTime == resets % 24)
+		else if (1 + roundsTillInvin * numPipe + invinTime == resets % (roundsTillInvin * 4))
 			isInvincible = true;
 		if ((oscilPipes && resets >= numStartOscil) || isInvincible)	oscillator.start();
 		if (isInvincible && color.equals(Color.YELLOW)) color = Color.RED;
