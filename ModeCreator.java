@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.FileNotFoundException;
 import javax.swing.JTextArea;
+import java.awt.Font;
 
 public class ModeCreator extends JPanel {
 
@@ -21,8 +22,12 @@ public class ModeCreator extends JPanel {
 	private JButton saveChanges;
 	private JTextArea errorMessage;
 	private JTextArea[] descriptions;
+	private SettingsPanel settings;
+	private Font universal;
 
-	public ModeCreator() {
+	public ModeCreator(SettingsPanel settings) {
+		universal = new Font("Arial", Font.PLAIN, 36);
+		this.settings = settings;
 		setLayout(null);
 		setBackground(Color.WHITE);
 		options = new JCheckBox[5];
@@ -41,34 +46,38 @@ public class ModeCreator extends JPanel {
 		values = new JTextField[6];
 		for (int i = 0; i < options.length; i++) {
 			add(options[i]);
-			options[i].setSize(400, 40);
+			options[i].setSize(2060, 40);
 			options[i].setLocation(50, 50 * i);
 			options[i].setBackground(Color.WHITE);
+			options[i].setFont(universal);
 		}
 		for (int i = 0; i < values.length; i++) {
 			values[i] = new JTextField();
 			add(descriptions[i]);
-			descriptions[i].setSize(400, 40);
+			descriptions[i].setSize(2060, 40);
 			descriptions[i].setLocation(50, 100 * i + 250);
 			descriptions[i].setBackground(Color.WHITE);
 			descriptions[i].setEditable(false);
+			descriptions[i].setFont(universal);
 			add(values[i]);
-			values[i].setSize(400, 40);
+			values[i].setSize(2060, 40);
 			values[i].setLocation(50, 100 * i + 300);
+			values[i].setFont(new Font("Arial", Font.PLAIN, 20));
 		}
 		saveChanges = new JButton("SAVE CHANGES");
 		add(saveChanges);
-		saveChanges.setSize(400, 40);
+		saveChanges.setSize(2060, 40);
 		saveChanges.setLocation(50, 850);
 		saveChanges.addActionListener(new ChangeSaver());
 		errorMessage = new JTextArea("Error: Changes could not be saved.\nPlease remember that the last 5 options must all be numbers.");
 		errorMessage.setForeground(Color.RED);
 		errorMessage.setBackground(Color.WHITE);
 		add(errorMessage);
-		errorMessage.setSize(400, 80);
-		errorMessage.setLocation(50, 600);
+		errorMessage.setSize(2060, 100);
+		errorMessage.setLocation(50, 950);
 		errorMessage.setVisible(false);
 		errorMessage.setEditable(false);
+		errorMessage.setFont(universal);
 	}
 
 	private class ChangeSaver implements ActionListener {
@@ -86,13 +95,6 @@ public class ModeCreator extends JPanel {
 				s += scan.nextLine() + "\n";
 			}
 			PrintWriter writeMode = null;
-			try {
-				writeMode = new PrintWriter(new File("gameModes.txt"));
-			} catch (FileNotFoundException e) {
-				System.out.println("ERROR: gameModes.txt could not be opened. Stack trace:\n");
-				e.printStackTrace();
-				return;
-			}
 			double initVel = 0;
 			double mOSpeed = 0;
 			int maxOscil = 0;
@@ -106,6 +108,14 @@ public class ModeCreator extends JPanel {
 				invin = Integer.parseInt(values[5].getText());
 			} catch (IllegalArgumentException e) {
 				errorMessage.setVisible(true);
+				System.out.println("Illegal argument exception");
+				return;
+			}
+			try {
+				writeMode = new PrintWriter(new File("gameModes.txt"));
+			} catch (FileNotFoundException e) {
+				System.out.println("ERROR: gameModes.txt could not be opened. Stack trace:\n");
+				e.printStackTrace();
 				return;
 			}
 			errorMessage.setVisible(false);
@@ -115,8 +125,8 @@ public class ModeCreator extends JPanel {
 			writeMode.print(options[0].isSelected() + " ");
 			writeMode.print(options[1].isSelected() + " ");
 			writeMode.print(options[2].isSelected() + " ");
-			writeMode.print(mOSpeed + " ");
 			writeMode.print(maxOscil + " ");
+			writeMode.print(mOSpeed + " ");
 			writeMode.print(numStartOscil + " ");
 			writeMode.print(invin + " ");
 			writeMode.print(options[3].isSelected() + " ");
@@ -124,6 +134,7 @@ public class ModeCreator extends JPanel {
 			writeMode.print(s);
 			writeMode.close();
 			scan.close();
+			settings.getComboBox().addItem(removeSpaces(values[0].getText()));
 		}
 	}
 
@@ -135,14 +146,5 @@ public class ModeCreator extends JPanel {
 			}
 		}
 		return s;
-	}
-
-	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		frame.getContentPane().add(new ModeCreator());
-		frame.setVisible(true);
-		frame.setSize(2160, 1440);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
 	}
 }

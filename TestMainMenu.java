@@ -36,7 +36,6 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		cards = new CardLayout();
 		setLayout(cards);
 		gamePanel = new FlappyPanel(this);
-		creator = new ModeCreator();
 		play = new JButton("PLAY");
 		play.setFont(universal);
 		play.setBackground(Color.GREEN);
@@ -82,6 +81,7 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		settingsToMenu.setSize(1000, 200);
 		settingsToMenu.setLocation(580, 1020);
 		settingsToMenu.addActionListener(new BackToMenu());
+		creator = new ModeCreator(settings);
 		add(menu, "Main Menu");
 		add(gamePanel, "Game");
 		add(instructions, "Instructions");
@@ -91,7 +91,7 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		backToSettings = new JButton("CLOSE");
 		creator.add(backToSettings);
 		backToSettings.setLocation(50, 900);
-		backToSettings.setSize(400, 40);
+		backToSettings.setSize(2060, 40);
 		backToSettings.setBackground(Color.RED);
 		backToSettings.setForeground(Color.WHITE);
 		backToSettings.addActionListener(new ShowSettings());

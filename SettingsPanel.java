@@ -24,9 +24,11 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 	private FlappyPanel game;
 	private JComboBox defaultValues;
 	private TestMainMenu menu;
+	private boolean first;
 
 	public SettingsPanel(FlappyPanel game, TestMainMenu menu) {
 		setLayout(null);
+		first = true;
 		setBackground(Color.BLUE);
 		this.game = game;
 		this.menu = menu;
@@ -51,6 +53,10 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		defaultValues.setSelectedIndex(indexOf(loadModes(), "Default"));
 		add(defaultValues);
 		game.setValues(parseMode("Default"));
+	}
+
+	public JComboBox getComboBox() {
+		return defaultValues;
 	}
 
 	private int indexOf(String[] arr, String val) {
@@ -132,6 +138,10 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 
 	private class ToggleDefault implements ItemListener {
 		public void itemStateChanged(ItemEvent e) {
+			if (first) {
+				first = false;
+				return;
+			}
 			String chosen = defaultValues.getSelectedItem().toString();
 			if (chosen.equals("Create new mode...")) {
 				menu.show("Mode Creator");
