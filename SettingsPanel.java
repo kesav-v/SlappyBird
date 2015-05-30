@@ -68,8 +68,13 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 
 	private String[] loadModes() {
 		Scanner scan = null;
+		File gameModes = new File("gameModes.txt");
+		if (!gameModes.exists())	{
+			System.err.println("Cannot find file: gameModes.txt");
+			System.exit(2);
+		}
 		try {
-			scan = new Scanner(new File("gameModes.txt"));
+			scan = new Scanner(gameModes);
 		} catch (FileNotFoundException e) {
 			return new String[] {"(No modes found)"};
 		}
@@ -100,7 +105,7 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 			scan = new Scanner(new File("gameModes.txt"));
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR: No modes found");
-			System.exit(1);
+			System.exit(2);
 		}
 		String theMode = null;
 		while (scan.hasNext()) {

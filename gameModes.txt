@@ -1,2 +1,10 @@
+<<<<<<< HEAD
 OriginalGame 3.0 null null false false false 0 0.0 1000 0 false false
 Default 2 null null true false false 400 5 1 6 false false
+=======
+Original 2 null null true false false 400 5 1 6 false false
+Default	3 null null true true false 400 5 1 6 false true
+Ghost 3 null null true false true 300 2 2 5 false true
+Retro 3 null null true true false 400 5 1 6 true true
+RealRetro 13 null null true false false 250 3 3 3 true true
+>>>>>>> origin/master
