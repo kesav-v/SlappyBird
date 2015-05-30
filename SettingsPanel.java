@@ -9,7 +9,6 @@ import javax.swing.JCheckBox;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.Font;
-import javax.swing.JToggleButton;
 
 public class SettingsPanel extends JPanel implements ChangeListener, ItemListener {
 
@@ -17,7 +16,7 @@ public class SettingsPanel extends JPanel implements ChangeListener, ItemListene
 	private static final int SCREEN_HEIGHT = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 	private JSlider volume;
 	private FlappyPanel game;
-	private JToggleButton retroMode;
+	private JCheckBox retroMode;
 	private JCheckBox ghostMode;
 	private JComboBox defaultValues;
 
@@ -36,7 +35,7 @@ public class SettingsPanel extends JPanel implements ChangeListener, ItemListene
 		volume.setBackground(Color.BLUE);
 		volume.setForeground(Color.WHITE);
 		volume.addChangeListener(this);
-		retroMode = new JToggleButton("Retro mode?");
+		retroMode = new JCheckBox("Retro mode?");
 		add(retroMode);
 		retroMode.setSize(200, 40);
 		retroMode.setLocation(680, 275);
@@ -52,7 +51,7 @@ public class SettingsPanel extends JPanel implements ChangeListener, ItemListene
 		ghostMode.setBackground(Color.BLUE);
 		ghostMode.setForeground(Color.WHITE);
 		ghostMode.setFont(new Font("Arial", Font.PLAIN, 16));
-		defaultValues = new JComboBox(new String[] {"Default", "Ghost"});
+		defaultValues = new JComboBox(new String[] {"Default", "Original", "Ghost", "Retro", "Real Retro"});
 		defaultValues.setSize(200, 40);
 		defaultValues.setLocation(480, 175);
 		defaultValues.addItemListener(new ToggleDefault());
@@ -70,8 +69,11 @@ public class SettingsPanel extends JPanel implements ChangeListener, ItemListene
 	private class ToggleDefault implements ItemListener {
 		public void itemStateChanged(ItemEvent e) {
 			String chosen = defaultValues.getSelectedItem().toString();
-			if (chosen.equals("Default"))	game.setValues(game.DEFAULT_VALUES);
-			else if (chosen.equals("Ghost"))	game.setValues(game.DEFAULT_GHOST);
+			if (chosen.equals("Default"))	game.setValues(FlappyPanel.GAME_MODE.DEFAULT);
+			else if (chosen.equals("Ghost"))	game.setValues(FlappyPanel.GAME_MODE.GHOST);
+			else if (chosen.equals("Original"))	game.setValues(FlappyPanel.GAME_MODE.ORIGINAL);
+			else if (chosen.equals("Retro"))	game.setValues(FlappyPanel.GAME_MODE.RETRO);
+			else if (chosen.equals("Real Retro"))	game.setValues(FlappyPanel.GAME_MODE.REAL_RETRO);
 		}
 	}
 

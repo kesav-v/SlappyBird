@@ -31,9 +31,21 @@ import java.text.SimpleDateFormat;
 */
 
 public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
-							// initVel, null, null, numPipe, oscilPipe, changeOscil, ghostPipe, maxOscil, mOSpeed, numStartOscil
-	public final Object[] DEFAULT_VALUES = {(double)3, null, null, true, true, false, 400, (double)5, 1, 6};
-	public final Object[] DEFAULT_GHOST = {(double)3, null, null, true, false, true, 300, (double)2, 2, 5};
+							
+	public enum GAME_MODE	{
+		// initVel, null, null, oscilPipe, changeOscil, ghostPipe, maxOscil, mOSpeed, numStartOscil, invin%, retro, explode
+		ORIGINAL	((double)2, null, null, true, false, false, 400, (double)5, 1, 6, false, false),
+		DEFAULT	((double)3, null, null, true, true, false, 400, (double)5, 1, 6, false, true),
+		GHOST	((double)3, null, null, true, false, true, 300, (double)2, 2, 5, false, true),
+		RETRO	((double)3, null, null, true, true, false, 400, (double)5, 1, 6, true, true),
+		REAL_RETRO	((double)13, null, null, true, false, false, 250, (double)3, 3, 3, true, true);
+
+		public final Object[] values;
+
+		GAME_MODE(Object... values)	{
+			this.values = values;
+		}
+	}
 	private TestMainMenu mainMenu;
 	private FlappyPipe[] pipes;
 	private Timer movePipes;
@@ -83,7 +95,6 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		explode = true;
 		firstPress = true;
 		headBangs = count = 0;
-		setValues(DEFAULT_VALUES);
 		bird = new Bird(this);
 		addKeyListener(this);
 		justDied = true;
@@ -114,7 +125,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		return new Object[]	{initVelocity, numPipe * (getWidth() / 4) + getWidth() / 4, numPipe, oscilPipes, changeOscil, ghostPipes, maxOscillation, maxOscilSpeed, numStartOscil, roundsTillInvin};
 	}
 
-	public void setValues(Object... values)	{
+	public void setValues(GAME_MODE mode)	{
+		Object[] values = mode.values;
 		initVelocity = (double)values[0];
 		oscilPipes = (boolean)values[3];
 		changeOscil = (boolean)values[4];
@@ -123,6 +135,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		maxOscilSpeed = (double)values[7];
 		numStartOscil = (int)values[8];
 		roundsTillInvin = (int)values[9];
+		retro = (boolean)values[10];
+		explode = (boolean)values[11];
 	}
 
 	private class Handler implements ActionListener {
@@ -307,7 +321,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if ((e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_SPACE) && !dying() && !dead()) {
+		if ((e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_SPACE) && !dying() && !gameIsOver) {
 			if (firstPress) {
 				movePipes.start();
 				bird.startFalling();
@@ -316,7 +330,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			bird.setVelocity(13);
 			repaint();
 		}
-		if (e.getKeyChar() == 'r' && dead()) {
+		if (e.getKeyChar() == 'r' && gameIsOver) {
 			resetGame();
 			repaint();
 		}
@@ -375,7 +389,6 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	
 	public void setGhostPipes(boolean val)	{
 		ghostPipes = val;
-		setValues(DEFAULT_GHOST);
 	}
 	public void setOscilationPipes(boolean val)	{
 		oscilPipes = val;
