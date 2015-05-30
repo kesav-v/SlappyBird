@@ -26,14 +26,17 @@ public class TestMainMenu extends JPanel implements ActionListener {
 	private JButton settingsToMenu;
 	private JButton goToSettings;
 	private JButton gameToMenu;
+	private JButton backToSettings;
 	private Font universal;
 	private SettingsPanel settings;
+	private ModeCreator creator;
 
 	public TestMainMenu() {
 		universal = new Font("Comic Sans", Font.BOLD, 48);
 		cards = new CardLayout();
 		setLayout(cards);
 		gamePanel = new FlappyPanel(this);
+		creator = new ModeCreator();
 		play = new JButton("PLAY");
 		play.setFont(universal);
 		play.setBackground(Color.GREEN);
@@ -74,7 +77,7 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		statsToMenu.addActionListener(new BackToMenu());
 		statsToMenu.setSize(1000, 200);
 		statsToMenu.setLocation(580, 1020);
-		settings = new SettingsPanel(gamePanel);
+		settings = new SettingsPanel(gamePanel, this);
 		settings.add(settingsToMenu);
 		settingsToMenu.setSize(1000, 200);
 		settingsToMenu.setLocation(580, 1020);
@@ -84,6 +87,14 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		add(instructions, "Instructions");
 		add(statPanel, "Stats");
 		add(settings, "Settings");
+		add(creator, "Mode Creator");
+		backToSettings = new JButton("CLOSE");
+		creator.add(backToSettings);
+		backToSettings.setLocation(50, 900);
+		backToSettings.setSize(400, 40);
+		backToSettings.setBackground(Color.RED);
+		backToSettings.setForeground(Color.WHITE);
+		backToSettings.addActionListener(new ShowSettings());
 		menu.add(play);
 		play.setSize(1000, 200);
 		play.setLocation(580, 520);
@@ -118,10 +129,6 @@ public class TestMainMenu extends JPanel implements ActionListener {
 
 	public void gameStart()	{
 		gameToMenu.setVisible(gamePanel.gameIsOver());
-	}
-
-	public SettingsPanel getSettings() {
-		return settings;
 	}
 
 	private class ShowSettings implements ActionListener {

@@ -46,6 +46,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			this.values = values;
 		}
 	}
+	
 	private TestMainMenu mainMenu;
 	private FlappyPipe[] pipes;
 	private Timer movePipes;
@@ -125,8 +126,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		return new Object[]	{initVelocity, numPipe * (getWidth() / 4) + getWidth() / 4, numPipe, oscilPipes, changeOscil, ghostPipes, maxOscillation, maxOscilSpeed, numStartOscil, roundsTillInvin};
 	}
 
-	public void setValues(GAME_MODE mode)	{
-		Object[] values = mode.values;
+	public void setValues(Object[] values)	{
 		initVelocity = (double)values[0];
 		oscilPipes = (boolean)values[3];
 		changeOscil = (boolean)values[4];
