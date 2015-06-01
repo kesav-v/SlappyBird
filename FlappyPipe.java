@@ -94,8 +94,9 @@ public class FlappyPipe implements ActionListener {
 		}
 		isVisible = true;
 		if (!oscilPipes || Math.random() > 0.5) oscillation = 0;
-		oscillation = Math.random() * maxOscilSpeed + 1;
-		if (isInvincible) oscillation = 10;
+		else oscillation = Math.random() * maxOscilSpeed + 1;
+		if (isInvincible && oscilPipes) oscillation = 10;
+		else if (isInvincible) oscillation = 0;
 		newOscilDist();
 		resets++;
 	}

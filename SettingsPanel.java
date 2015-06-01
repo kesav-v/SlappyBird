@@ -22,7 +22,7 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 	private static final int SCREEN_HEIGHT = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 	private JSlider volume;
 	private FlappyPanel game;
-	private JComboBox defaultValues;
+	private JComboBox<String> defaultValues;
 	private TestMainMenu menu;
 	private boolean first;
 
@@ -43,7 +43,7 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		volume.setBackground(Color.BLUE);
 		volume.setForeground(Color.WHITE);
 		volume.addChangeListener(this);
-		defaultValues = new JComboBox(loadModes());
+		defaultValues = new JComboBox<String>(loadModes());
 		defaultValues.setSize(200, 40);
 		defaultValues.setLocation(480, 175);
 		defaultValues.addItemListener(new ToggleDefault());
@@ -55,7 +55,7 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		game.setValues(parseMode("Default"));
 	}
 
-	public JComboBox getComboBox() {
+	public JComboBox<String> getComboBox() {
 		return defaultValues;
 	}
 
