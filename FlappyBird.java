@@ -7,6 +7,6 @@
 
 public class FlappyBird {
 	public static void main(String[] args) {
-		TestMainMenu.main(new String[] {});
+		TestMainMenu.main(new String[] {}); // runs the TestMainMenu class
 	}
 }

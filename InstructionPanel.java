@@ -15,12 +15,10 @@ import java.awt.Toolkit;
 
 public class InstructionPanel extends JPanel {
 
-	private JTextArea words;
-	private static final int SCREEN_WIDTH = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-	private static final int SCREEN_HEIGHT = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+	private JTextArea words; // the words the describe the game
 
 	public InstructionPanel() {
-		setLayout(null);
+		setLayout(null); // so that buttons can be added from TestMainMenu
 		words = new JTextArea();
 		add(words);
 		words.setSize(2160, 900);
@@ -31,6 +29,12 @@ public class InstructionPanel extends JPanel {
 	}
 
 	@Override
+
+	/**
+	 * Paints the message onto the panel.
+	 * @param g The Graphics object used to paint the components.
+	*/
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		setBackground(Color.WHITE);

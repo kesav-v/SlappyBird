@@ -6,20 +6,25 @@ import java.awt.event.ActionEvent;
 /**
  * This class represents a bird in my Flappy Bird game.
  * @author Kesav Viswanadha
- * @version 1.8
- * @lastedited May 24, 2015
+ * @version 2.1
+ * @lastedited May 29, 2015
 */
 
 public class Bird implements ActionListener {
 
-	private int y;
-	private int velocity;
-	private Timer fall;
-	private JComponent comp;
-	private boolean invincible;
-	private boolean exploding;
-	private int radius;
-	private int dR;
+	private int y; // the birds height
+	private int velocity; // the birds current velocity
+	private Timer fall; // the timer that makes the bird fall
+	private JComponent comp; // a reference to a JComponent to which this bird will be added
+	private boolean invincible; // is the bird invincible?
+	private boolean exploding; // is the bird in the process of exploding?
+	private int radius; // the radius of the explosion
+	private int dR; // how quickly the radius is changing
+
+	/**
+	 * Constructs a Bird object/
+	 * @param comp A reference to the JComponent to which this bird will be added.
+	*/
 
 	public Bird(JComponent comp) {
 		y = 720;
@@ -31,6 +36,11 @@ public class Bird implements ActionListener {
 		radius = 0;
 		dR = 0;
 	}
+
+	/**
+	 * ActionEvents fired by the Timer cause the bird to fall.
+	 * @param e The ActionEvent fired by the timer
+	*/
 
 	public void actionPerformed(ActionEvent e) {
 		fall();
@@ -47,6 +57,10 @@ public class Bird implements ActionListener {
 	public boolean isExploding() {
 		return exploding;
 	}
+
+	/**
+	 * Moves the bird up or down a certain amount each time it is called.
+	*/
 
 	public void fall() {
 		if (exploding) {
