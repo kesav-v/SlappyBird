@@ -306,7 +306,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		}	catch (Exception e)	{System.err.println("Fix your score.txt files!!!"); return; }
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm a");
-		previousScores.add(i, sumScores() + " on " + sdf.format(date));
+		previousScores.add(i, sumScores() + " on " + sdf.format(date) + " in level " + mainMenu.getSettingsPanel().getComboBox().getSelectedItem());
 		PrintWriter writeScores = null;
 		try {
 			writeScores = new PrintWriter(new File("scores.txt"));

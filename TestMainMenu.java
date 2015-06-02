@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.Timer;
+import javax.swing.ImageIcon;
 
 public class TestMainMenu extends JPanel implements ActionListener {
 
@@ -94,7 +95,7 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		backToSettings.setSize(2060, 40);
 		backToSettings.setBackground(Color.RED);
 		backToSettings.setForeground(Color.WHITE);
-		backToSettings.addActionListener(new ShowSettings());
+		backToSettings.addActionListener(new ResetCreator());
 		menu.add(play);
 		play.setSize(1000, 200);
 		play.setLocation(580, 520);
@@ -112,6 +113,10 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		goToSettings.setLocation(580, 220);
 		goToSettings.addActionListener(new ShowSettings());
 		cards.show(this, "Main Menu");
+	}
+
+	public SettingsPanel getSettingsPanel() {
+		return settings;
 	}
 
 	public static void main(String[] args) {
@@ -134,6 +139,14 @@ public class TestMainMenu extends JPanel implements ActionListener {
 	private class ShowSettings implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			show("Settings");
+		}
+	}
+
+	private class ResetCreator implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			show("Settings");
+			creator.clear();
+			settings.getComboBox().setSelectedItem("DefaultEASY");
 		}
 	}
 

@@ -50,9 +50,9 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		defaultValues.setBackground(Color.BLUE);
 		defaultValues.setForeground(Color.WHITE);
 		defaultValues.setFont(new Font("Arial", Font.PLAIN, 16));
-		defaultValues.setSelectedIndex(indexOf(loadModes(), "Default"));
+		defaultValues.setSelectedItem("DefaultEASY");
 		add(defaultValues);
-		game.setValues(parseMode("Default"));
+		game.setValues(parseMode("DefaultEASY"));
 	}
 
 	public JComboBox<String> getComboBox() {

@@ -135,6 +135,17 @@ public class ModeCreator extends JPanel {
 			writeMode.close();
 			scan.close();
 			settings.getComboBox().addItem(removeSpaces(values[0].getText()));
+			settings.getComboBox().setSelectedItem(removeSpaces(values[0].getText()));
+			clear();
+		}
+	}
+
+	public void clear() {
+		for (JTextField jtf : values) {
+			jtf.setText("");
+		}
+		for (JCheckBox jcb : options) {
+			jcb.setSelected(false);
 		}
 	}
 
