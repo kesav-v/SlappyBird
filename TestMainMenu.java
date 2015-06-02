@@ -91,7 +91,7 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		add(creator, "Mode Creator");
 		backToSettings = new JButton("CLOSE");
 		creator.add(backToSettings);
-		backToSettings.setLocation(50, 900);
+		backToSettings.setLocation(50, 950);
 		backToSettings.setSize(2060, 40);
 		backToSettings.setBackground(Color.RED);
 		backToSettings.setForeground(Color.WHITE);
@@ -146,7 +146,7 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			show("Settings");
 			creator.clear();
-			settings.getComboBox().setSelectedItem("DefaultEASY");
+			settings.getComboBox().setSelectedItem("Default");
 		}
 	}
 

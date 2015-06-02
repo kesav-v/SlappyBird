@@ -52,7 +52,7 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		defaultValues.setFont(new Font("Arial", Font.PLAIN, 16));
 		defaultValues.setSelectedItem("DefaultEASY");
 		add(defaultValues);
-		game.setValues(parseMode("DefaultEASY"));
+		game.setValues(parseMode("Default"));
 	}
 
 	public JComboBox<String> getComboBox() {
@@ -104,7 +104,7 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		try {
 			scan = new Scanner(new File("gameModes.txt"));
 		} catch (FileNotFoundException e) {
-			System.out.println("ERROR: No modes found");
+			System.out.println("ERROR: Cannot find file gameModes.txt");
 			System.exit(2);
 		}
 		String theMode = null;
@@ -116,7 +116,7 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 			}
 		}
 		if (theMode == null) {
-			System.out.println("ERROR: No such mode exists");
+			System.out.println("ERROR: Cannot find mode " + modeName + " in gameModes.txt");
 			System.exit(1);
 		}
 		Scanner getParts = new Scanner(theMode);
@@ -128,17 +128,17 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 			System.out.println("ERROR: This mode is incomplete");
 			System.exit(1);
 		}
-		double initVel = Double.parseDouble(pieces.get(0));
-		boolean oscilPipe = pieces.get(3).equals("true");
-		boolean changeOscil = pieces.get(4).equals("true");
-		boolean ghostPipe = pieces.get(5).equals("true");
-		int maxOscil = Integer.parseInt(pieces.get(6));
-		double mOSpeed = Double.parseDouble(pieces.get(7));
-		int numStartOscil = Integer.parseInt(pieces.get(8));
-		int invin = Integer.parseInt(pieces.get(9));
-		boolean retro = pieces.get(10).equals("true");
-		boolean exploding = pieces.get(11).equals("true");
-		return new Object[] {initVel, null, null, oscilPipe, changeOscil, ghostPipe, maxOscil, mOSpeed, numStartOscil, invin, retro, exploding};
+		double initVel             = Double.parseDouble(pieces.get(0));
+		double chanceofoscillating = Double.parseDouble(pieces.get(3));
+		boolean changeOscil        = Boolean.parseBoolean(pieces.get(4));
+		boolean ghostPipe          = Boolean.parseBoolean(pieces.get(5));
+		int maxOscil               = Integer.parseInt(pieces.get(6));
+		double mOSpeed             = Double.parseDouble(pieces.get(7));
+		int numStartOscil          = Integer.parseInt(pieces.get(8));
+		int invin                  = Integer.parseInt(pieces.get(9));
+		boolean retro              = Boolean.parseBoolean(pieces.get(10));
+		boolean exploding          = Boolean.parseBoolean(pieces.get(11));
+		return new Object[] {initVel, null, null, chanceofoscillating, changeOscil, ghostPipe, maxOscil, mOSpeed, numStartOscil, invin, retro, exploding};
 	}
 
 	private class ToggleDefault implements ItemListener {

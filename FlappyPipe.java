@@ -31,7 +31,6 @@ public class FlappyPipe implements ActionListener {
 	private int score;
 	private int topOscilDist, botOscilDist;
 	private boolean changeOscil;
-	private boolean oscilPipes;
 	private final int numPipe;
 	private int invinTime;
 	private boolean isVisible;
@@ -40,12 +39,14 @@ public class FlappyPipe implements ActionListener {
 	private double maxOscilSpeed;
 	private int numStartOscil;
 	private int roundsTillInvin;
+	private double chanceofoscillating;
 
 	public FlappyPipe(JComponent comp, Object... values) {
 		this.velocity = (double)values[0];
 		this.x = (int)values[1];
 		this.numPipe = (int)values[2];
-		this.oscilPipes = (boolean)values[3];
+		this.chanceofoscillating = (double)values[3];
+		if (chanceofoscillating > 1)	chanceofoscillating /= 100;
 		this.changeOscil = (boolean)values[4];
 		this.isGhost = (boolean)values[5];
 		this.maxOscillation = (int)values[6];
@@ -59,7 +60,7 @@ public class FlappyPipe implements ActionListener {
 		isVisible = true;
 		isInvincible = true;
 		oscillator = new Timer(20, this);
-		if (oscilPipes || isInvincible)
+		if (chanceofoscillating > 0 || isInvincible)
 			oscillator.start();
 		y = Math.random() * (comp.getHeight() - 800) + 400;
 		reset();
@@ -75,7 +76,7 @@ public class FlappyPipe implements ActionListener {
 		}
 		else if (1 + roundsTillInvin * numPipe + invinTime == resets % (roundsTillInvin * 4))
 			isInvincible = true;
-		if ((oscilPipes && resets >= numStartOscil) || isInvincible)	oscillator.start();
+		if ((chanceofoscillating > 0 && resets >= numStartOscil) || isInvincible)	oscillator.start();
 		if (isInvincible && color.equals(Color.YELLOW)) color = Color.RED;
 		if (color.equals(Color.RED)) {
 			redding = false;
@@ -93,10 +94,9 @@ public class FlappyPipe implements ActionListener {
 			blueing = false;
 		}
 		isVisible = true;
-		if (!oscilPipes || Math.random() > 0.5) oscillation = 0;
+		if (Math.random() > chanceofoscillating) oscillation = 0;
 		else oscillation = Math.random() * maxOscilSpeed + 1;
-		if (isInvincible && oscilPipes) oscillation = 10;
-		else if (isInvincible) oscillation = 0;
+		if (isInvincible) oscillation = 10;
 		newOscilDist();
 		resets++;
 	}

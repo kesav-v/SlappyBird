@@ -33,12 +33,12 @@ import java.text.SimpleDateFormat;
 public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 							
 	public enum GAME_MODE	{
-		// initVel, null, null, oscilPipe, changeOscil, ghostPipe, maxOscil, mOSpeed, numStartOscil, invin%, retro, explode
-		ORIGINAL	((double)2, null, null, true, false, false, 400, (double)5, 1, 6, false, false),
-		DEFAULT	((double)3, null, null, true, true, false, 400, (double)5, 1, 6, false, true),
-		GHOST	((double)3, null, null, true, false, true, 300, (double)2, 2, 5, false, true),
-		RETRO	((double)3, null, null, true, true, false, 400, (double)5, 1, 6, true, true),
-		REAL_RETRO	((double)13, null, null, true, false, false, 250, (double)3, 3, 3, true, true);
+		// initVel, null, null, chanceofoscillating, changeOscil, ghostPipe, maxOscil, mOSpeed, numStartOscil, invin%, retro, explode
+		ORIGINAL	((double)2, null, null, (double)0.5, false, false, 400, (double)5, 1, 6, false, false),
+		DEFAULT	((double)3, null, null, (double)0.5, true, false, 400, (double)5, 1, 6, false, true),
+		GHOST	((double)3, null, null, (double)0.3, false, true, 300, (double)2, 2, 5, false, true),
+		RETRO	((double)3, null, null, (double)0.5, true, false, 400, (double)5, 1, 6, true, true),
+		REAL_RETRO	((double)13, null, null, (double)1, false, false, 250, (double)3, 3, 4, true, true);
 
 		public final Object[] values;
 
@@ -68,7 +68,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private int headBangs;
 	private int count;
 	private ImageIcon apple;
-	private boolean ghostPipes, oscilPipes, changeOscil;
+	private boolean ghostPipes, changeOscil;
+	private double chanceofoscillating;
 	private double initVelocity;
 	private int maxOscillation;
 	private double maxOscilSpeed;
@@ -123,12 +124,12 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public Object[] getValues(int numPipe)	{
-		return new Object[]	{initVelocity, numPipe * (getWidth() / 4) + getWidth() / 4, numPipe, oscilPipes, changeOscil, ghostPipes, maxOscillation, maxOscilSpeed, numStartOscil, roundsTillInvin};
+		return new Object[]	{initVelocity, numPipe * (getWidth() / 4) + getWidth() / 4, numPipe, chanceofoscillating, changeOscil, ghostPipes, maxOscillation, maxOscilSpeed, numStartOscil, roundsTillInvin};
 	}
 
 	public void setValues(Object[] values)	{
 		initVelocity = (double)values[0];
-		oscilPipes = (boolean)values[3];
+		chanceofoscillating = (double)values[3];
 		changeOscil = (boolean)values[4];
 		ghostPipes = (boolean)values[5];
 		maxOscillation = (int)values[6];
@@ -388,8 +389,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	public void setGhostPipes(boolean val)	{
 		ghostPipes = val;
 	}
-	public void setOscilationPipes(boolean val)	{
-		oscilPipes = val;
+	public void setChanceOfOscillating(double val)	{
+		chanceofoscillating = val;
 	}
 	public void setChangeOscillation(boolean val)	{
 		changeOscil = val;
