@@ -9,12 +9,24 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+/**
+ * This class calculates statistics about a player's performance
+ * in the Flappy Bird Game.
+ * @author Kesav Viswanadha
+ * @version 2.1
+ * @lastedited May 28, 2015
+*/
+
 public class FlappyStats extends JPanel {
 	
-	ArrayList<Integer> scores;
+	ArrayList<Integer> scores; // this list holds all the scores the user has ever gotten.
+
+	/**
+	 * Constructs a FlappyStats object.
+	*/
 
 	public FlappyStats() {
-		setLayout(null);
+		setLayout(null); // setting layout to null so JButtons can be placed where necessary
 		scores = new ArrayList<Integer>();
 		readScores();
 	}
@@ -27,6 +39,10 @@ public class FlappyStats extends JPanel {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(1000, 1000);
 	}
+
+	/**
+	 * This method adds upto the first 20 scores from scores.txt into the list of scores.
+	*/
 
 	public void readScores() {
 		Scanner in = null;
@@ -42,6 +58,12 @@ public class FlappyStats extends JPanel {
 		}
 	}
 
+	@Override
+	/**
+	 * Paints all 2D graphics shown in the panel.
+	 * @param g A Graphics object with which to paint.
+	*/
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		setBackground(Color.WHITE);
@@ -53,6 +75,11 @@ public class FlappyStats extends JPanel {
 		g.drawString("Standard Deviation (top 20 games): " + standardDev(), getWidth() / 2 - 300, getHeight() / 2 + 100);
 	}
 
+	/**
+	 * Calculates the average of all the scores in the list.
+	 * @return The average of all the scores in the list.
+	*/
+
 	public double average() {
 		double sum = 0;
 		for (int i : scores) {
@@ -60,6 +87,11 @@ public class FlappyStats extends JPanel {
 		}
 		return sum / scores.size();
 	}
+
+	/**
+	 * Finds the largest score in this list.
+	 * @return The high score of the player.
+	*/
 
 	public int max() {
 		int max = scores.get(0);
@@ -69,6 +101,11 @@ public class FlappyStats extends JPanel {
 		return max;
 	}
 
+	/**
+	 * Calculates the standard deviation of the data in list.
+	 * @return The standard deviation of the data in list.
+	*/
+
 	public double standardDev() {
 		double avg = average();
 		double sum = 0;
@@ -77,6 +114,11 @@ public class FlappyStats extends JPanel {
 		}
 		return Math.sqrt(sum / scores.size());
 	}
+
+	/**
+	 * Calculates the median value of the data after merge sorting it.
+	 * @return The median value of the sorted data.
+	*/
 
 	public double median() {
 		mergeSort(scores, 0, scores.size() - 1);
