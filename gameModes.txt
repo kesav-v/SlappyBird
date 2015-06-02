@@ -1,6 +1,5 @@
 RetroIMPOSSIBLE 11.0 null null true true true 1000 20.0 0 1000 true true
 DefaultIMPOSSIBLE 11.0 null null true true true 1440 20.0 0 1000000 false true
-SRAVANI 6.0 null null true true false 600 5.0 3 2 false true
 DefaultEASY 3.0 null null false false false 0 0.0 1000000 5 false true
 DefaultMEDIUM 5.0 null null true false false 600 4.0 3 6 false true
 DefaultHARD 10.0 null null true true true 600 10.0 1 7 false true
