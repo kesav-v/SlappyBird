@@ -15,31 +15,7 @@ import javax.swing.Timer;
 public class FlappyPipe implements ActionListener {
 
 	private double x;
-	private double y; // (x, y) represents the bottom left corner of the pipe
-	private double velocity;
-	private final int WIDTH;
-	private Color color;
-	private Timer oscillator;
-	private double oscillation;
-	private final int HEIGHT;
-	private boolean isInvincible;
-	private int resets;
-	private boolean redding;
-	private boolean blueing;
-	private boolean greening;
-	private boolean reset;
-	private int score;
-	private int topOscilDist, botOscilDist;
-	private boolean changeOscil;
-	private final int numPipe;
-	private int invinTime;
-	private boolean isVisible;
-	private boolean isGhost;
-	private int maxOscillation;
-	private double maxOscilSpeed;
-	private int numStartOscil;
-	private int roundsTillInvin;
-	private double chanceofoscillating;
+	private double y; // (x, y) represents
 	private double velocity; // how quickly the pipe sidescrolls
 	private final int WIDTH; // the width of the pipe, which is 50 pixels
 	private Color color; // the color of the pipe /(for retro mode)
@@ -55,7 +31,7 @@ public class FlappyPipe implements ActionListener {
 	private int score; // the score that this pipe has given the user
 	private int topOscilDist, botOscilDist; // the two points where the pipes change vertical direction
 	private boolean changeOscil; // whether or not the oscillation distance is constant
-	private boolean oscilPipes; // do the pipes oscillate or not?
+	private double chanceofoscillating;
 	private final int numPipe; // the number, or index, represented by this pipe
 	private int invinTime; // a random value used to generate invincibility items
 	private boolean isVisible; // can the pipe be seen?
@@ -116,7 +92,7 @@ public class FlappyPipe implements ActionListener {
 		}
 		else if (1 + roundsTillInvin * numPipe + invinTime == resets % (roundsTillInvin * 4))
 			isInvincible = true;
-		if ((chanceofoscillating > 0 && resets >= numStartOscil) || isInvincible)	oscillator.start();
+		if (((chanceofoscillating > 0 && resets >= numStartOscil) || isInvincible))	oscillator.start();
 		if (isInvincible && color.equals(Color.YELLOW)) color = Color.RED;
 		if (color.equals(Color.RED)) {
 			redding = false;
@@ -136,7 +112,7 @@ public class FlappyPipe implements ActionListener {
 		isVisible = true;
 		if (Math.random() > chanceofoscillating) oscillation = 0;
 		else oscillation = Math.random() * maxOscilSpeed + 1;
-		if (isInvincible) oscillation = 10;
+		if (isInvincible && chanceofoscillating != 0) oscillation = 10;
 		newOscilDist();
 		resets++;
 	}

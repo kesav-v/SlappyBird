@@ -163,7 +163,7 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			show("Settings");
 			creator.clear();
-			settings.getComboBox().setSelectedItem("Default");
+			settings.getComboBox().setSelectedItem("DefaultEASY");
 		}
 	}
 

@@ -25,13 +25,18 @@ import java.awt.Font;
 
 public class ModeCreator extends JPanel {
 
-	private JCheckBox[] options;
-	private JTextField[] values;
-	private JButton saveChanges;
-	private JTextArea errorMessage;
-	private JTextArea[] descriptions;
-	private SettingsPanel settings;
-	private Font universal;
+	private JCheckBox[] options; // These checkboxes represent the boolean values that can be toggled by the user.
+	private JTextField[] values; // These textfields are for setting numerical values for ceratin properties of the pipe.
+	private JButton saveChanges; // This button saves the user's new mode into a text file for parsing.
+	private JTextArea errorMessage; // Displayed if the user enters invalid input.
+	private JTextArea[] descriptions; // These are messages that describe what each text field or checkbox is for.
+	private SettingsPanel settings; // This is a reference to the settings panel of the game.
+	private Font universal; // The universal font used for all checkboxes, text fields, and text areas.
+
+	/**
+	 * Constructs a ModeCreator object.
+	 * @param settings A reference to the settings panel of this game.
+	*/
 
 	public ModeCreator(SettingsPanel settings) {
 		universal = new Font("Arial", Font.PLAIN, 36);
@@ -88,6 +93,10 @@ public class ModeCreator extends JPanel {
 		errorMessage.setFont(universal);
 	}
 
+	/**
+	 * This nested class handles the writing of the new mode to a text file.
+	*/
+
 	private class ChangeSaver implements ActionListener {
 		public void actionPerformed(ActionEvent evt) {
 			String s = "";
@@ -116,7 +125,7 @@ public class ModeCreator extends JPanel {
 				mOSpeed = Double.parseDouble(values[4].getText());
 				numStartOscil = Integer.parseInt(values[5].getText());
 				invin = Integer.parseInt(values[6].getText());
-			} catch (IllegalArgumentException e) {
+			} catch (IllegalArgumentException e) { // if any input is invalid, display an error message
 				errorMessage.setVisible(true);
 				System.out.println("Illegal argument exception");
 				return;
@@ -150,6 +159,10 @@ public class ModeCreator extends JPanel {
 		}
 	}
 
+	/**
+	 * This method clears all the text fields and unchecks all the checkboxes.
+	*/
+
 	public void clear() {
 		for (JTextField jtf : values) {
 			jtf.setText("");
@@ -158,6 +171,12 @@ public class ModeCreator extends JPanel {
 			jcb.setSelected(false);
 		}
 	}
+
+	/**
+	 * This method removes all the whitespace from the name of the mode.
+	 * @param s The original string with spaces.
+	 * @return The string without any whitespace.
+	*/
 
 	private String removeSpaces(String s) {
 		for (int i = 0; i < s.length(); i++) {

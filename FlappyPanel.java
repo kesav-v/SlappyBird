@@ -26,60 +26,45 @@ import java.text.SimpleDateFormat;
  * This is the bulk of the code - the game itself is displayed through this panel.
  * @author Kesav Viswanadha
  * @contributor Ofek Gila
- * @version 1.8
- * @lastedited May 24, 2015
+ * @version 2.1
+ * @lastedited June 2, 2015
 */
 
 public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 							
-	public enum GAME_MODE	{
-		// initVel, null, null, chanceofoscillating, changeOscil, ghostPipe, maxOscil, mOSpeed, numStartOscil, invin%, retro, explode
-		ORIGINAL	((double)2, null, null, (double)0.5, false, false, 400, (double)5, 1, 6, false, false),
-		DEFAULT	((double)3, null, null, (double)0.5, true, false, 400, (double)5, 1, 6, false, true),
-		GHOST	((double)3, null, null, (double)0.3, false, true, 300, (double)2, 2, 5, false, true),
-		RETRO	((double)3, null, null, (double)0.5, true, false, 400, (double)5, 1, 6, true, true),
-		REAL_RETRO	((double)13, null, null, (double)1, false, false, 250, (double)3, 3, 4, true, true);
+	private TestMainMenu mainMenu; // a reference to the main menu of this game
+	private FlappyPipe[] pipes; // an array of the pipes that will be shown on screen
+	private Timer movePipes; // This timer moves the pipes horizontally
+	private boolean first; // is it the first time paintComponent is called?
+	private Bird bird; // The bird that moves through the pipes in the game
+	private int invincibleTimes; // the number of times the invincibility timer has been called
+	private boolean firstPress; // is it the first key press?
+	private ArrayList<String> previousScores; // all the user's previous scores in the game
+	private boolean justDied; // did the bird just hit a pipe?
+	private ImageIcon bird1, bird2; // two pictures of birds to create a flapping animation
+	private Timer invincibility; // This timer fires events while the bird is invincible
+	private AudioList songs; // the playlist of background music during the game
+	private AudioClip clip; // the invincibility background music
+	private ImageIcon thePipe; // an image of the pipe
+	private int count; // the number of times the pipes have moved
+	private ImageIcon apple; // the image of the invincibility apple
+	private boolean ghostPipes, changeOscil; // are there ghost pipes? does the oscillation distance change?
+	private double chanceofoscillating; // the chance that a pipe oscillates
+	private double initVelocity; // the initial sidescrolling speed of the pipes
+	private int maxOscillation; // the maximum distance that the pipe moves up and down
+	private double maxOscilSpeed; // the maximum speed with which the pipe oscillates
+	private int numStartOscil; // the number of screenfuls of pipes until oscillation begins
+	private int roundsTillInvin; // how far apart the invincibility apples are spaced
+	private boolean gameIsOver; // is the game finished? has the bird died?
+	private boolean retro; // toggles retro mode on/off
+	private boolean explode; // does the bird explode when it dies?
+	private Color birdColor; // the color of the bird, which changes in retro mode
+	private ImageIcon explosion; // the image of the bird's explosion
 
-		public final Object[] values;
-
-		GAME_MODE(Object... values)	{
-			this.values = values;
-		}
-	}
-	
-	private TestMainMenu mainMenu;
-	private FlappyPipe[] pipes;
-	private Timer movePipes;
-	private boolean first;
-	private Bird bird;
-	private int invincibleTimes;
-	private boolean firstPress;
-	private ArrayList<String> previousScores;
-	private boolean justDied;
-	private ImageIcon theBird;
-	private ImageIcon bird1, bird2;
-	private boolean imgLoaded;
-	private Timer invincibility;
-	private Color invincibleColor;
-	private AudioList songs;
-	private ArrayList<String> songNames;
-	private AudioClip clip;
-	private ImageIcon thePipe;
-	private int headBangs;
-	private int count;
-	private ImageIcon apple;
-	private boolean ghostPipes, changeOscil;
-	private double chanceofoscillating;
-	private double initVelocity;
-	private int maxOscillation;
-	private double maxOscilSpeed;
-	private int numStartOscil;
-	private int roundsTillInvin;
-	private boolean gameIsOver;
-	private boolean retro;
-	private boolean explode;
-	private Color birdColor;
-	private ImageIcon explosion;
+	/**
+	 * Constucts a new FlappyPanel object.
+	  *@param mainMenu A reference to the main menu of this game.
+	*/
 
 	public FlappyPanel(TestMainMenu mainMenu) {
 		this.mainMenu = mainMenu;
@@ -96,18 +81,19 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		retro = false;
 		explode = true;
 		firstPress = true;
-		headBangs = count = 0;
+		count = 0;
 		bird = new Bird(this);
 		addKeyListener(this);
 		justDied = true;
-		imgLoaded = true;
 		birdColor = Color.white;
-		invincibleColor = Color.BLACK;
-		theBird = new ImageIcon(getClass().getResource("FlappyBirdOnline.png"));
 		bird1 = new ImageIcon(getClass().getResource("Bird1.png"));
 		bird2 = new ImageIcon(getClass().getResource("Bird2.png"));
 		thePipe = new ImageIcon(getClass().getResource("PipeCut.png"));
 	}
+
+	/**
+	 * If the game is over and the users hits 'r', this method resets the game.
+	*/
 
 	public void resetGame()	{
 		bird = new Bird(this);
@@ -123,9 +109,20 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		mainMenu.gameOver();
 	}
 
+	/**
+	 * This method returns the properties of a given pipe.
+	 * @param numPipe The index of the pipe for which this method gets the values.
+	 * @return The properties of the pipe.
+	*/
+
 	public Object[] getValues(int numPipe)	{
 		return new Object[]	{initVelocity, numPipe * (getWidth() / 4) + getWidth() / 4, numPipe, chanceofoscillating, changeOscil, ghostPipes, maxOscillation, maxOscilSpeed, numStartOscil, roundsTillInvin};
 	}
+
+	/**
+	 * This method sets the properties of this game as specified.
+	 * @param values The properties of the game.
+	*/
 
 	public void setValues(Object[] values)	{
 		initVelocity = (double)values[0];
@@ -140,6 +137,10 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		explode = (boolean)values[11];
 	}
 
+	/**
+	 * This nested class handles what happens if an invincibility item is collected.
+	*/
+
 	private class Handler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			invincibleTimes++;
@@ -147,7 +148,6 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 				clip.play();
 				songs.pause();
 			}
-			invincibleColor = new Color(255 - invincibleTimes, 0, 0);
 			if (invincibleTimes == 255) {
 				bird.setInvincible(false);
 				invincibility.stop();
@@ -165,6 +165,11 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	public AudioClip getInvinMusic() {
 		return clip;
 	}
+
+	/**
+	 * This method paints all the things seen on screen.
+	 * @param g The Graphics object used for the drawing.
+	*/
 
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
@@ -250,6 +255,12 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		}
 	}
 
+	/**
+	 * This method calculates the sum of the scores of all the pipes, which
+	 * ends up being the user's total score.
+	 * @return The total score the user has so far.
+	*/
+
 	private int sumScores() {
 		int sum = 0;
 		for (FlappyPipe fp : pipes) {
@@ -257,6 +268,11 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		}
 		return sum;
 	}
+
+	/**
+	 * This method is called with a Timer to create the animation of sidescrolling pipes.
+	 * @param e The ActionEvent fired by the Timer.
+	*/
 
 	public void actionPerformed(ActionEvent e) {
 		count++;
@@ -267,11 +283,12 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			incPipeVelocity(bird.isInvincible() ? 2:1);
 		}
 		repaint();
-
-
-		// songs.setRate(1 + sumScores() / 20f);
-		// System.out.println((1 + sumScores() / 20f) + " " + (1 + (pipes[0].getVelocity()-2)/20));
 	}
+
+	/**
+	 * Increases/decreases the speed of each pipe in the game by a certain amount.
+	 * @param ratio The factor by which the speed increases.
+	*/
 
 	public void incPipeVelocity(double ratio)	{
 		for (FlappyPipe fp : pipes)	{
@@ -281,13 +298,27 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		}
 	}
 
+	/**
+	 * Returns the velocity increase, which is a reciprocal square root function of the current velocity.
+	 * @param The current velocity
+	*/
+
 	public double velocityInc(double num)	{
 		return 1 / (100 * Math.sqrt(num));
 	}
 
+	/**
+	 * Returns the velocity decrease, which is a square root function of the current velocity.
+	 * @param The current velocity
+	*/
+
 	public double velocityDec(double num)	{
 		return Math.sqrt(num) / 100;
 	}
+
+	/**
+	 * When the player dies, this method saves his/her score into the scores.txt file.
+	*/
 
 	public void saveScore() {
 		Scanner getScores = null;
@@ -321,7 +352,13 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		writeScores.close();
 	}
 
+	/**
+	 * This method handles the keyboard controls of the game.
+	 * @param e The KeyEvent fired by the KeyListener.
+	*/
+
 	public void keyPressed(KeyEvent e) {
+		// if the user jumps
 		if ((e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_SPACE) && !dying() && !gameIsOver) {
 			if (firstPress) {
 				movePipes.start();
@@ -331,7 +368,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			bird.setVelocity(13);
 			repaint();
 		}
-		if (e.getKeyChar() == 'r' && gameIsOver) {
+		if (e.getKeyChar() == 'r' && gameIsOver) { // 'r' resets the game
 			resetGame();
 			repaint();
 		}
@@ -343,6 +380,15 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 
 	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}
+
+	/**
+	 * This method figures out if a bird is dead. It is dead if one of the following conditions is satisfied:
+	 * - the bird hit the ceiling.
+	 * - the bird hit the ground.
+	 * - the bird hit one of the pipes.
+	 * @return Is the bird dead or not?
+	*/
+
 	public boolean dead() {
 		if (bird.getY() + 50 > getHeight() || (bird.getY() < 0)) {
 			gameIsOver = true;
@@ -373,12 +419,15 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 				bird.setInvincible(true);
 				fp.setVisible(false);
 				invincibility.start();
-				invincibleColor = Color.RED;
 				return false;
 			}
 		}
 		return false;
 	}
+
+	/**
+	 * Is the bird in the process of falling/exploding?
+	*/
 
 	public boolean dying() {
 		return bird.isFalling() && !movePipes.isRunning();
