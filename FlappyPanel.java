@@ -120,7 +120,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		justDied = true;
 		previousScores.clear();
 		gameIsOver = false;
-		mainMenu.gameStart();
+		mainMenu.gameOver();
 	}
 
 	public Object[] getValues(int numPipe)	{

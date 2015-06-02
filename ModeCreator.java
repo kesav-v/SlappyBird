@@ -15,6 +15,14 @@ import java.io.FileNotFoundException;
 import javax.swing.JTextArea;
 import java.awt.Font;
 
+/**
+ * This panel provides a nice GUI where the user can create
+ * a custom mode of gameplay however they like it.
+ * @author Kesav Viswanadha
+ * @version 2.1
+ * @lastedited June 1, 2014
+*/
+
 public class ModeCreator extends JPanel {
 
 	private JCheckBox[] options;

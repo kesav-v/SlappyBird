@@ -14,17 +14,29 @@ import java.io.IOException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
+
+/**
+ * This class represents the panel where the user can toggle/change certain settings with the game.
+ * @author Kesav Viswanadha
+ * @contributor Ofek Gila
+ * @version 2.1
+ * @lastedited June 1, 2015
+*/
 
 public class SettingsPanel extends JPanel implements ChangeListener {
 
-	private static final int SCREEN_WIDTH = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-	private static final int SCREEN_HEIGHT = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-	private JSlider volume;
-	private FlappyPanel game;
-	private JComboBox<String> defaultValues;
-	private TestMainMenu menu;
-	private boolean first;
+	private JSlider volume; // the slider that changes the volume of the background music
+	private FlappyPanel game; // a reference to the panel object which is the game
+	private JComboBox<String> defaultValues; // the list of choices between different game modes
+	private TestMainMenu menu; // a reference to the main menu object of the game
+	private boolean first; // to handle the special case where itemStateChanged is called for the first time
+
+	/**
+	 * Constructs a SettingsPanel object.
+	 * Adds all components and such.
+	 * @param game A reference to the panel where the game is played.
+	 * @param menu A reference to the main menu of the game.
+	*/
 
 	public SettingsPanel(FlappyPanel game, TestMainMenu menu) {
 		setLayout(null);
@@ -59,12 +71,10 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		return defaultValues;
 	}
 
-	private int indexOf(String[] arr, String val) {
-		for (int i = 0; i < arr.length; i++) {
-			if (arr[i].equals(val)) return i;
-		}
-		return -1;
-	}
+	/**
+	 * This method gets all the names of the modes from the text file gameModes.txt.
+	 * @return An array of mode names.
+	*/
 
 	private String[] loadModes() {
 		Scanner scan = null;
@@ -98,6 +108,15 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		modes[cnt] = "Create new mode...";
 		return modes;
 	}
+
+	/**
+	 * This method takes a single line out of the text file gameModes.txt,
+	 * and parses the string to convert into a game mode, which is an array of Objects.
+	 * It does this by reading in the individual tokens and assigning values based on what
+	 * each token says.
+	 * @param modeName The name of the mode to be parsed
+	 * @return An array of objects representing all the properties of this game mode.
+	*/
 
 	private Object[] parseMode(String modeName) {
 		Scanner scan = null;
@@ -141,9 +160,13 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		return new Object[] {initVel, null, null, chanceofoscillating, changeOscil, ghostPipe, maxOscil, mOSpeed, numStartOscil, invin, retro, exploding};
 	}
 
+	/**
+	 * This nested class handles the combo box and changes the mode of game play as necessary.
+	*/
+
 	private class ToggleDefault implements ItemListener {
 		public void itemStateChanged(ItemEvent e) {
-			if (first) {
+			if (first) { // to make sure there are no NullPointerExceptions
 				first = false;
 				return;
 			}
@@ -153,14 +176,13 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 				return;
 			}
 			game.setValues(parseMode(chosen));
-			/**String chosen = defaultValues.getSelectedItem().toString();
-			if (chosen.equals("Default"))	game.setValues(FlappyPanel.GAME_MODE.DEFAULT);
-			else if (chosen.equals("Ghost"))	game.setValues(FlappyPanel.GAME_MODE.GHOST);
-			else if (chosen.equals("Original"))	game.setValues(FlappyPanel.GAME_MODE.ORIGINAL);
-			else if (chosen.equals("Retro"))	game.setValues(FlappyPanel.GAME_MODE.RETRO);
-			else if (chosen.equals("Real Retro"))	game.setValues(FlappyPanel.GAME_MODE.REAL_RETRO);*/
 		}
 	}
+
+	/**
+	 * Changes the volume of the music to whatever the user puts it at.
+	 * @param e The ChangeEvent fired by the JSlider.
+	*/
 
 	public void stateChanged(ChangeEvent e) {
 		game.getBackgroundMusic().setVolume(volume.getValue() / 100.0);

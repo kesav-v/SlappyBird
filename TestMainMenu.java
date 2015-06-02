@@ -11,26 +11,38 @@ import java.awt.Font;
 import javax.swing.Timer;
 import javax.swing.ImageIcon;
 
+/**
+ * This class represents the main menu of the game. All the parts of the game come together
+ * under this panel. This is the main class of the game.
+ * @author Kesav Viswanadha
+ * @version 2.1
+ * @lastedited June 1, 2015
+*/
+
 public class TestMainMenu extends JPanel implements ActionListener {
 
-	private JButton play;
-	private JButton howToPlay;
-	private CardLayout cards;
-	private FlappyPanel gamePanel;
-	private MainMenu menu;
-	private InstructionPanel instructions;
-	private JButton stats;
-	private FlappyStats statPanel;
-	private JButton backToMenu;
-	private JButton instructionsToMenu;
-	private JButton statsToMenu;
-	private JButton settingsToMenu;
-	private JButton goToSettings;
-	private JButton gameToMenu;
-	private JButton backToSettings;
-	private Font universal;
-	private SettingsPanel settings;
-	private ModeCreator creator;
+	private JButton play; // the "PLAY" button displayed in the main menu
+	private JButton howToPlay; // the "HOW TO PLAY" button displayed in the main menu
+	private CardLayout cards; // the card layout that this panel is going to use
+	private FlappyPanel gamePanel; // the main panel where the game is played
+	private MainMenu menu; // this is the panel that represents the main menu
+	private InstructionPanel instructions; // this panel displays instructions on how to play the game
+	private JButton stats; // the "YOUR STATISTICS" button displayed in the main menu
+	private FlappyStats statPanel; // the panel which displays the statistics
+	private JButton instructionsToMenu; // the button which takes the user back to the menu from the instructions
+	private JButton statsToMenu; // the button which takes the user back to the menu from the stats page
+	private JButton settingsToMenu; // the button which takes the user back to the menu from the settings panel
+	private JButton goToSettings; // the "SETTINGS" button displayed in the main menu
+	private JButton gameToMenu; // the button which takes the user back to the main menu from the game
+	private JButton backToSettings; // the button which takes the user back to settings from the mode creator
+	private Font universal; // the universal font used for all the JButtons
+	private SettingsPanel settings; // the settings panel
+	private ModeCreator creator; // the panel where a user can create a new mode of gameplay
+
+	/**
+	 * Constructs a TestMainMenu object.
+	 * Adds all necessary components to the panel and sets up everything.
+	*/
 
 	public TestMainMenu() {
 		universal = new Font("Comic Sans", Font.BOLD, 48);
@@ -128,13 +140,18 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		frame.setResizable(false);
 	}
 
+	/**
+	 * If the game is over, displays the "BACK TO MAIN MENU" button.
+	*/
+
 	public void gameOver()	{
 		gameToMenu.setVisible(gamePanel.gameIsOver());
 	}
 
-	public void gameStart()	{
-		gameToMenu.setVisible(gamePanel.gameIsOver());
-	}
+	/**
+	 * Below are several nested classes for handling the buttons throughout the program.
+	 * They do a variety of simple functions which mostly consist of flipping through cards in the layout.
+	*/
 
 	private class ShowSettings implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -169,16 +186,27 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		}
 	}
 
+	public void actionPerformed(ActionEvent e) {
+		show("Game");
+	}
+
+	/**
+	 * Displays a JPanel with the given name.
+	 * @param s The name of the panel to be displayed.
+	*/
+
 	public void show(String s) {
 		cards.show(this, s);
 	}
 
+	@Override
+	/**
+	 * Paints all the components onto the main menu.
+	 * @param g The Graphics object used to do the drawing.
+	*/
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		setBackground(Color.BLACK);
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		show("Game");
 	}
 }
