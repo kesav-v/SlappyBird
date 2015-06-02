@@ -5,6 +5,14 @@ import java.awt.Font;
 import javax.swing.JTextArea;
 import java.awt.Toolkit;
 
+/**
+ * This class is a panel that displays some information
+ * about the game to the user.
+ * @author Kesav Viswanadha
+ * @version 2.1
+ * @lastedited May 28, 2015
+*/
+
 public class InstructionPanel extends JPanel {
 
 	private JTextArea words;

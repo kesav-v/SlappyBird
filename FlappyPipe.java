@@ -8,8 +8,8 @@ import javax.swing.Timer;
  * This class represents a pipe in the Flappy Bird game.
  * @author Kesav Viswanadha
  * @contributor Ofek Gila
- * @version 1.8
- * @lastedited May 24, 2015
+ * @version 2.1
+ * @lastedited June 1, 2015
 */
 
 public class FlappyPipe implements ActionListener {
@@ -40,6 +40,36 @@ public class FlappyPipe implements ActionListener {
 	private int numStartOscil;
 	private int roundsTillInvin;
 	private double chanceofoscillating;
+	private double velocity; // how quickly the pipe sidescrolls
+	private final int WIDTH; // the width of the pipe, which is 50 pixels
+	private Color color; // the color of the pipe /(for retro mode)
+	private Timer oscillator; // handles the oscillation animation
+	private double oscillation; // how quickly the pipe oscillates vertically
+	private final int HEIGHT; // the height of the pipe, randomly generated each time
+	private boolean isInvincible; // is the pipe an invincibility item?
+	private int resets; // the number of times the pipe has wrapped around the screen
+	private boolean redding; // is the color of the pipe fading into red?
+	private boolean blueing; // is the color of the pipe fading into blue?
+	private boolean greening; // is the color of the pipe fading into green?
+	private boolean reset; // has the pipe just reset?
+	private int score; // the score that this pipe has given the user
+	private int topOscilDist, botOscilDist; // the two points where the pipes change vertical direction
+	private boolean changeOscil; // whether or not the oscillation distance is constant
+	private boolean oscilPipes; // do the pipes oscillate or not?
+	private final int numPipe; // the number, or index, represented by this pipe
+	private int invinTime; // a random value used to generate invincibility items
+	private boolean isVisible; // can the pipe be seen?
+	private boolean isGhost; // is this a ghost pipe, so it disappears?
+	private int maxOscillation; // the maximum oscillation distance of the pipe
+	private double maxOscilSpeed; // the maximum speed at which the pipe oscillates
+	private int numStartOscil; // the number of screenfuls of pipes before the oscillating pipes show up
+	private int roundsTillInvin; // how often a pipe shows up
+
+	/**
+	 * Constructs a FlappyPipe object.
+	 * @param comp The JComponent to which this FlappyPipe was added.
+	 * @param values The defining values that will set the properties of this pipe.
+	*/
 
 	public FlappyPipe(JComponent comp, Object... values) {
 		this.velocity = (double)values[0];
@@ -64,10 +94,20 @@ public class FlappyPipe implements ActionListener {
 			oscillator.start();
 		y = Math.random() * (comp.getHeight() - 800) + 400;
 		reset();
-		
 	}
 
-	public void reset()	{
+	/**
+	 * This is the method that is called everytime a new pipe is created.
+	 * It does the following:
+	 * 
+	 * - Sets the color of the pipe (for retro mode)
+	 * - Decides whether the pipe is invincible or not.
+	 * - Finds the starting point for color fading (retro mode)
+	 * - figures out the oscillation speed and top/bottom distance
+	 * - increments the number of resets
+	*/
+
+	private void reset()	{
 		setColor();
 		if (oscillator.isRunning())	oscillator.stop();
 		if (isInvincible)	{
@@ -101,13 +141,22 @@ public class FlappyPipe implements ActionListener {
 		resets++;
 	}
 
-	public void newOscilDist()	{
+	/**
+	 * This method calculates random oscillation top/bottom boundaries.
+	*/
+
+	private void newOscilDist()	{
 		if (changeOscil)	{
 			topOscilDist = maxOscillation / 2 - (int)(Math.random() * 50);
 			botOscilDist = maxOscillation / 2 - (int)(Math.random() * 50);
 		}
 		else topOscilDist = botOscilDist = maxOscillation / 2;
 	}
+
+	/**
+	 * This method moves the pipe a certain amount of pixels to the left.
+	 * A Timer is used on this method to create the animation of sidescrolling.
+	*/
 
 	public void move() {
 		x -= velocity;
@@ -139,6 +188,12 @@ public class FlappyPipe implements ActionListener {
 		return score;
 	}
 
+	/**
+	 * This method slightly alters the color of the pipe.
+	 * Red pipes fade into green pipes, green into blue, and blue back to red.
+	 * A Timer is used on this method to create the animation of a pipe that gradually changes color.
+	*/
+
 	public void fadeColor()	{
 		if (redding) {
 			if (color.getRed() >= 255) {
@@ -166,6 +221,11 @@ public class FlappyPipe implements ActionListener {
 		}
 	}
 
+	/**
+	 * Randomly chooses a color for the pipe between
+	 * red, blue, green, and yellow.
+	*/
+
 	public void setColor() {
 		switch ((int)(Math.random() * 4)) {
 			case 0: color = Color.RED; break;
@@ -174,6 +234,11 @@ public class FlappyPipe implements ActionListener {
 			case 3: color = Color.GREEN; break;
 		}
 	}
+
+	/**
+	 * This method moves the pipe up or down a certain amount.
+	 * A Timer is used on this method to create the animation of oscillating pipes.
+	*/
 
 	public void actionPerformed(ActionEvent e) {
 		y -= oscillation;
