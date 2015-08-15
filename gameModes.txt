@@ -1,9 +1,9 @@
 me 100.0 null null 0.1 true true 2 90.0 2 7 true true
-RetroIMPOSSIBLE 11.0 null null 0.9 true true 1000 20.0 0 1000 true true
-DefaultIMPOSSIBLE 11.0 null null 0.9 true true 1000 20.0 0 1000000 false true
-DefaultEASY 3.0 null null 0 false false 0 0.0 1000000 5 false true
-DefaultMEDIUM 5.0 null null 0.5 false false 600 4.0 3 6 false true
-DefaultHARD 10.0 null null 0.7 true true 600 10.0 1 7 false true
-RetroEASY 3.0 null null 0 false false 0 0.0 1000000 5 true true
-RetroMEDIUM 5.0 null null 0.5 false false 600 4.0 3 6 true true
-RetroHARD 10.0 null null 0.7 true true 600 10.0 1 7 true true
+RetroIMPOSSIBLE 11.0 null null 0.9 true true 1000 20.0 0 1000 true true true
+DefaultIMPOSSIBLE 11.0 null null 0.9 true true 1000 20.0 0 1000000 false true true
+DefaultEASY 3.0 null null 0 false false 0 0.0 1000000 5 false true false
+DefaultMEDIUM 5.0 null null 0.5 false false 600 4.0 3 6 false true true
+DefaultHARD 10.0 null null 0.7 true true 600 10.0 1 7 false true true
+RetroEASY 3.0 null null 0 false false 0 0.0 1000000 5 true true false
+RetroMEDIUM 5.0 null null 0.5 false false 600 4.0 3 6 true true true
+RetroHARD 10.0 null null 0.7 true true 600 10.0 1 7 true true true

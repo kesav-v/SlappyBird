@@ -43,11 +43,12 @@ public class ModeCreator extends JPanel {
 		this.settings = settings;
 		setLayout(null);
 		setBackground(Color.WHITE);
-		options = new JCheckBox[4];
+		options = new JCheckBox[5];
 		options[0] = new JCheckBox("Oscillation distance not constant?");
 		options[1] = new JCheckBox("Ghost pipes (pipes that disappear)?");
 		options[2] = new JCheckBox("Retro mode?");
 		options[3] = new JCheckBox("Bird explodes?");
+		options[4] = new JCheckBox("Gravity reverses?");
 		descriptions = new JTextArea[7];
 		descriptions[0] = new JTextArea("Name of your new mode:");
 		descriptions[1] = new JTextArea("Initial horizontal velocity of sidescroll:");
@@ -68,13 +69,13 @@ public class ModeCreator extends JPanel {
 			values[i] = new JTextField();
 			add(descriptions[i]);
 			descriptions[i].setSize(2060, 40);
-			descriptions[i].setLocation(50, 100 * i + 200);
+			descriptions[i].setLocation(50, 100 * i + 250);
 			descriptions[i].setBackground(Color.WHITE);
 			descriptions[i].setEditable(false);
 			descriptions[i].setFont(universal);
 			add(values[i]);
 			values[i].setSize(2060, 40);
-			values[i].setLocation(50, 100 * i + 250);
+			values[i].setLocation(50, 100 * i + 300);
 			values[i].setFont(new Font("Arial", Font.PLAIN, 20));
 		}
 		saveChanges = new JButton("SAVE CHANGES");
@@ -149,7 +150,8 @@ public class ModeCreator extends JPanel {
 			writeMode.print(numStartOscil + " ");
 			writeMode.print(invin + " ");
 			writeMode.print(options[2].isSelected() + " ");
-			writeMode.println(options[3].isSelected());
+			writeMode.print(options[3].isSelected() + " ");
+			writeMode.println(options[4].isSelected());
 			writeMode.print(s);
 			writeMode.close();
 			scan.close();

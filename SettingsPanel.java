@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.Timer;
 
 /**
  * This class represents the panel where the user can toggle/change certain settings with the game.
@@ -28,8 +31,10 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 	private JSlider volume; // the slider that changes the volume of the background music
 	private FlappyPanel game; // a reference to the panel object which is the game
 	private JComboBox<String> defaultValues; // the list of choices between different game modes
+	private JComboBox<String> whichSong; // the list of choices between different game modes
 	private TestMainMenu menu; // a reference to the main menu object of the game
 	private boolean first; // to handle the special case where itemStateChanged is called for the first time
+	private Timer changeSong; // to change the name of the song in the JCheckBox
 
 	/**
 	 * Constructs a SettingsPanel object.
@@ -44,6 +49,7 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		setBackground(Color.BLUE);
 		this.game = game;
 		this.menu = menu;
+		changeSong = new Timer(1000, new ChangeSong());
 		volume = new JSlider(JSlider.HORIZONTAL, 0, 100, 100);
 		add(volume);
 		volume.setSize(800, 50);
@@ -64,12 +70,35 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		defaultValues.setFont(new Font("Arial", Font.PLAIN, 16));
 		defaultValues.setSelectedItem("DefaultEASY");
 		add(defaultValues);
+		whichSong = new JComboBox<String>(loadSongs());
+		whichSong.setSize(600, 40);
+		whichSong.setLocation(1480, 175);
+		whichSong.addItemListener(new ToggleSongs());
+		whichSong.setBackground(Color.BLUE);
+		whichSong.setForeground(Color.WHITE);
+		whichSong.setFont(new Font("Arial", Font.PLAIN, 16));
+		whichSong.setSelectedItem(game.getSongList().getAudioClip().getName());
+		add(whichSong);
 		game.setValues(parseMode("DefaultEASY"));
 	}
 
 	public JComboBox<String> getComboBox() {
 		return defaultValues;
 	}
+
+	public String[] loadSongs() {
+		ArrayList<File> list = FileSearcher.findFiles(FileSearcher.SUBFOLDERS_AND_CURRENT, ".mp3");
+		ArrayList<String> names = new ArrayList<String>();
+		for (File f : list) {
+			if (!(f.getName().equals("MarioInvincible.mp3"))) names.add(f.getName());
+		}
+		String[] songs = new String[names.size()];
+		for (int i = 0; i < songs.length; i++) {
+			songs[i] = names.get(i).substring(0, names.get(i).length() - 4);
+		}
+		return songs;
+	}
+
 
 	/**
 	 * This method gets all the names of the modes from the text file gameModes.txt.
@@ -143,7 +172,7 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		while (getParts.hasNext()) {
 			pieces.add(getParts.next());
 		}
-		if (pieces.size() != 12) {
+		if (pieces.size() != 13) {
 			System.out.println("ERROR: This mode is incomplete");
 			System.exit(1);
 		}
@@ -157,7 +186,8 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		int invin                  = Integer.parseInt(pieces.get(9));
 		boolean retro              = Boolean.parseBoolean(pieces.get(10));
 		boolean exploding          = Boolean.parseBoolean(pieces.get(11));
-		return new Object[] {initVel, null, null, chanceofoscillating, changeOscil, ghostPipe, maxOscil, mOSpeed, numStartOscil, invin, retro, exploding};
+		boolean reversing          = Boolean.parseBoolean(pieces.get(12));
+		return new Object[] {initVel, null, null, chanceofoscillating, changeOscil, ghostPipe, maxOscil, mOSpeed, numStartOscil, invin, retro, exploding, reversing};
 	}
 
 	/**
@@ -176,6 +206,19 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 				return;
 			}
 			game.setValues(parseMode(chosen));
+		}
+	}
+
+	private class ToggleSongs implements ItemListener {
+		public void itemStateChanged(ItemEvent e) {
+			String chosen = whichSong.getSelectedItem().toString();
+			game.getSongList().playSong(chosen);
+		}
+	}
+
+	private class ChangeSong implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			whichSong.setSelectedItem(game.getSongList().getAudioClip().getName());
 		}
 	}
 

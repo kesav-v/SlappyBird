@@ -56,6 +56,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private double maxOscilSpeed; // the maximum speed with which the pipe oscillates
 	private int numStartOscil; // the number of screenfuls of pipes until oscillation begins
 	private int roundsTillInvin; // how far apart the invincibility apples are spaced
+	private boolean upsideDown; // does the gravity reverse in this level?
 	private boolean gameIsOver; // is the game finished? has the bird died?
 	private boolean retro; // toggles retro mode on/off
 	private boolean explode; // does the bird explode when it dies?
@@ -121,7 +122,11 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	*/
 
 	public Object[] getValues(int numPipe)	{
-		return new Object[]	{initVelocity, numPipe * (getWidth() / 4) + getWidth() / 4, numPipe, chanceofoscillating, changeOscil, ghostPipes, maxOscillation, maxOscilSpeed, numStartOscil, roundsTillInvin};
+		return new Object[]	{initVelocity, numPipe * (getWidth() / 4) + getWidth() / 4, numPipe, chanceofoscillating, changeOscil, ghostPipes, maxOscillation, maxOscilSpeed, numStartOscil, roundsTillInvin, upsideDown};
+	}
+
+	public AudioList getSongList() {
+		return songs;
 	}
 
 	/**
@@ -140,6 +145,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		roundsTillInvin = (int)values[9];
 		retro = (boolean)values[10];
 		explode = (boolean)values[11];
+		upsideDown = (boolean)values[12];
 	}
 
 	/**
@@ -269,6 +275,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", Font.BOLD, 96));
 		g.drawString("SCORE: " + sumScores(), 800, 800);
+		if (bird.isFallingUp()) g.setColor(Color.RED);
 		g.drawString("JUMPS: " + numJumps, 800, 900);
 		if (firstPress) {
 			g.setColor(new Color(0, 100, 0));
@@ -382,7 +389,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		// if the user jumps
 		if ((e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_SPACE) && !dying() && !gameIsOver) {
 			numJumps++;
-			if (numJumps % 10 == 0 && numJumps != 0) bird.reverseGravity();
+			if (numJumps % 20 == 0 && numJumps != 0 && upsideDown) bird.reverseGravity();
+			if (numJumps % 20 == 10 && numJumps != 10 && upsideDown) bird.reverseGravity();
 			if (firstPress) {
 				movePipes.start();
 				bird.startFalling();
