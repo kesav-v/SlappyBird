@@ -20,9 +20,10 @@ public class Bird implements ActionListener {
 	private boolean exploding; // is the bird in the process of exploding?
 	private int radius; // the radius of the explosion
 	private int dR; // how quickly the radius is changing
+	private int gravity; // how quickly the bird falls
 
 	/**
-	 * Constructs a Bird object/
+	 * Constructs a Bird object.
 	 * @param comp A reference to the JComponent to which this bird will be added.
 	*/
 
@@ -35,6 +36,7 @@ public class Bird implements ActionListener {
 		exploding = false;
 		radius = 0;
 		dR = 0;
+		gravity = 1;
 	}
 
 	/**
@@ -75,7 +77,7 @@ public class Bird implements ActionListener {
 			return;
 		}
 		y -= velocity;
-		velocity -= 1;
+		velocity -= gravity;
 		comp.repaint();
 		if (y + 50 > comp.getHeight()) stopFalling();
 	}
@@ -106,5 +108,13 @@ public class Bird implements ActionListener {
 
 	public void setInvincible(boolean bool) {
 		invincible = bool;
+	}
+
+	public void reverseGravity() {
+		gravity *= -1;
+	}
+
+	public boolean isFallingUp() {
+		return gravity < 0;
 	}
 }
