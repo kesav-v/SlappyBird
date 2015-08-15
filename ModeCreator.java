@@ -55,7 +55,7 @@ public class ModeCreator extends JPanel {
 		descriptions[3] = new JTextArea("Maximum pipe oscillation:");
 		descriptions[4] = new JTextArea("Maximum oscillation speed:");
 		descriptions[5] = new JTextArea("Number of rounds until oscillating pipes show up:");
-		descriptions[6] = new JTextArea("Approximate percentage of pipes that are invincibility items:");
+		descriptions[6] = new JTextArea("Invincibility Frequency Index (1 - 20, 1 is most frequent and 29 is least):");
 		values = new JTextField[7];
 		for (int i = 0; i < options.length; i++) {
 			add(options[i]);

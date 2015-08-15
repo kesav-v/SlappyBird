@@ -42,6 +42,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private ArrayList<String> previousScores; // all the user's previous scores in the game
 	private boolean justDied; // did the bird just hit a pipe?
 	private ImageIcon bird1, bird2; // two pictures of birds to create a flapping animation
+	private ImageIcon bird1ud, bird2ud; // two upside-down pictures of birds to create a flapping animation
 	private Timer invincibility; // This timer fires events while the bird is invincible
 	private AudioList songs; // the playlist of background music during the game
 	private AudioClip clip; // the invincibility background music
@@ -60,6 +61,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	private boolean explode; // does the bird explode when it dies?
 	private Color birdColor; // the color of the bird, which changes in retro mode
 	private ImageIcon explosion; // the image of the bird's explosion
+	private int numJumps; // the number of times the user jumped
 
 	/**
 	 * Constucts a new FlappyPanel object.
@@ -88,6 +90,8 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		birdColor = Color.white;
 		bird1 = new ImageIcon(getClass().getResource("Bird1.png"));
 		bird2 = new ImageIcon(getClass().getResource("Bird2.png"));
+		bird1ud = new ImageIcon(getClass().getResource("Bird1Rotated.png"));
+		bird2ud = new ImageIcon(getClass().getResource("Bird2Rotated.png"));
 		thePipe = new ImageIcon(getClass().getResource("PipeCut.png"));
 	}
 
@@ -96,6 +100,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	*/
 
 	public void resetGame()	{
+		numJumps = 0;
 		bird = new Bird(this);
 		pipes = new FlappyPipe[4];
 		for (int i = 0; i < pipes.length; i++) {
@@ -200,9 +205,14 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 						g.drawRect(fp.getX(), 0, 50, fp.getY());
 						g.drawRect(fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200));
 					}
-					else	{
+					else if (!bird.isInvincible()) {
 						g.drawImage(thePipe.getImage(), fp.getX(), 0, 50, fp.getY(), this);
 						g.drawImage(thePipe.getImage(), fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200), this);
+					}
+					else {
+						g.setColor(Color.white);
+						g.drawRoundRect(fp.getX(), 0, 50, fp.getY(), 50, 50);
+						g.drawRoundRect(fp.getX(), fp.getY() + 200, 50, getHeight() - (fp.getY() + 200), 50, 50);
 					}
 			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 		}
@@ -227,13 +237,23 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		}
 		else
 			if (bird.isInvincible())
-				if (count % 4 < 2)
-					g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
-				else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
+				if (count % 4 < 2) {
+					if (bird.isFallingUp()) g.drawImage(bird1ud.getImage(), 50, bird.getY(), 50, 50, this);
+					else g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
+				}
+				else {
+					if (bird.isFallingUp()) g.drawImage(bird2ud.getImage(), 50, bird.getY(), 50, 50, this);
+					else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
+				}
 			else
-				if (count % 20 < 10)
-					 g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
-				else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
+				if (count % 20 < 10) {
+					 if (bird.isFallingUp()) g.drawImage(bird1ud.getImage(), 50, bird.getY(), 50, 50, this);
+					 else g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
+				}
+				else {
+					if (bird.isFallingUp()) g.drawImage(bird2ud.getImage(), 50, bird.getY(), 50, 50, this);
+					else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
+				}
 		if (dying() || dead()) {
 			movePipes.stop();
 			for (FlappyPipe fp : pipes)
@@ -249,6 +269,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", Font.BOLD, 96));
 		g.drawString("SCORE: " + sumScores(), 800, 800);
+		g.drawString("JUMPS: " + numJumps, 800, 900);
 		if (firstPress) {
 			g.setColor(new Color(0, 100, 0));
 			g.drawString("GET READY!", 780, 700);
@@ -360,15 +381,22 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	public void keyPressed(KeyEvent e) {
 		// if the user jumps
 		if ((e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_SPACE) && !dying() && !gameIsOver) {
+			numJumps++;
+			if (numJumps % 10 == 0 && numJumps != 0) bird.reverseGravity();
 			if (firstPress) {
 				movePipes.start();
 				bird.startFalling();
 				firstPress = false;
 			}
-			bird.setVelocity(13);
+			if (bird.isFallingUp()) {
+				bird.setVelocity(-13);
+			}
+			else {
+				bird.setVelocity(13);
+			}
 			repaint();
 		}
-		if (e.getKeyChar() == 'r' && gameIsOver) { // 'r' resets the game
+		if (e.getKeyChar() == KeyEvent.VK_ENTER && gameIsOver) { // 'r' resets the game
 			resetGame();
 			repaint();
 		}
