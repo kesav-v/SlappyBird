@@ -402,8 +402,9 @@ public class AudioClip extends Application implements Runnable	{
 	   	    latch.countDown();
 	   	}
 	});
-	try {
+	/*try {
+		System.out.println("awaiting...");
 		latch.await();
-	} catch (Exception e) {System.err.println("ahh");}
+	} catch (Exception e) {System.err.println("ahh");}*/
   }
 }

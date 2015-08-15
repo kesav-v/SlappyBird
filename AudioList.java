@@ -203,18 +203,18 @@ public class AudioList implements ActionListener {
 
 	public void playSong(String songName)	{
 		playlist = new ArrayList<Integer>();
-		songOn = 0;
 		clip.stop();
 		int songloc;
-		for (songloc = 0; songloc < locations.length; songloc++)
+		for (songloc = 0; songloc < locations.length; songloc++) {
 			if (getName(locations[songloc]).equals(songName))
 				break;
+		}
 		if (songloc == locations.length)
 			System.err.println("Cannot find song " + songName);
 		else {
 			playlist.add(songloc);
 			clip.stop();
-			clip = new AudioClip(new File(locations[playlist.get(songOn)]).getAbsoluteFile());
+			clip = new AudioClip(new File(locations[playlist.get(0)]).getAbsoluteFile());
 			play();
 		}
 	}
