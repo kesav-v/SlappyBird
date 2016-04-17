@@ -12,15 +12,15 @@ import java.awt.event.ActionEvent;
 
 public class Bird implements ActionListener {
 
-	private int y; // the birds height
-	private int velocity; // the birds current velocity
+	private double y; // the birds height
+	private double velocity; // the birds current velocity
 	private Timer fall; // the timer that makes the bird fall
 	private JComponent comp; // a reference to a JComponent to which this bird will be added
 	private boolean invincible; // is the bird invincible?
 	private boolean exploding; // is the bird in the process of exploding?
 	private int radius; // the radius of the explosion
 	private int dR; // how quickly the radius is changing
-	private int gravity; // how quickly the bird falls
+	private double gravity; // how quickly the bird falls
 
 	/**
 	 * Constructs a Bird object.
@@ -76,17 +76,21 @@ public class Bird implements ActionListener {
 			}
 			return;
 		}
+		if (velocity < 0) 
+			gravity = 1 - (y / 1440);
+		else gravity = 1;
+		System.out.println(gravity);
 		y -= velocity;
 		velocity -= gravity;
 		comp.repaint();
 		if (y + 50 > comp.getHeight()) stopFalling();
 	}
 
-	public int getY() {
+	public double getY() {
 		return y;
 	}
 
-	public void setVelocity(int v) {
+	public void setVelocity(double v) {
 		velocity = v;
 	}
 

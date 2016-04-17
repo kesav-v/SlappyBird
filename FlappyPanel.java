@@ -227,38 +227,38 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			if (bird.isExploding())	{
 				g.setColor(Color.red);
 				for (int radius = bird.getRadius(); radius > 0; radius -= 20)
-					g.drawOval(75 - radius / 2, bird.getY() + 25 - radius / 2, radius, radius);
+					g.drawOval(75 - radius / 2, (int)bird.getY() + 25 - radius / 2, radius, radius);
 			}
 			else {
-				g.drawOval(50, bird.getY(), 50, 50);
+				g.drawOval(50, (int)bird.getY(), 50, 50);
 				if (bird.isInvincible())	{
 					int antiradius = (int)(invincibleTimes * 50f / 255);
-					g.drawOval(50 + antiradius/2, bird.getY() + antiradius/2, 50 - antiradius, 50 - antiradius);
+					g.drawOval(50 + antiradius/2, (int)bird.getY() + antiradius/2, 50 - antiradius, 50 - antiradius);
 				}
 			}
 			
 		}
 		else if (bird.isExploding()) {
-			g.drawImage(explosion.getImage(), 75 - bird.getRadius() / 2, bird.getY() + 25 - bird.getRadius() / 2, bird.getRadius(), bird.getRadius(), this);
+			g.drawImage(explosion.getImage(), 75 - bird.getRadius() / 2, (int)bird.getY() + 25 - bird.getRadius() / 2, bird.getRadius(), bird.getRadius(), this);
 		}
 		else
 			if (bird.isInvincible())
 				if (count % 4 < 2) {
-					if (bird.isFallingUp()) g.drawImage(bird1ud.getImage(), 50, bird.getY(), 50, 50, this);
-					else g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
+					if (bird.isFallingUp()) g.drawImage(bird1ud.getImage(), 50, (int)bird.getY(), 50, 50, this);
+					else g.drawImage(bird1.getImage(), 50, (int)bird.getY(), 50, 50, this);
 				}
 				else {
-					if (bird.isFallingUp()) g.drawImage(bird2ud.getImage(), 50, bird.getY(), 50, 50, this);
-					else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
+					if (bird.isFallingUp()) g.drawImage(bird2ud.getImage(), 50, (int)bird.getY(), 50, 50, this);
+					else g.drawImage(bird2.getImage(), 50, (int)bird.getY(), 50, 50, this);
 				}
 			else
 				if (count % 20 < 10) {
-					 if (bird.isFallingUp()) g.drawImage(bird1ud.getImage(), 50, bird.getY(), 50, 50, this);
-					 else g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
+					 if (bird.isFallingUp()) g.drawImage(bird1ud.getImage(), 50, (int)bird.getY(), 50, 50, this);
+					 else g.drawImage(bird1.getImage(), 50, (int)bird.getY(), 50, 50, this);
 				}
 				else {
-					if (bird.isFallingUp()) g.drawImage(bird2ud.getImage(), 50, bird.getY(), 50, 50, this);
-					else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
+					if (bird.isFallingUp()) g.drawImage(bird2ud.getImage(), 50, (int)bird.getY(), 50, 50, this);
+					else g.drawImage(bird2.getImage(), 50, (int)bird.getY(), 50, 50, this);
 				}
 		if (dying() || dead()) {
 			movePipes.stop();
@@ -426,7 +426,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 	*/
 
 	public boolean dead() {
-		if (bird.getY() + 50 > getHeight() || (bird.getY() < 0)) {
+		if ((int)bird.getY() + 50 > getHeight() || ((int)bird.getY() < 0)) {
 			gameIsOver = true;
 			if (explode) {
 				bird.setExploding(true);
@@ -438,7 +438,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 			if (fp.getX() <= 50)
 				birdColor = fp.getColor();
 			if (!fp.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 &&
-				(fp.getY() <= bird.getY() - 150 || fp.getY() >= bird.getY())) {
+				(fp.getY() <= (int)bird.getY() - 150 || fp.getY() >= (int)bird.getY())) {
 				if (bird.isInvincible())	{
 					incPipeVelocity(-1);
 					return false;
@@ -451,7 +451,7 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 					mainMenu.gameOver();
 					return true;
 				}
-			} else if (fp.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 && bird.getY() + 50 >= fp.getY() && bird.getY() <= fp.getY() + 50) {
+			} else if (fp.isInvincible() && fp.getX() >= 0 && fp.getX() <= 100 && (int)bird.getY() + 50 >= fp.getY() && (int)bird.getY() <= fp.getY() + 50) {
 				bird.setInvincible(true);
 				fp.setVisible(false);
 				invincibility.start();
