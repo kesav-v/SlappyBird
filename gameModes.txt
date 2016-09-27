@@ -1,3 +1,6 @@
+Kesav3 3.0 null null 100.0 false true 600 2.0 0 5 true false false
+Kesav2 3.0 null null 100.0 false true 600 10.0 1 5 true false false
+Kesav 5.0 null null 10.0 false true 600 6.0 2 5 false true false
 me 100.0 null null 0.1 true true 2 90.0 2 7 true true
 RetroIMPOSSIBLE 11.0 null null 0.9 true true 1000 20.0 0 1000 true true true
 DefaultIMPOSSIBLE 11.0 null null 0.9 true true 1000 20.0 0 1000000 false true true

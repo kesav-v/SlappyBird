@@ -81,7 +81,7 @@ public class ModeCreator extends JPanel {
 		saveChanges = new JButton("SAVE CHANGES");
 		add(saveChanges);
 		saveChanges.setSize(2060, 40);
-		saveChanges.setLocation(50, 900);
+		saveChanges.setLocation(50, 950);
 		saveChanges.addActionListener(new ChangeSaver());
 		errorMessage = new JTextArea("Error: Changes could not be saved.\nPlease remember that the last 5 options must all be numbers.");
 		errorMessage.setForeground(Color.RED);

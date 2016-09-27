@@ -103,7 +103,7 @@ public class TestMainMenu extends JPanel implements ActionListener {
 		add(creator, "Mode Creator");
 		backToSettings = new JButton("CLOSE");
 		creator.add(backToSettings);
-		backToSettings.setLocation(50, 950);
+		backToSettings.setLocation(50, 1000);
 		backToSettings.setSize(2060, 40);
 		backToSettings.setBackground(Color.RED);
 		backToSettings.setForeground(Color.WHITE);

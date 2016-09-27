@@ -79,10 +79,6 @@ public class Bird implements ActionListener {
 			}
 			return;
 		}
-		if (velocity < 0) 
-			gravity = 1 - (y / 1440);
-		else gravity = 1;
-		System.out.println(gravity);
 		y -= velocity;
 		velocity -= gravity;
 		comp.repaint();

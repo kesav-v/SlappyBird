@@ -405,7 +405,6 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 		if ((e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_SPACE) && !dying() && !gameIsOver) {
 			numJumps++;
 			if (numJumps % 20 == 0 && numJumps != 0 && upsideDown) bird.reverseGravity();
-			if (numJumps % 20 == 10 && numJumps != 10 && upsideDown) bird.reverseGravity();
 			if (firstPress) {
 				movePipes.start();
 				bird.startFalling();
