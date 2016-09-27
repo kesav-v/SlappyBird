@@ -259,6 +259,21 @@ public class FlappyPanel extends JPanel implements ActionListener, KeyListener {
 				else {
 					if (bird.isFallingUp()) g.drawImage(bird2ud.getImage(), 50, (int)bird.getY(), 50, 50, this);
 					else g.drawImage(bird2.getImage(), 50, (int)bird.getY(), 50, 50, this);
+					if (bird.isFallingUp()) g.drawImage(bird1ud.getImage(), 50, bird.getY(), 50, 50, this);
+					else g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
+				}
+				else {
+					if (bird.isFallingUp()) g.drawImage(bird2ud.getImage(), 50, bird.getY(), 50, 50, this);
+					else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
+				}
+			else
+				if (count % 20 < 10) {
+					 if (bird.isFallingUp()) g.drawImage(bird1ud.getImage(), 50, bird.getY(), 50, 50, this);
+					 else g.drawImage(bird1.getImage(), 50, bird.getY(), 50, 50, this);
+				}
+				else {
+					if (bird.isFallingUp()) g.drawImage(bird2ud.getImage(), 50, bird.getY(), 50, 50, this);
+					else g.drawImage(bird2.getImage(), 50, bird.getY(), 50, 50, this);
 				}
 		if (dying() || dead()) {
 			movePipes.stop();

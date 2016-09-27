@@ -14,6 +14,8 @@ public class Bird implements ActionListener {
 
 	private double y; // the birds height
 	private double velocity; // the birds current velocity
+	private int y; // the birds height
+	private int velocity; // the birds current velocity
 	private Timer fall; // the timer that makes the bird fall
 	private JComponent comp; // a reference to a JComponent to which this bird will be added
 	private boolean invincible; // is the bird invincible?
@@ -21,6 +23,7 @@ public class Bird implements ActionListener {
 	private int radius; // the radius of the explosion
 	private int dR; // how quickly the radius is changing
 	private double gravity; // how quickly the bird falls
+	private int gravity; // how quickly the bird falls
 
 	/**
 	 * Constructs a Bird object.
